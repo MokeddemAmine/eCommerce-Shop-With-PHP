@@ -6,6 +6,6 @@
     <link rel="stylesheet" href="<?= $css; ?>vendor/fonts/all.min.css"/>
     <link rel="stylesheet" href="<?= $css; ?>vendor/bootstrap_4.5.3.min.css"/>
     <link rel="stylesheet" href="<?= $css; ?>backend.css"/>
-    <title>eCommerce Dashboard</title>
+    <title><?php if(isset($pageTitle)) echo $pageTitle; else echo 'eCommerce'; ?></title>
 </head>
 <body>

@@ -3,7 +3,7 @@
     <?php
         ob_start();
         session_start();
-
+        $pageTitle = 'Home';
         if(isset($_SESSION['useradmin'])){
             $navbar = 'include';
         }
@@ -26,33 +26,33 @@
         ?>
         <section class="dashboard">
             <div class="container">
-                <h2 class="text-center text-capitalize text-second-color my-5">dashboard</h2>
+                <h2 class="text-center text-capitalize text-second-color my-5"><?= lang('dashboard'); ?></h2>
                 <div class="dashboard-statistics d-flex text-white">
                     <div class="stats-box col-md-6 col-lg-3 d-flex align-items-center justify-content-between bg-main-color py-2">
                         <i class="fa-solid fa-users fa-3x"></i>
                         <div class="stats-box-content">
-                            <h5 class="text-capitalize">total memebers</h5>
+                            <h5 class="text-capitalize"><?= lang('total memebers'); ?></h5>
                             <h6 class="text-center display-4"><a href="members.php" class="text-white">13</a></h6>
                         </div>
                     </div>
                     <div class="stats-box col-md-6 col-lg-3 d-flex align-items-center justify-content-between bg-second-color py-2">
                         <i class="fa-solid fa-user-plus fa-3x"></i>
                         <div class="stats-box-content">
-                            <h5 class="text-capitalize">pending members</h5>
+                            <h5 class="text-capitalize"><?= lang('pending members'); ?></h5>
                             <h6 class="text-center display-4"><a href="members.php" class="text-white">3</a></h6>
                         </div>
                     </div>
                     <div class="stats-box col-md-6 col-lg-3 d-flex align-items-center justify-content-between bg-third-color py-2">
                         <i class="fa-solid fa-tag fa-3x"></i>
                         <div class="stats-box-content">
-                            <h5 class="text-capitalize">total items</h5>
+                            <h5 class="text-capitalize"><?= lang('total items'); ?></h5>
                             <h6 class="text-center display-4"><a href="items.php" class="text-white">3</a></h6>
                         </div>
                     </div>
                     <div class="stats-box col-md-6 col-lg-3 d-flex align-items-center justify-content-between bg-fourth-color py-2">
                         <i class="fa-solid fa-comments fa-3x"></i>
                         <div class="stats-box-content">
-                            <h5 class="text-capitalize">total comments</h5>
+                            <h5 class="text-capitalize"><?= lang('total comments'); ?></h5>
                             <h6 class="text-center display-4"><a href="comments.php" class="text-white">53</a></h6>
                         </div>
                     </div>

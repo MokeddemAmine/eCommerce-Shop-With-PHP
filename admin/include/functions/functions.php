@@ -1,5 +1,6 @@
 <?php
     // function for all queries v1.0
+    // v1.1 add negative values !=
 
     function query($type,$table,$props,$values = NULL,$wprops = NULL){
         global $pdo;
@@ -15,7 +16,13 @@
             if($wprops){
                 $where = '';
                 foreach($wprops as $wprop){
-                    $where .=$wprop.'=? AND ';
+                    if($wprop[0] == '!'){
+                        $wprop = substr($wprop,1);
+                        $where .=$wprop.' !=? AND ';
+                    }
+                    else{
+                        $where .=$wprop.' =? AND ';
+                    }
                 }
                 $where = 'WHERE '.substr_replace($where,' ',-4);
             }

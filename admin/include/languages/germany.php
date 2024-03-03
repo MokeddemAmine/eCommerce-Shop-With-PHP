@@ -1,7 +1,7 @@
 <?php
     function lang($sentence){
         static $lang = array(
-            'welcome'           => 'Bienvenue'
+            'welcome'           => 'Willkommen'
         );
         return $lang($sentence);
     }

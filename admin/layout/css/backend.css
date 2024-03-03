@@ -28,7 +28,7 @@
 .bg-third-color{
     background-color: var(--third-color) !important;
 }
-.bg-fourth{
+.bg-fourth-color{
     background-color: var(--fourth-color) !important;
 }
 
@@ -46,3 +46,8 @@ header .links{
     width:100%;
 }
 /* end header */
+/* start dashboar */
+.dashboard .dashboard-statistics{
+    gap:.5rem;
+}
+/* end dashboar */

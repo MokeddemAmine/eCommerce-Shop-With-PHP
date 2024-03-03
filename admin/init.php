@@ -12,6 +12,9 @@
     include $functions.'functions.php';
     include $languages.'english.php';
     include $template.'header.php';
-    
+    if(isset($navbar)){
+        include 'navbar.php';
+    }
+
 
 ?>

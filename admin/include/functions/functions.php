@@ -4,32 +4,54 @@
 
     function query($type,$table,$props,$values = NULL,$wprops = NULL){
         global $pdo;
-        if($type == 'select'){
-            // get the columns 
-            $select = '';
-            foreach($props as $prop){
-                $select .=$prop.',';
-            }
-            $select = substr_replace($select,' ',-1);
-            // get the where conditions columns
-            $where = NULL;
-            if($wprops){
-                $where = '';
-                foreach($wprops as $wprop){
-                    if($wprop[0] == '!'){
-                        $wprop = substr($wprop,1);
-                        $where .=$wprop.' !=? AND ';
-                    }
-                    else{
-                        $where .=$wprop.' =? AND ';
-                    }
+        try{
+            if($type == 'select'){
+                // get the columns 
+                $select = '';
+                foreach($props as $prop){
+                    $select .=$prop.',';
                 }
-                $where = 'WHERE '.substr_replace($where,' ',-4);
+                $select = substr_replace($select,' ',-1);
+                // get the where conditions columns
+                $where = NULL;
+                if($wprops){
+                    $where = '';
+                    foreach($wprops as $wprop){
+                        if($wprop[0] == '!'){
+                            $wprop = substr($wprop,1);
+                            $where .=$wprop.' !=? AND ';
+                        }
+                        else{
+                            $where .=$wprop.' =? AND ';
+                        }
+                    }
+                    $where = 'WHERE '.substr_replace($where,' ',-4);
+                }
+                // get the query
+                $query = $pdo->prepare("SELECT $select FROM $table $where ");
+                $query->execute($values);
+                return $query;
+            }elseif ($type == 'insert'){
+                $columns = '';
+                $vals = '';
+                foreach($props as $prop){
+                    $columns.=$prop.',';
+                    $vals .='?,';
+                }
+                $columns = substr_replace($columns,' ',-1);
+                $vals = substr_replace($vals,' ',-1);
+                $query = $pdo->prepare("INSERT INTO $table ($columns) VALUES ($vals)");  
+                $query->execute($values);
+                echo '<div class="alert alert-success">Info added with success</div>';
             }
-            // get the query
-            $query = $pdo->prepare("SELECT $select FROM $table $where ");
-            $query->execute($values);
-            return $query;
+        }catch(PDOException $e){
+            if(str_contains($e->getMessage(),'Duplicate entry')){
+                if(str_contains($e->getMessage(),'Username')){
+                    echo '<div class="alert alert-danger">Username has been used</div>';
+                }if(str_contains($e->getMessage(),'Email')){
+                    echo '<div class="alert alert-danger">Email has been used</div>';
+                }
+            }
         }
     }
 ?>

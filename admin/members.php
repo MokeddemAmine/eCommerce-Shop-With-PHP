@@ -90,7 +90,8 @@
                     </div>
                 </div>
             </form>
-        <?php }
+        <?php 
+        }
         else{
             header('Location: index.php');
             exit();

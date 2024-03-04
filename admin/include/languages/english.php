@@ -32,6 +32,7 @@
             'edit member'       => 'edit member',
             'update member'     => 'update member',
             'delete member'     => 'delete member',
+            'approve member'    => 'approve member',
             // long sentences
             'Username (8 character minimun)'    => 'Username (8 character minimun)',
             'Password must be >= 8 characters'  => 'Password must be >= 8 characters',

@@ -33,7 +33,7 @@
                             <i class="fa-solid fa-users fa-3x"></i>
                             <div class="stats-box-content">
                                 <h5 class="text-capitalize"><?= lang('total memebers'); ?></h5>
-                                <h6 class="text-center display-4"><a href="members.php" class="text-white">13</a></h6>
+                                <h6 class="text-center display-4"><a href="members.php" class="text-white"><?= query('select','Users',['UserID'])->rowCount() -1; ?></a></h6>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                             <i class="fa-solid fa-user-plus fa-2x"></i>
                             <div class="stats-box-content">
                                 <h5 class="text-capitalize"><?= lang('pending members'); ?></h5>
-                                <h6 class="text-center display-4"><a href="members.php" class="text-white">3</a></h6>
+                                <h6 class="text-center display-4"><a href="members.php?regStatus=0" class="text-white"><?= query('select','Users',['UserID'],[0],['RegStatus'])->rowCount() ?></a></h6>
                             </div>
                         </div>
                     </div>

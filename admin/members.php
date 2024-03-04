@@ -27,6 +27,9 @@
                     <tbody>
                         <?php
                             while($row = $getMembers->fetchObject()){
+                                if(isset($_GET['regStatus']) && $row->RegStatus == 1){
+                                    continue;
+                                }
                                 echo '<tr>';
                                 echo '<td>'.$row->UserID.'</td>';
                                 echo '<td>'.$row->Username.'</td>';
@@ -36,6 +39,9 @@
                                 echo '<td class="text-center">'; 
                                     echo '<a href="?do=Edit&userid='.$row->UserID.'" class="btn btn-success btn-sm text-capitalize mr-1"><i class="fa-solid fa-edit"></i> edit</a>';
                                     echo '<a href="?do=Delete&userid='.$row->UserID.'" class="btn btn-danger btn-sm text-capitalize confirm-delete"><i class="fa-solid fa-close"></i> delete</a>';
+                                    if($row->RegStatus == 0){
+                                        echo '<a href="?do=Approve&userid='.$row->UserID.'" class="btn btn-info btn-sm text-capitalize ml-1"><i class="fa-solid fa-tag"></i> approve</a>';
+                                    }
                                 echo '</td>';
                                 echo '</tr>';
                             }
@@ -189,6 +195,11 @@
             }else{
                 redirectPage();
             }
+        }elseif($page == 'Approve'){
+            echo '<h2 class="text-center text-capitalize text-second-color my-5">'.lang('approve member').'</h2>';
+            $userid = isset($_GET['userid']) && is_numeric($_GET['userid'])?$_GET['userid']:0;
+            $approveMember = query('update','Users',['RegStatus'],[1,$userid],['UserID']);
+            redirectPage('back');
         }
         else{
             header('Location: index.php');

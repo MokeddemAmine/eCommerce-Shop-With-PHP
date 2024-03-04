@@ -58,6 +58,23 @@
                 $query = $pdo->prepare("INSERT INTO $table ($columns) VALUES ($vals)");  
                 $query->execute($values);
                 echo '<div class="alert alert-success">'.lang('Info added with success').'</div>';
+            }elseif($type == 'update'){
+                $set = 'SET ';
+                foreach($props as $prop){
+                    $set .=$prop.' =?, ';
+                }
+                $set = substr_replace($set,' ',-2);
+                $where = NULL;
+                if($wprops){
+                    $where = 'WHERE ';
+                    foreach($wprops as $wprop){
+                        $where .= $wprop.' = ? AND ';
+                    }
+                    $where = substr_replace($where,' ',-4);
+                }
+                $query = $pdo->prepare("UPDATE $table $set $where");
+                $query->execute($values);
+                echo '<div class="alert alert-success">'.lang('Info updated with success').'</div>';
             }
         }catch(PDOException $e){
             if(str_contains($e->getMessage(),'Duplicate entry')){

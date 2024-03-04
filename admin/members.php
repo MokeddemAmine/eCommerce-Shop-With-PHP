@@ -161,6 +161,24 @@
                 echo '<div class="alert alert-danger">There are no user with this ID</div>';
                 redirectPage('back');
             }
+        }elseif($page == 'Update'){
+            echo '<h2 class="text-center text-capitalize text-second-color my-5">'.lang('update member').'</h2>';
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $userid     = $_POST['userid'];
+                $username   = $_POST['username'];
+                $password   = $_POST['password'];
+                $email      = $_POST['email'];
+                $name       = $_POST['name'];
+                
+                if(empty($password)){
+                    $updateMember = query('update','Users',['Username','Email','FullName'],[$username,$email,$name,$userid],['UserID']);
+                }else{
+                    $updateMember = query('update','Users',['Username','password','Email','FullName'],[$username,sha1($password),$email,$name,$userid],['UserID']);
+                }
+                redirectPage('back');
+            }else{
+                redirectPage();
+            }
         }
         else{
             header('Location: index.php');

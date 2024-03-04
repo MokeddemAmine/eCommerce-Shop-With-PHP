@@ -38,6 +38,7 @@
             'Enter your full name'              => 'Enter your full name',
             'add your avatar here'              => 'add your avatar here',
             'Info added with success'           => 'Info added with success',
+            'Info updated with success'         => 'Info updated with success',
             'Username has been used'            => 'Username has been used',
             'Email has been used'               => 'Email has been used',
             'Same password if you don\'t enter'  => 'Same password if you don\'t enter',

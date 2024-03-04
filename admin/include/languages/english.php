@@ -21,6 +21,19 @@
             'manage members'    => 'manage members',
             'no member exist'   => 'no member exist',
             'add member'        => 'add member',
+            'add new member'    => 'add new member',
+            'username'          => 'username',
+            'password'          => 'password',
+            'email'             => 'email',
+            'full name'         => 'full name',
+            'avatar'            => 'avatar',
+            'add member'        => 'add member',
+            // long sentences
+            'Username (8 character minimun)'    => 'Username (8 character minimun)',
+            'Password must be >= 8 characters'  => 'Password must be >= 8 characters',
+            'Email must be valid'               => 'Email must be valid',
+            'Enter your full name'              => 'Enter your full name',
+            'add your avatar here'              => 'add your avatar here',
         );
         return $lang[$sentence];
     }

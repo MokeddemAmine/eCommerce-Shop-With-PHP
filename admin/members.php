@@ -46,8 +46,52 @@
             }else{
                 echo '<div class="alert alert-secondary text-capitalize text-fourth-color">'.lang('no member exist').'</div>';
             }
-            echo '<a class="btn bg-second-color text-capitalize text-main-color">'.lang('add member').'</a>';
-        }else{
+            echo '<a href="?do=add" class="btn bg-second-color text-capitalize text-main-color">'.lang('add member').'</a>';
+        }elseif ($page == 'add'){?>
+            <h2 class="text-capitalize text-second-color text-center my-5"><?= lang('add new member') ?></h2>
+            <form action="?do=Insert" method="POST">
+                <div class="form-group row align-items-center">
+                    <label for="add-username" class="col-2 font-weight-bold text-capitalize text-second-color"><?= lang('username'); ?></label>
+                    <div class="col-12 col-md-10 col-lg-6">
+                        <input type="text" name="username" id="add-username" class="form-control" placeholder="<?= lang('Username (8 character minimun)'); ?>" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group row align-items-center">
+                    <label for="add-password" class="col-2 font-weight-bold text-capitalize text-second-color"><?= lang('password'); ?></label>
+                    <div class="col-12 col-md-10 col-lg-6">
+                        <input type="password" name="password" id="add-password" placeholder="<?= lang('Password must be >= 8 characters'); ?>" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row align-items-center">
+                    <label for="add-email" class="col-2 font-weight-bold text-capitalize text-second-color"><?= lang('email'); ?></label>
+                    <div class="col-12 col-md-10 col-lg-6">
+                        <input type="email" name="email" id="add-email" placeholder="<?= lang('Email must be valid'); ?>" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row align-items-center">
+                    <label for="add-name" class="col-2 font-weight-bold text-capitalize text-second-color"><?= lang('full name') ?></label>
+                    <div class="col-12 col-md-10 col-lg-6">
+                        <input type="text" name="name" id="add-name" placeholder="<?= lang('Enter your full name'); ?>" class="form-control" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group row align-items-center ">
+                    <label for="add-avatar" class="col-2 font-weight-bold text-capitalize text-second-color"><?= lang('avatar'); ?></label>
+                    <div class="col-12 col-md-10 col-lg-6">
+                        <div class="custom-file">
+                            <input type="file" name="avatar" id="add-avatar" class="custom-file-input">
+                            <label for="add-avatar" class="custom-file-label text-capitalize"><?= lang('add your avatar here'); ?></label>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-8 mt-4">
+                        <input type="submit" value="<?= lang('add member') ?>" class="btn btn-block bg-main-color text-second-color text-capitalize">
+                    </div>
+                </div>
+            </form>
+        <?php }
+        else{
             header('Location: index.php');
             exit();
         }

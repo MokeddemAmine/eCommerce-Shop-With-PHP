@@ -31,6 +31,7 @@
             'insert member'     => 'insert member',
             'edit member'       => 'edit member',
             'update member'     => 'update member',
+            'delete member'     => 'delete member',
             // long sentences
             'Username (8 character minimun)'    => 'Username (8 character minimun)',
             'Password must be >= 8 characters'  => 'Password must be >= 8 characters',
@@ -41,7 +42,8 @@
             'Info updated with success'         => 'Info updated with success',
             'Username has been used'            => 'Username has been used',
             'Email has been used'               => 'Email has been used',
-            'Same password if you don\'t enter'  => 'Same password if you don\'t enter',
+            'Same password if you don\'t enter' => 'Same password if you don\'t enter',
+            'Info delete with success'          =>  'Info delete with success'
         );
         return $lang[$sentence];
     }

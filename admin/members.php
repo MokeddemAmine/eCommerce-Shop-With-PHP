@@ -35,7 +35,7 @@
                                 echo '<td>'.$row->RegDate.'</td>';
                                 echo '<td class="text-center">'; 
                                     echo '<a href="?do=Edit&userid='.$row->UserID.'" class="btn btn-success btn-sm text-capitalize mr-1"><i class="fa-solid fa-edit"></i> edit</a>';
-                                    echo '<a href="" class="btn btn-danger btn-sm text-capitalize"><i class="fa-solid fa-close"></i> delete</a>';
+                                    echo '<a href="?do=Delete&userid='.$row->UserID.'" class="btn btn-danger btn-sm text-capitalize confirm-delete"><i class="fa-solid fa-close"></i> delete</a>';
                                 echo '</td>';
                                 echo '</tr>';
                             }
@@ -175,6 +175,16 @@
                 }else{
                     $updateMember = query('update','Users',['Username','password','Email','FullName'],[$username,sha1($password),$email,$name,$userid],['UserID']);
                 }
+                redirectPage('back');
+            }else{
+                redirectPage();
+            }
+        }elseif($page == 'Delete'){
+            echo '<h2 class="text-center text-capitalize text-second-color my-5">'.lang('delete member').'</h2>';
+            $userid = isset($_GET['userid']) && is_numeric($_GET['userid'])?$_GET['userid']:0;
+            $confirmUser = query('select','Users',['*'],[$userid],['UserID']);
+            if($confirmUser->rowCount() == 1){
+                $deleteMember = query('delete','Users',['UserID'],[$userid]);
                 redirectPage('back');
             }else{
                 redirectPage();

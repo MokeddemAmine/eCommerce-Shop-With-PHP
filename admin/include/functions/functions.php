@@ -75,6 +75,15 @@
                 $query = $pdo->prepare("UPDATE $table $set $where");
                 $query->execute($values);
                 echo '<div class="alert alert-success">'.lang('Info updated with success').'</div>';
+            }elseif($type == 'delete'){
+                $columns = 'WHERE ';
+                foreach($props as $prop){
+                    $columns.=$prop.' =? AND ';
+                }
+                $columns = substr_replace($columns,' ',-4);
+                $query = $pdo->prepare("DELETE FROM $table $columns ");
+                $query->execute($values);
+                echo '<div class="alert alert-success">'.lang('Info delete with success').'</div>';
             }
         }catch(PDOException $e){
             if(str_contains($e->getMessage(),'Duplicate entry')){

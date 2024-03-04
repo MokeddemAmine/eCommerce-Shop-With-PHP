@@ -42,14 +42,14 @@
                 $vals = substr_replace($vals,' ',-1);
                 $query = $pdo->prepare("INSERT INTO $table ($columns) VALUES ($vals)");  
                 $query->execute($values);
-                echo '<div class="alert alert-success">Info added with success</div>';
+                echo '<div class="alert alert-success">'.lang('Info added with success').'</div>';
             }
         }catch(PDOException $e){
             if(str_contains($e->getMessage(),'Duplicate entry')){
                 if(str_contains($e->getMessage(),'Username')){
-                    echo '<div class="alert alert-danger">Username has been used</div>';
+                    echo '<div class="alert alert-danger">'.lang('Username has been used').'</div>';
                 }if(str_contains($e->getMessage(),'Email')){
-                    echo '<div class="alert alert-danger">Email has been used</div>';
+                    echo '<div class="alert alert-danger">'.lang('Email has been used').'</div>';
                 }
             }
         }

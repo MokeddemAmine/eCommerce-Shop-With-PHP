@@ -91,6 +91,21 @@
                 </div>
             </form>
         <?php 
+        }elseif($page == 'Insert'){
+            echo '<h2 class="text-center text-second-color text-capitalize my-5">'.lang('insert member').'</h2>';
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                $username   = $_POST['username'];
+                $password   = $_POST['password'];
+                $email      = $_POST['email'];
+                $name       = $_POST['name'];
+
+                $setMember = query('insert','Users',['Username','password','Email','FullName','RegStatus'],[$username,sha1($password),$email,$name,1]);
+                
+            }else{
+                header('Location: index.php');
+                exit();
+            }
         }
         else{
             header('Location: index.php');

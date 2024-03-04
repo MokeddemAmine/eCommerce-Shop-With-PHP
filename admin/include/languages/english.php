@@ -28,12 +28,16 @@
             'full name'         => 'full name',
             'avatar'            => 'avatar',
             'add member'        => 'add member',
+            'insert member'     => 'insert member',
             // long sentences
             'Username (8 character minimun)'    => 'Username (8 character minimun)',
             'Password must be >= 8 characters'  => 'Password must be >= 8 characters',
             'Email must be valid'               => 'Email must be valid',
             'Enter your full name'              => 'Enter your full name',
             'add your avatar here'              => 'add your avatar here',
+            'Info added with success'           => 'Info added with success',
+            'Username has been used'            => 'Username has been used',
+            'Email has been used'               => 'Email has been used',
         );
         return $lang[$sentence];
     }

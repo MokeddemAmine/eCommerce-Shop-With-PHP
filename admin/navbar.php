@@ -1,7 +1,7 @@
 <header class="bg-second-color">
     <div class="container">
     <div class="navbar navbar-expand-md navbar-dark">
-            <a href="index.php" class="navbar-brand"><h1 class="text-uppercase text-main-color mb-0">logo</h1></a>
+            <a href="index.php" class="navbar-brand"><h1 class="text-uppercase text-main-color mb-0" style="font-size:2rem;">logo</h1></a>
             <button class="navbar-toggler bg-main-color" data-toggle="collapse" data-target="#main-navbar-content"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse justify-content-between" id="main-navbar-content">
                 <ul class="navbar-nav">

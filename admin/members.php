@@ -34,7 +34,7 @@
                                 echo '<td class="text-capitalize">'.$row->FullName.'</td>';
                                 echo '<td>'.$row->RegDate.'</td>';
                                 echo '<td class="text-center">'; 
-                                    echo '<a href="" class="btn btn-success btn-sm text-capitalize mr-1"><i class="fa-solid fa-edit"></i> edit</a>';
+                                    echo '<a href="?do=Edit&userid='.$row->UserID.'" class="btn btn-success btn-sm text-capitalize mr-1"><i class="fa-solid fa-edit"></i> edit</a>';
                                     echo '<a href="" class="btn btn-danger btn-sm text-capitalize"><i class="fa-solid fa-close"></i> delete</a>';
                                 echo '</td>';
                                 echo '</tr>';
@@ -106,6 +106,60 @@
             }else{
                 header('Location: index.php');
                 exit();
+            }
+        }elseif($page == 'Edit'){
+            echo '<h2 class="text-center text-second-color text-capitalize my-5">'.lang('edit member').'</h2>';
+            $userid = isset($_GET['userid']) && is_numeric($_GET['userid'])?$_GET['userid']:0;
+            $getUser = query('select','Users',['*'],[$userid],['UserID']);
+            if($getUser->rowCount() == 1){
+                $getUser = $getUser->fetchObject();
+                ?>
+                <form action="?do=Update" method="POST">
+                    <input type="hidden" name="userid" value="<?= $getUser->UserID ?>">
+                    <div class="form-group row align-items-center">
+                        <label for="add-username" class="col-2 font-weight-bold text-capitalize text-second-color"><?= lang('username'); ?></label>
+                        <div class="col-12 col-md-10 col-lg-6">
+                            <input type="text" name="username" value="<?= $getUser->Username ?>" id="add-username" class="form-control" placeholder="<?= lang('Username (8 character minimun)'); ?>" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label for="add-password" class="col-2 font-weight-bold text-capitalize text-second-color"><?= lang('password'); ?></label>
+                        <div class="col-12 col-md-10 col-lg-6">
+                            <input type="password" name="password" id="add-password" placeholder="<?= lang('Same password if you don\'t enter'); ?>" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label for="add-email" class="col-2 font-weight-bold text-capitalize text-second-color"><?= lang('email'); ?></label>
+                        <div class="col-12 col-md-10 col-lg-6">
+                            <input type="email" name="email" id="add-email" value="<?= $getUser->Email; ?>" placeholder="<?= lang('Email must be valid'); ?>" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label for="add-name" class="col-2 font-weight-bold text-capitalize text-second-color"><?= lang('full name') ?></label>
+                        <div class="col-12 col-md-10 col-lg-6">
+                            <input type="text" name="name" id="add-name" value="<?= $getUser->FullName; ?>" placeholder="<?= lang('Enter your full name'); ?>" class="form-control" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center ">
+                        <label for="add-avatar" class="col-2 font-weight-bold text-capitalize text-second-color"><?= lang('avatar'); ?></label>
+                        <div class="col-12 col-md-10 col-lg-6">
+                            <div class="custom-file">
+                                <input type="file" name="avatar" id="add-avatar" class="custom-file-input">
+                                <label for="add-avatar" class="custom-file-label text-capitalize"><?= lang('add your avatar here'); ?></label>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-lg-8 mt-4">
+                            <input type="submit" value="<?= lang('update member') ?>" class="btn btn-block bg-main-color text-second-color text-capitalize">
+                        </div>
+                    </div>
+                </form>
+                <?php
+            }else{
+                echo '<div class="alert alert-danger">There are no user with this ID</div>';
+                redirectPage('back');
             }
         }
         else{

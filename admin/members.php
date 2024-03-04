@@ -101,6 +101,7 @@
                 $name       = $_POST['name'];
 
                 $setMember = query('insert','Users',['Username','password','Email','FullName','RegStatus'],[$username,sha1($password),$email,$name,1]);
+                redirectPage('back',5);
                 
             }else{
                 header('Location: index.php');

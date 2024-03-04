@@ -1,4 +1,20 @@
 <?php
+
+    // redirect function:
+    // function go to previous page or index page
+    function redirectPage($page = NULL,$time = '3'){
+        echo '<div class="alert alert-info">the page will redirect to ';
+        if($page == NULL){
+            echo 'Home page in '.$time.' second</div>';
+            header("refresh:$time;url=index.php");
+
+        }else{
+            $page = $_SERVER['HTTP_REFERER'];
+            echo 'Previous page in '.$time.' second</div>';
+            header("refresh:$time;url=$page");
+        }
+        exit();
+    }
     // function for all queries v1.0
     // v1.1 add negative values !=
 
@@ -48,8 +64,10 @@
             if(str_contains($e->getMessage(),'Duplicate entry')){
                 if(str_contains($e->getMessage(),'Username')){
                     echo '<div class="alert alert-danger">'.lang('Username has been used').'</div>';
+                    return false;
                 }if(str_contains($e->getMessage(),'Email')){
                     echo '<div class="alert alert-danger">'.lang('Email has been used').'</div>';
+                    return false;
                 }
             }
         }

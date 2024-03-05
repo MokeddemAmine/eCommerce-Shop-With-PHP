@@ -13,13 +13,46 @@
                 <h2 class="text-capitalize text-second-color text-center my-5"><?= lang('manage categories'); ?></h2>
                 <div class="card">
                     <div class="card-header">
-                        <div class="row">
+                        <div class="row align-items-center">
                             <div class="col-lg-3 text-capitalize text-second-color font-weight-bold"><i class="fa-solid fa-edit"></i> manage categories</div>
+                            <form method="GET" action="" class="col-lg-6 order my-2 my-lg-0">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2 text-capitalize text-second-color font-weight-bold mb-1 mb-md-0">
+                                    <i class="fa-solid fa-sort"></i> order
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select name="order-by" class="custom-select custom-select-sm">
+                                            <option value="Name">Name</option>
+                                            <option value="Ordering">Ordering</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-7 my-2 my-md-0">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-7">
+                                                <div class="custom-control custom-control-inline custom-radio">
+                                                    <input type="radio" name="order" value="ASC" id="order-asc" class="custom-control-input"/>
+                                                    <label for="order-asc" class="custom-control-label">ASC</label>
+                                                </div>
+                                                <div class="custom-control custom-control-inline custom-radio">
+                                                    <input type="radio" name="order" value="DESC" id="order-desc" class="custom-control-input"/>
+                                                    <label for="order-desc" class="custom-control-label">DESC</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                    <input type="submit" value="Order" class="btn form-control bg-second-color text-main-color my-2 my-md-0">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="card-body">
                         <?php
                             $getCategories = query('select','categories',['*']);
+                            if(isset($_GET['order-by']) && isset($_GET['order'])){
+                                $getCategories = query('select','categories',['*'],null,null,$_GET['order-by'],$_GET['order']);
+                            }
                             if($getCategories->rowCount() > 0){
                                 while($cat = $getCategories->fetchObject()){
                                     ?>

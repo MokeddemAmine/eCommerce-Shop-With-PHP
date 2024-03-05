@@ -77,7 +77,7 @@ header .links{
         right:-9rem;
     }
     to{
-        right:0;
+        right:1rem;
     }
 }
 /* end categories */

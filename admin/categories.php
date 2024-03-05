@@ -174,16 +174,90 @@
             }else{
                 redirectPage();
             }
+        }elseif($page == 'Edit'){
+            $catid = isset($_GET['catid']) && is_numeric($_GET['catid'])?$_GET['catid']:0;
+            $getCategory = query('select','Categories',['*'],[$catid],['CatID']);
+            if($getCategory->rowCount() == 1){
+                $cat = $getCategory->fetchObject();
+            ?>
+            <h2 class="text-second-color text-center text-capitalize my-5"><?= lang('edit category') ?></h2>
+            <form action="?do=Update" method="POST">
+                <input type="hidden" name="catid" value="<?= $cat->CatID; ?>">
+                <div class="form-group row align-items-center">
+                    <label for="cat-name" class="col-2 text-capitalize font-weight-bold"><?= lang('name'); ?></label>
+                    <div class="col-md-8 col-lg-6">
+                        <input type="text" name="name" value="<?= $cat->Name; ?>" placeholder="<?= lang("Name of the category"); ?>" id="cat-name" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row align-items-center">
+                    <label for="cat-desc" class="col-2 text-capitalize font-weight-bold"><?= lang('description'); ?></label>
+                    <div class="col-md-8 col-lg-6">
+                        <input type="text" name="description" value="<?= $cat->Description; ?>" placeholder="<?= lang('Describe the category') ?>" id="cat-desc" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row align-items-center">
+                    <label for="cat-order" class="col-2 text-capitalize font-weight-bold"><?= lang('ordering'); ?></label>
+                    <div class="col-md-8 col-lg-6">
+                        <input type="number" name="ordering" value="<?= $cat->Ordering; ?>" placeholder="<?= lang('Number to arrange the categories') ?>" id="cat-order" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row align-items-center">
+                    <label for="cat-visible" class="col-2 text-capitalize font-weight-bold"><?= lang('visible'); ?></label>
+                    <div class="col-md-8 col-lg-6">
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" name="visible" id="visible-yes" value="1" class="custom-control-input" <?php if($cat->Visibility == 1) echo 'checked'; ?>>
+                            <label for="visible-yes" class="custom-control-label text-capitalize"><?= lang('yes'); ?></label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" name="visible" id="visible-no" value="0" class="custom-control-input" <?php if($cat->Visibility == 0) echo 'checked'; ?>>
+                            <label for="visible-no" class="custom-control-label text-capitalize"><?= lang('no'); ?></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row text-align-center">
+                    <label for="" class="col-2 text-capitalize font-weight-bold"><?= lang('Comments'); ?></label>
+                    <div class="col-md-8 col-lg-6">
+                        <div class="custom-control custom-control-inline custom-radio">
+                            <input type="radio" name="comments" value="1" id="comments-yes" class="custom-control-input" <?php if($cat->Allow_Comments == 1) echo 'checked'; ?>>
+                            <label for="comments-yes" class="custom-control-label text-capitalize"><?= lang('yes'); ?></label>
+                        </div>
+                        <div class="custom-control custom-control-inline custom-radio">
+                            <input type="radio" name="comments" value="0" id="comments-no" class="custom-control-input" <?php if($cat->Allow_Comments == 0) echo 'checked'; ?>>
+                            <label for="comments-no" class="custom-control-label text-capitalize"><?= lang('no'); ?></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row text-align-center">
+                    <label for="" class="col-2 text-capitalize font-weight-bold"><?= lang('ads'); ?></label>
+                    <div class="col-md-8 col-lg-6">
+                        <div class="custom-control custom-control-inline custom-radio">
+                            <input type="radio" name="ads" value="1" id="ads-yes" class="custom-control-input" <?php if($cat->Allow_Ads == 1) echo 'checked'; ?>/>
+                            <label for="ads-yes" class="custom-control-label text-capitalize"><?= lang('yes'); ?></label>
+                        </div>
+                        <div class="custom-control custom-control-inline custom-radio">
+                            <input type="radio" name="ads" value="0" id="ads-no" class="custom-control-input" <?php if($cat->Allow_Ads == 0) echo 'checked'; ?>/>
+                            <label for="ads-no" class="custom-control-label text-capitalize"><?= lang('no'); ?></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-10 col-lg-8">
+                        <input type="submit" value="<?= lang('update category'); ?>" class="btn btn-block bg-main-color text-capitalize">
+                    </div>
+                </div>
+            </form>
+            <?php
+            }else{
+                redirectPage();
+            }
         }
         else{
-            header('Location: index.php');
-            exit();
+            redirectPage();
         }
         echo '</div>';
         echo '</section>';
     }else{
-        header('Location: index.php');
-        exit();
+        redirectPage();
     }
     include $template.'footer.php';
     ob_end_flush();

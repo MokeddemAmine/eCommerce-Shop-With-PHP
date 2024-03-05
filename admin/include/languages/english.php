@@ -61,6 +61,8 @@
             'Describe the category'     => 'Describe the category',
             'Number to arrange the categories'  => 'Number to arrange the categories',
             'insert category'           => 'insert category',
+            'edit category'             => 'edit category',
+            'update category'           => 'update category',
             
         );
         return $lang[$sentence];

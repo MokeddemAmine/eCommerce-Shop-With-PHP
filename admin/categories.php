@@ -12,13 +12,13 @@
             ?>
                 <h2 class="text-capitalize text-second-color text-center my-5"><?= lang('manage categories'); ?></h2>
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header categories-header">
                         <div class="row align-items-center">
                             <div class="col-lg-3 text-capitalize text-second-color font-weight-bold"><i class="fa-solid fa-edit"></i> manage categories</div>
                             <form method="GET" action="" class="col-lg-6 order my-2 my-lg-0">
                                 <div class="row align-items-center">
                                     <div class="col-md-2 text-capitalize text-second-color font-weight-bold mb-1 mb-md-0">
-                                    <i class="fa-solid fa-sort"></i> order
+                                    <i class="fa-solid fa-sort"></i>order:
                                     </div>
                                     <div class="col-md-3">
                                         <select name="order-by" class="custom-select custom-select-sm">
@@ -45,6 +45,12 @@
                                     </div>
                                 </div>
                             </form>
+                            <div class="col-lg-3 view">
+                                <div class="row align-items-center">
+                                <div class="col-lg-6 font-weight-bold text-second-color"><i class="fa-solid fa-eye"></i> view:</div>
+                                <div class="col-lg-6 text-capitalize"><span class="view-mode " data-mode="classic">classic</span> | <span class="view-mode active" data-mode="full">full</span></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
@@ -58,12 +64,14 @@
                                     ?>
                                     <div class="category mb-3">
                                         <div class="category-content p-2 rounded mb-2">
-                                            <h3 class="text-capitalize text-fourth-color"><?= $cat->Name ?></h3>
-                                            <p><?= $cat->Description ?></p>
-                                            <div class="category-info text-capitalize">
-                                                <span class="btn btn-sm <?php if($cat->Visibility == 1) echo 'btn-success'; else echo 'btn-danger'; ?> text-white"><i class="fa-solid fa-eye"></i> visible</span>
-                                                <span class="btn btn-sm <?php if($cat->Allow_Comments == 1) echo 'btn-success'; else echo 'btn-danger'; ?> text-white"><i class="fa-solid fa-comment"></i> comments</span>
-                                                <span class="btn btn-sm <?php if($cat->Allow_Ads == 1) echo 'btn-success'; else echo 'btn-danger'; ?> text-white"><i class="fa-solid fa-tag"></i> ads</span>
+                                            <h3 class="text-capitalize text-fourth-color category-title"><?= $cat->Name ?></h3>
+                                            <div class="category-info">
+                                                <p><?= $cat->Description ?></p>
+                                                <div class="category-info text-capitalize">
+                                                    <span class="btn btn-sm <?php if($cat->Visibility == 1) echo 'btn-success'; else echo 'btn-danger'; ?> text-white"><i class="fa-solid fa-eye"></i> visible</span>
+                                                    <span class="btn btn-sm <?php if($cat->Allow_Comments == 1) echo 'btn-success'; else echo 'btn-danger'; ?> text-white"><i class="fa-solid fa-comment"></i> comments</span>
+                                                    <span class="btn btn-sm <?php if($cat->Allow_Ads == 1) echo 'btn-success'; else echo 'btn-danger'; ?> text-white"><i class="fa-solid fa-tag"></i> ads</span>
+                                                </div>
                                             </div>
                                             <div class="category-btn">
                                                 <a href="categories.php?do=Edit&catid=<?= $cat->CatID ?>" class="btn btn-success btn-sm text-capitalize"><i class="fa-solid fa-edit"></i> edit</a>

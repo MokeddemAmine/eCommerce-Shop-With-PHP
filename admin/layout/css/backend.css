@@ -52,10 +52,20 @@ header .links{
 }
 /* end dashboard */
 /* start categories */
+.categories .categories-header .view-mode{
+    cursor:pointer;
+}
+.categories .categories-header .view-mode.active{
+    color:var(--main-color);
+    font-weight:bold
+}
 .categories .category-content{
     position:relative;
     overflow: hidden;
     transition: .5s;
+}
+.category-title{
+    cursor:pointer;
 }
 .categories .category:not(:last-of-type){
     border-bottom:2px dashed var(--main-color);

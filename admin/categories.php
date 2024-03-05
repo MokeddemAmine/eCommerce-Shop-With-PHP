@@ -36,11 +36,11 @@
                     <label for="cat-visible" class="col-2 text-capitalize font-weight-bold"><?= lang('visible'); ?></label>
                     <div class="col-md-8 col-lg-6">
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" name="visible" id="visible-yes" value="yes" class="custom-control-input" checked>
+                            <input type="radio" name="visible" id="visible-yes" value="1" class="custom-control-input" checked>
                             <label for="visible-yes" class="custom-control-label text-capitalize"><?= lang('yes'); ?></label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" name="visible" id="visible-no" value="no" class="custom-control-input">
+                            <input type="radio" name="visible" id="visible-no" value="0" class="custom-control-input">
                             <label for="visible-no" class="custom-control-label text-capitalize"><?= lang('no'); ?></label>
                         </div>
                     </div>
@@ -49,11 +49,11 @@
                     <label for="" class="col-2 text-capitalize font-weight-bold"><?= lang('Comments'); ?></label>
                     <div class="col-md-8 col-lg-6">
                         <div class="custom-control custom-control-inline custom-radio">
-                            <input type="radio" name="comments" value="yes" id="comments-yes" class="custom-control-input" checked>
+                            <input type="radio" name="comments" value="1" id="comments-yes" class="custom-control-input" checked>
                             <label for="comments-yes" class="custom-control-label text-capitalize"><?= lang('yes'); ?></label>
                         </div>
                         <div class="custom-control custom-control-inline custom-radio">
-                            <input type="radio" name="comments" value="no" id="comments-no" class="custom-control-input">
+                            <input type="radio" name="comments" value="0" id="comments-no" class="custom-control-input">
                             <label for="comments-no" class="custom-control-label text-capitalize"><?= lang('no'); ?></label>
                         </div>
                     </div>
@@ -62,11 +62,11 @@
                     <label for="" class="col-2 text-capitalize font-weight-bold"><?= lang('ads'); ?></label>
                     <div class="col-md-8 col-lg-6">
                         <div class="custom-control custom-control-inline custom-radio">
-                            <input type="radio" name="ads" value="yes" id="ads-yes" class="custom-control-input" checked/>
+                            <input type="radio" name="ads" value="1" id="ads-yes" class="custom-control-input" checked/>
                             <label for="ads-yes" class="custom-control-label text-capitalize"><?= lang('yes'); ?></label>
                         </div>
                         <div class="custom-control custom-control-inline custom-radio">
-                            <input type="radio" name="ads" value="no" id="ads-no" class="custom-control-input"/>
+                            <input type="radio" name="ads" value="0" id="ads-no" class="custom-control-input"/>
                             <label for="ads-no" class="custom-control-label text-capitalize"><?= lang('no'); ?></label>
                         </div>
                     </div>
@@ -78,7 +78,25 @@
                 </div>
             </form>
             <?php
-        }else{
+        }elseif($page == 'Insert'){
+            echo '<h2 class="text-capitalize text-center my-5 text-second-color">'.lang('insert category').'</h2>';
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $name       = $_POST['name'];
+                $desc       = $_POST['description'];
+                $order      = $_POST['ordering'];
+                $visible    = intval($_POST['visible']);
+                $comments   = intval($_POST['comments']);
+                $ads        = intval($_POST['ads']);
+
+                $setCategory = query('insert','categories',['Name','Description','Ordering','Visibility','Allow_Comments','Allow_Ads'],[$name,$desc,$order,$visible,$comments,$ads]);
+
+                redirectPage('back');
+
+            }else{
+                redirectPage();
+            }
+        }
+        else{
             header('Location: index.php');
             exit();
         }

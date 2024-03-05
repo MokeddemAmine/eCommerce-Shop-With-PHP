@@ -110,8 +110,7 @@
                 redirectPage('back',5);
                 
             }else{
-                header('Location: index.php');
-                exit();
+                redirectPage();
             }
         }elseif($page == 'Edit'){
             echo '<h2 class="text-center text-second-color text-capitalize my-5">'.lang('edit member').'</h2>';
@@ -202,14 +201,12 @@
             redirectPage('back');
         }
         else{
-            header('Location: index.php');
-            exit();
+            redirectPage();
         }
         echo '</div>';
         echo '</section>';
     }else{
-        header('Location: index.php');
-        exit();
+        redirectPage();
     }
     
     include $template.'footer.php';

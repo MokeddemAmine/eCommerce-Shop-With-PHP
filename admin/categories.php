@@ -250,6 +250,23 @@
             }else{
                 redirectPage();
             }
+        }elseif($page == 'Update'){
+            echo '<h2 class="text-center text-capitalize text-second-color my-5">'.lang('update category').'</h2>';
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $catid      = $_POST['catid'];
+                $name       = $_POST['name'];
+                $desc       = $_POST['description'];
+                $order      = $_POST['ordering'];
+                $visible    = intval($_POST['visible']);
+                $comments   = intval($_POST['comments']);
+                $ads        = intval($_POST['ads']);
+
+                $updateCategory = query('update','categories',['Name','Description','Ordering','Visibility','Allow_Comments','Allow_Ads'],[$name,$desc,$order,$visible,$comments,$ads,$catid],['CatID']);
+
+                redirectPage('back');
+            }else{
+                redirectPage();
+            }
         }
         else{
             redirectPage();

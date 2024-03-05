@@ -11,7 +11,7 @@
                     <li class="nav-item"><a href="comments.php" class="nav-link text-white text-capitalize"><?= lang('comments'); ?></a></li>
                 </ul>
                 <div class="sous-menu d-inline-block">
-                    <h3 class="bg-main-color p-2 m-0 rounded sous-menu-name">mohammedamine</h3>
+                    <h3 class="bg-main-color p-2 m-0 rounded sous-menu-name"><?= $_SESSION['useradmin']; ?></h3>
                     <ul class="links list-unstyled bg-main-color text-center py-3">
                         <li><a href="../index.php" class="text-second-color text-capitalize my-3 font-weight-bold"><?= lang('visit shop'); ?></a></li>
                         <li><a href="#" class="text-second-color text-capitalize my-3 font-weight-bold"><?= lang('settings'); ?></a></li>

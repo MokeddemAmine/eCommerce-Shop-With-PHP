@@ -46,6 +46,8 @@ header .links{
     width:100%;
 }
 /* end header */
-/* start dashboar */
-
-/* end dashboar */
+/* start dashboard */
+.toggle-latest{
+    cursor:pointer;
+}
+/* end dashboard */

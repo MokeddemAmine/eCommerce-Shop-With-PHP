@@ -207,6 +207,9 @@
         }
         echo '</div>';
         echo '</section>';
+    }else{
+        header('Location: index.php');
+        exit();
     }
     
     include $template.'footer.php';

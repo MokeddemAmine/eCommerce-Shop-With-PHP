@@ -17,7 +17,7 @@
     // function for all queries v1.0
     // v1.1 add negative values !=
 
-    function query($type,$table,$props,$values = NULL,$wprops = NULL){
+    function query($type,$table,$props,$values = NULL,$wprops = NULL,$orderBy = NULL,$order = 'ASC',$limit = NULL){
         global $pdo;
         try{
             if($type == 'select'){
@@ -42,8 +42,15 @@
                     }
                     $where = 'WHERE '.substr_replace($where,' ',-4);
                 }
+                // order by
+                if($orderBy){
+                    $orderBy = "ORDER BY $orderBy $order";
+                }
+                if($limit){
+                    $limit = "LIMIT $limit";
+                }
                 // get the query
-                $query = $pdo->prepare("SELECT $select FROM $table $where ");
+                $query = $pdo->prepare("SELECT $select  FROM $table $where $orderBy $limit");
                 $query->execute($values);
                 return $query;
             }elseif ($type == 'insert'){

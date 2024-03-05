@@ -46,6 +46,7 @@
             'Same password if you don\'t enter' => 'Same password if you don\'t enter',
             'Info delete with success'          =>  'Info delete with success',
             // categories page
+            'manage categories'         => 'manage categories',
             'add new category'          => 'add new category',
             'add category'              => 'add category',
             'name'                      => 'name',

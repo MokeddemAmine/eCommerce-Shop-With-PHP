@@ -9,7 +9,45 @@
         echo '<section class="categories">';
         echo '<div class="container">';
         if($page == 'manage'){
-
+            ?>
+                <h2 class="text-capitalize text-second-color text-center my-5"><?= lang('manage categories'); ?></h2>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-lg-3 text-capitalize text-second-color font-weight-bold"><i class="fa-solid fa-edit"></i> manage categories</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <?php
+                            $getCategories = query('select','categories',['*']);
+                            if($getCategories->rowCount() > 0){
+                                while($cat = $getCategories->fetchObject()){
+                                    ?>
+                                    <div class="category mb-3">
+                                        <div class="category-content p-2 rounded mb-2">
+                                            <h3 class="text-capitalize text-fourth-color"><?= $cat->Name ?></h3>
+                                            <p><?= $cat->Description ?></p>
+                                            <div class="category-info text-capitalize">
+                                                <span class="btn btn-sm <?php if($cat->Visibility == 1) echo 'btn-success'; else echo 'btn-danger'; ?> text-white"><i class="fa-solid fa-eye"></i> visible</span>
+                                                <span class="btn btn-sm <?php if($cat->Allow_Comments == 1) echo 'btn-success'; else echo 'btn-danger'; ?> text-white"><i class="fa-solid fa-comment"></i> comments</span>
+                                                <span class="btn btn-sm <?php if($cat->Allow_Ads == 1) echo 'btn-success'; else echo 'btn-danger'; ?> text-white"><i class="fa-solid fa-tag"></i> ads</span>
+                                            </div>
+                                            <div class="category-btn">
+                                                <a href="categories.php?do=Edit&catid=<?= $cat->CatID ?>" class="btn btn-success btn-sm text-capitalize"><i class="fa-solid fa-edit"></i> edit</a>
+                                                <a href="categories.php?do=Delete&catid=<?= $cat->CatID ?>" class="btn btn-danger btn-sm text-capitalize confirm-delete"><i class="fa-solid fa-close"></i> delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php
+                                }
+                            }else{
+                                echo '<h5 class="text-capitalize text-second-color">There are no category</h5>';
+                            }
+                        ?>
+                    </div>
+                </div>
+                <a href="?do=Add" class="btn bg-second-color text-main-color text-capitalize mt-3">add category</a>
+            <?php
         }elseif($page == 'Add'){
             ?>
             <h2 class="text-second-color text-center text-capitalize my-5"><?= lang('add new category') ?></h2>

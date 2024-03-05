@@ -51,3 +51,33 @@ header .links{
     cursor:pointer;
 }
 /* end dashboard */
+/* start categories */
+.categories .category-content{
+    position:relative;
+    overflow: hidden;
+    transition: .5s;
+}
+.categories .category:not(:last-of-type){
+    border-bottom:2px dashed var(--main-color);
+}
+.categories .category-content:hover{
+    background-color: var(--second-color);
+    color:white;
+}
+.categories .category-content .category-btn{
+    position:absolute;
+    right:-9rem;
+    top:1rem;
+}
+.categories .category-content:hover .category-btn{
+    animation:right-to-left .5s forwards;
+}
+@keyframes right-to-left{
+    from{
+        right:-9rem;
+    }
+    to{
+        right:0;
+    }
+}
+/* end categories */

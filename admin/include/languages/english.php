@@ -44,7 +44,22 @@
             'Username has been used'            => 'Username has been used',
             'Email has been used'               => 'Email has been used',
             'Same password if you don\'t enter' => 'Same password if you don\'t enter',
-            'Info delete with success'          =>  'Info delete with success'
+            'Info delete with success'          =>  'Info delete with success',
+            // categories page
+            'add new category'          => 'add new category',
+            'add category'              => 'add category',
+            'name'                      => 'name',
+            'description'               => 'description',
+            'ordering'                  => 'ordering',
+            'visible'                   => 'visible',
+            'Comments'                  => 'Comments',
+            'ads'                       => 'ads',
+            'yes'                       => 'yes',
+            'no'                        => 'no',
+            'Name of the category'      => 'Name of the category',
+            'Describe the category'     => 'Describe the category',
+            'Number to arrange the categories'  => 'Number to arrange the categories',
+            
         );
         return $lang[$sentence];
     }

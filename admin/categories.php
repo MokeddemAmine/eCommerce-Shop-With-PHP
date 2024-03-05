@@ -267,6 +267,16 @@
             }else{
                 redirectPage();
             }
+        }elseif($page == 'Delete'){
+            echo '<h2 class="text-center text-capitalize text-second-color my-5">'.lang('delete category').'</h2>';
+            $catid = isset($_GET['catid']) && is_numeric($_GET['catid'])?$_GET['catid']:0;
+            $verifyCategory = query('select','Categories',['*'],[$catid],['CatID']);
+            if($verifyCategory->rowCount() == 1){
+                $deleteCategory = query('delete','Categories',['CatID'],[$catid]);
+                redirectPage('back');
+            }else{
+                redirectPage();
+            }
         }
         else{
             redirectPage();

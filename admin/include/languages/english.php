@@ -63,6 +63,7 @@
             'insert category'           => 'insert category',
             'edit category'             => 'edit category',
             'update category'           => 'update category',
+            'delete category'           => 'delete category'
             
         );
         return $lang[$sentence];

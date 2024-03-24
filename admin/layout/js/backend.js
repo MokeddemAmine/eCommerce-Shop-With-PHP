@@ -40,4 +40,10 @@ $(document).ready(function(){
     $('.categories .category .category-title').click(function(){
         $(this).siblings('.category-info').slideToggle(200);
     })
+
+    // image with bootstrap style
+    $('.custom-file-input').on('change',function(){
+        var fileName = $(this).val().split('\\').pop();
+        $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
+    })
 })

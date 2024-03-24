@@ -44,6 +44,24 @@
                 CONSTRAINT categoriesPK PRIMARY KEY (CatID)
             )');
             $query->execute();
+            $query = $pdo->prepare('CREATE TABLE Items(
+                ItemID INT AUTO_INCREMENT NOT NULL,
+                Name VARCHAR(50) NOT NULL,
+                Description TEXT NOT NULL,
+                Price DOUBLE not null,
+                Currency Varchar(2) NOT NULL,
+                Add_Date DATE default now(),
+                Country_Name VARCHAR(20),
+                Image VARCHAR(255),
+                Status VARCHAR(50),
+                Rating SMALLINT,
+                CatID SMALLINT NOT NULL,
+                MemberID INT NOT NULL,
+                CONSTRAINT ItemIDPK PRIMARY KEY (ItemID),
+                CONSTRAINT CatIDFK FOREIGN KEY (CatID) REFERENCES categories (CatID) ON DELETE CASCADE ON UPDATE CASCADE,
+                CONSTRAINT MemberIDFK FOREIGN KEY (MemberID) REFERENCES Users (UserID) ON DELETE CASCADE ON UPDATE CASCADE
+            )');
+            $query->execute();
         }
     }
 ?>

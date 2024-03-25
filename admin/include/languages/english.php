@@ -72,6 +72,7 @@
             'edit item'                 => 'edit item',
             'update item'               => 'update item',
             'delete item'               => 'delete item',
+            'approve item'              => 'approve item',
             
         );
         return $lang[$sentence];

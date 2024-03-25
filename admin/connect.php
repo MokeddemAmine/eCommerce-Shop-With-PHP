@@ -57,6 +57,7 @@
                 Rating SMALLINT,
                 CatID SMALLINT NOT NULL,
                 MemberID INT NOT NULL,
+                Approve INT DEFAULT 0,
                 CONSTRAINT ItemIDPK PRIMARY KEY (ItemID),
                 CONSTRAINT CatIDFK FOREIGN KEY (CatID) REFERENCES categories (CatID) ON DELETE CASCADE ON UPDATE CASCADE,
                 CONSTRAINT MemberIDFK FOREIGN KEY (MemberID) REFERENCES Users (UserID) ON DELETE CASCADE ON UPDATE CASCADE

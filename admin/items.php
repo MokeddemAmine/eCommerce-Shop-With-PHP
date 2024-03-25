@@ -43,7 +43,10 @@
                                         echo '<td>'.$memberName.'</td>';
                                         echo '<td>';
                                             echo '<a href="?do=Edit&itemid='.$row->ItemID.'" class="btn btn-success btn-sm mr-1"><i class="fa-solid fa-edit"></i> Edit</a>';
-                                            echo '<a href="?do=Delete&itemid='.$row->ItemID.'" class="btn btn-danger btn-sm  confirm-delete"><i class="fa-solid fa-close"></i> Delete</a>';
+                                            echo '<a href="?do=Delete&itemid='.$row->ItemID.'" class="btn btn-danger btn-sm  confirm-delete mr-1"><i class="fa-solid fa-close"></i> Delete</a>';
+                                            if($row->Approve == 0){
+                                                echo '<a href="?do=Approve&itemid='.$row->ItemID.'" class="btn btn-info btn-sm">Approve</a>';
+                                            }
                                         echo '</td>';
                                     echo '</tr>';
                                 }
@@ -326,6 +329,16 @@
 
                 $deleteItem = query('delete','Items',['ItemID'],[$itemid]);
 
+                redirectPage('back');
+            }else{
+                redirectPage();
+            }
+        }elseif($page == 'Approve'){
+            echo '<h2 class="text-center text-capitalize text-second-color my-5">'.lang('approve item').'</h2>';
+            $itemid = isset($_GET['itemid']) && is_numeric($_GET['itemid']) ? $_GET['itemid']:0;
+            $getItem = query('select','Items',['*'],[$itemid],['ItemID']);
+            if($getItem->rowCount() == 1){
+                $approveItem = query('update','Items',['Approve'],[1]);
                 redirectPage('back');
             }else{
                 redirectPage();

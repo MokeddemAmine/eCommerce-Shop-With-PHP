@@ -63,6 +63,18 @@
                 CONSTRAINT MemberIDFK FOREIGN KEY (MemberID) REFERENCES Users (UserID) ON DELETE CASCADE ON UPDATE CASCADE
             )');
             $query->execute();
+            $query = $pdo->prepare('CREATE TABLE Comments (
+                CommentID INT NOT NULL AUTO_INCREMENT,
+                Comment TEXT NOT NULL,
+                Status TINYINT DEFAULT 0,
+                Comment_Date DATE DEFAULT now(),
+                ItemID INT NOT NULL,
+                UserID INT NOT NULL,
+                CONSTRAINT CommentIDPK PRIMARY KEY (CommentID),
+                CONSTRAINT ItemIDFK FOREIGN KEY (ItemID) REFERENCES Items (ItemID) ON UPDATE CASCADE ON DELETE CASCADE,
+                CONSTRAINT UserIDFK FOREIGN KEY (UserID) REFERENCES Users (UserID) ON UPDATE CASCADE ON DELETE CASCADE
+            )');
+            $query->execute();
         }
     }
 ?>

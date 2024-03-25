@@ -338,11 +338,13 @@
             $itemid = isset($_GET['itemid']) && is_numeric($_GET['itemid']) ? $_GET['itemid']:0;
             $getItem = query('select','Items',['*'],[$itemid],['ItemID']);
             if($getItem->rowCount() == 1){
-                $approveItem = query('update','Items',['Approve'],[1]);
+                $approveItem = query('update','Items',['Approve'],[1,$itemid],['ItemID']);
                 redirectPage('back');
             }else{
                 redirectPage();
             }
+        }else{
+            redirectPage(NULL,0);
         }
 
         echo '</div>';

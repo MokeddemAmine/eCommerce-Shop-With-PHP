@@ -69,6 +69,7 @@
                 $query->execute($values);
                 echo '<div class="alert alert-success">'.lang('Info added with success').'</div>';
             }elseif($type == 'update'){
+                
                 $set = 'SET ';
                 foreach($props as $prop){
                     $set .=$prop.' =?, ';

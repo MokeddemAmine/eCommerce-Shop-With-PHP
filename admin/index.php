@@ -25,6 +25,7 @@
 
         if(isset($_SESSION['useradmin'])){
             $latestReg  = 5;
+            $latestItems = 5;
         ?>
         <section class="dashboard">
             <div class="container">
@@ -88,6 +89,28 @@
                                     echo '<div class="d-flex justify-content-between align-items-center mb-1">';
                                         echo '<h6>'.$row->Username.'</h6>';
                                         echo '<a href="members.php?do=Edit&userid='.$row->UserID.'" class="btn btn-success btn-sm text-capitalize"><i class="fa-solid fa-edit"></i> edit</a>';
+                                    echo '</div>';
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="latest-items-added col-lg-6">
+                        <div class="card">
+                            <div class="card-header bg-main-color text-white d-flex justify-content-between align-items-center">
+                                <div class="card-title m-0">
+                                    <i class="fa-solid fa-tag"></i>
+                                    Latest 5 Added Items
+                                </div>
+                                <i class="fa-solid fa-minus toggle-latest"></i>
+                            </div>
+                            <div class="card-body">
+                                <?php
+                                $getLatestItems = query('select','Items',['ItemID','Name'],NULL,NULL,'ItemID','DESC',$latestItems);
+                                while($row = $getLatestItems->fetchObject()){
+                                    echo '<div class="d-flex justify-content-between align-items-center mb-1">';
+                                        echo '<h6>'.$row->Name.'</h6>';
+                                        echo '<a href="items.php?do=Edit&itemid='.$row->ItemID.'" class="btn btn-success btn-sm text-capitalize"><i class="fa-solid fa-edit"></i> edit</a>';
                                     echo '</div>';
                                 }
                                 ?>

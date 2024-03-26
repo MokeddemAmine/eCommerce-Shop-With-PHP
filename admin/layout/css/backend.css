@@ -50,6 +50,27 @@ header .links{
 .toggle-latest{
     cursor:pointer;
 }
+.latest-comments .username{
+    background-color: rgb(217, 212, 212);
+    padding:.2rem .5rem;
+    margin-right:.5rem;
+    flex:1;
+}
+.latest-comments .comment{
+    flex:3;
+    background-color:rgb(234, 228, 228) ;
+    position:relative;
+}
+.latest-comments .comment::before{
+    content:'';
+    border-color:transparent rgb(234, 228, 228) transparent transparent;
+    border-width: 10px;
+    border-style: solid;
+    position:absolute;
+    top:50%;
+    left:-20px;
+    transform: translateY(-50%);
+}
 /* end dashboard */
 /* start categories */
 .categories .categories-header .view-mode{

@@ -295,6 +295,37 @@
                         </div>
                     </div>
                 </form>
+                <?php 
+                        $getComments = query('select','Comments INNER JOIN Users ON Comments.UserID = Users.UserID',['Comments.Comment AS Comment','Comments.Comment_Date AS Comment_Date','Users.Username AS Username'],[$itemid],['Comments.ItemID']);
+                        if($getComments->rowCount() > 0){
+                            ?>
+                                <table class="table mt-5 table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Comment</th>
+                                            <th>Comment Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                            while($comment = $getComments->fetchObject()){
+                                                echo '<tr>';
+                                                    echo '<td>'.$comment->Username.'</td>';
+                                                    echo '<td>'.$comment->Comment.'</td>';
+                                                    echo '<td>'.$comment->Comment_Date.'</td>';
+                                                echo '</tr>';
+                                            }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            <?php
+
+                        }else{
+                            echo '<div class="text-center my-4">There are no Comment for this item</div>';
+                        }
+                    ?>
+                
             <?php
             }else{
                 redirectPage();

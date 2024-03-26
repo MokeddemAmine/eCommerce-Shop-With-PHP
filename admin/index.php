@@ -26,6 +26,7 @@
         if(isset($_SESSION['useradmin'])){
             $latestReg  = 5;
             $latestItems = 5;
+            $latestComments = 5;
         ?>
         <section class="dashboard">
             <div class="container">
@@ -54,7 +55,7 @@
                             <i class="fa-solid fa-tag fa-3x"></i>
                             <div class="stats-box-content">
                                 <h5 class="text-capitalize"><?= lang('total items'); ?></h5>
-                                <h6 class="text-center display-4"><a href="items.php" class="text-white">3</a></h6>
+                                <h6 class="text-center display-4"><a href="items.php" class="text-white"><?= query('select','Items',['*'])->rowCount(); ?></a></h6>
                             </div>
                         </div>
                     </div>
@@ -63,7 +64,7 @@
                         <i class="fa-solid fa-comments fa-3x"></i>
                             <div class="stats-box-content">
                                 <h5 class="text-capitalize"><?= lang('total comments'); ?></h5>
-                                <h6 class="text-center display-4"><a href="comments.php" class="text-white">53</a></h6>
+                                <h6 class="text-center display-4"><a href="comments.php" class="text-white"><?= query('select','Comments',['*'])->rowCount(); ?></a></h6>
                             </div>
                         </div>
                     </div>
@@ -111,6 +112,29 @@
                                     echo '<div class="d-flex justify-content-between align-items-center mb-1">';
                                         echo '<h6>'.$row->Name.'</h6>';
                                         echo '<a href="items.php?do=Edit&itemid='.$row->ItemID.'" class="btn btn-success btn-sm text-capitalize"><i class="fa-solid fa-edit"></i> edit</a>';
+                                    echo '</div>';
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="latest-comments col-lg-12 mt-3">
+                        <div class="card">
+                            <div class="card-header bg-main-color text-white d-flex justify-content-between align-items-center">
+                                <div class="card-title m-0 text-capitalize">
+                                    <i class="fa-solid fa-comments"></i>
+                                    latest <?= $latestReg ?> comments
+                                </div>
+                                <i class="fa-solid fa-minus toggle-latest"></i>
+                            </div>
+                            <div class="card-body">
+                                <?php
+                                $getLatestComments = query('select','Comments INNER JOIN Users ON Comments.UserID = Users.UserID',['Comments.Comment AS Comment','Users.Username AS Username'],NULL,NULL,'CommentID','DESC',$latestComments);
+                                while($row = $getLatestComments->fetchObject()){
+                                    echo '<div class="d-flex align-items-center mb-1">';
+                                        echo '<h6 class="
+                                        username m-0 mr-3 mb-3">'.$row->Username.'</h6>';
+                                        echo '<p class="comment m-0 mb-3 p-2">'.$row->Comment.'</p>'; 
                                     echo '</div>';
                                 }
                                 ?>

@@ -1,6 +1,7 @@
 <?php
     ob_start();
     session_start();
+    $pageTitle = 'Home Page';
     include 'init.php';
 
     ?>

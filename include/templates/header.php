@@ -29,9 +29,35 @@
                         </select>
                     </div>
                     <ul class="navbar-nav flex-grow-1 justify-content-end">
-                        
-                        <li class="nav-item"><a href="login.php" class="nav-link text-second-color text-uppercase btn btn-sm bg-main-color mr-md-1 mb-2 mb-md-0">login</a></li>
+                        <?php if(isset($_SESSION['user'])){
+                            $userStatus = query('select','Users',['*'],[$_SESSION['user']],['Username'])->fetchObject()->RegStatus;
+                        ?>
+                            
+                            <li class="nav-item user-sign-in m-0">
+                                <a data-toggle="collapse" href="#user-info" class="nav-link text-second-color text-uppercase btn btn-sm bg-main-color mb-2 mb-md-0"><?= $_SESSION['user']; ?></a>
+                                <div class="collapse" id="user-info">
+                                    <ul class="navbar-nav nav flex-column bg-main-color">
+                                        <?php
+                                            $getId = query('select','Users',['UserID'],[$_SESSION['user']],['Username'])->fetchObject()->UserID;
+                                            if($getId == 1){
+                                                echo '<li class="nav-item d-block"><a href="admin/index.php" class="nav-link text-second-color">Go To  Admin</a></li>';
+                                            }
+                                            if($userStatus == 1){
+                                                echo '<li class="nav-item d-block"><a href="items.php?do=AddItem" class="nav-link text-second-color">Add Item</a></li>';
+                                            }
+                                        ?>
+                                        <li class="nav-item d-block"><a href="profile.php" class="nav-link text-second-color">Profile</a></li>
+                                        <li class="nav-item d-block"><a href="settings.php" class="nav-link text-second-color">Settings</a></li>
+                                        <li class="nav-item d-block"><a href="logout.php" class="nav-link text-second-color">Logout</a></li>
+                                    </ul>
+                                </div>
+                                
+                            </li>
+
+                        <?php }else{ ?>
+                        <li class="nav-item"><a href="login.php?do=login" class="nav-link text-second-color text-uppercase btn btn-sm bg-main-color mr-md-1 mb-2 mb-md-0">login</a></li>
                         <li class="nav-item"><a href="login.php?do=register" class="nav-link text-second-color text-uppercase btn btn-sm bg-main-color">register</a></li>
+                        <?php } ?>
                     </ul>
                     
                 </div>

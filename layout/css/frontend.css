@@ -43,7 +43,15 @@
     font-size:1.5rem;
     color:var(--main-color);
 }
+.user-sign-in {
+    position:relative;
+}
+.user-sign-in #user-info{
+    position:absolute;
+    z-index:1000;
+    width:100%;
 
+}
 /* header end */
 /* homepage start */
 .cats-items .card{
@@ -61,3 +69,8 @@
     border-radius:.5rem;
 }
 /* homepage end */
+/* Start login */
+.register-go , .login-go{
+    cursor:pointer;
+}
+/* End login */

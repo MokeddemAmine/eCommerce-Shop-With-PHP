@@ -73,6 +73,11 @@
             'update item'               => 'update item',
             'delete item'               => 'delete item',
             'approve item'              => 'approve item',
+
+            // comments page
+            'manage comments'           => 'manage comments',
+            'approve comment'           => 'approve comment',
+            'delete comment'            => 'delete comment',
             
         );
         return $lang[$sentence];

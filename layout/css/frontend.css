@@ -1,0 +1,47 @@
+:root{
+    --main-color:#FBC40E;
+    --second-color:#343f71;
+    --third-color:#e9d8e4;
+    --fourth-color:#f34c19;
+}
+*{
+    box-sizing: border-box;
+}
+.text-main-color{
+    color:var(--main-color) !important;
+}
+.text-second-color{
+    color:var(--second-color) !important;
+}
+.text-third-color{
+    color:var(--third-color) !important;
+}
+.text-fourth{
+    color:var(--fourth-color) !important;
+}
+.bg-main-color{
+    background-color: var(--main-color) !important;
+}
+.bg-second-color{
+    background-color: var(--second-color) !important;
+}
+.bg-third-color{
+    background-color: var(--third-color) !important;
+}
+.bg-fourth-color{
+    background-color: var(--fourth-color) !important;
+}
+/* header start */
+.search-input{
+    position:relative;
+}
+.search-icon{
+    position:absolute;
+    top:50%;
+    right:2px;
+    transform: translateY(-50%);
+    font-size:1.5rem;
+    color:var(--main-color);
+}
+
+/* header end */

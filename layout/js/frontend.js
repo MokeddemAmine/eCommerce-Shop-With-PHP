@@ -17,3 +17,13 @@ $(document).ready(function(){
         
     })
 })
+
+// live show when add new item
+$(document).ready(function(){
+    $('.input-change').keyup(function(){
+        $('.card .'+$(this).attr('name')).text($(this).val());
+    })
+    $('.input-change-currency').change(function(){
+        $('.card .currency').text($(this).val());
+    })
+})

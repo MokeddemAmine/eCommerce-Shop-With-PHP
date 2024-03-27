@@ -75,19 +75,24 @@
                         $getLatestCategories = query('select','Categories',['*'],NULL,NULL,'CatID','DESC',5);
                         if($getLatestCategories->rowCount() > 0){
                             while($cat = $getLatestCategories->fetchObject()){
-                                echo '<a href="items.php?catid='.$cat->CatID.'" class="btn btn-light btn-sm mr-2">'.$cat->Name.'</a>';
+                                echo '<a href="items.php?do=ShowCategory&catid='.$cat->CatID.'" class="btn btn-light btn-sm mr-2">'.$cat->Name.'</a>';
                             }
                         }
                     ?>
                 </div>
                 <form action="items.php" method="GET" class="col-md-2">
+                    <input type="hidden" name="do" value="ShowCategory">
                     <select name="catid" id="cat-menu" class="custom-select custom-select-sm">
                         <?php
                             $getAllCategories  = query('select','Categories',['*']);
                             echo '<option value="0">All</option>';
                             if($getAllCategories->rowCount() > 0){ 
                                 while($cat = $getAllCategories->fetchObject()){
-                                    echo '<option value="'.$cat->CatID.'">'.$cat->Name.'</option>';
+                                    echo '<option value="'.$cat->CatID.'"'; 
+                                        if(isset($_GET['catid']) && is_numeric($_GET['catid']) && $cat->CatID == $_GET['catid']){
+                                            echo 'selected';
+                                        }
+                                    echo '>'.$cat->Name.'</option>';
                                 }
                             }
                         ?>

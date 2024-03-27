@@ -32,6 +32,45 @@
         }else{
             echo '<div class="alert alert-white">There are no item</div>';
         }
+    }elseif($page == 'ShowCategory'){
+        $catid = isset($_GET['catid']) && is_numeric($_GET['catid'])?$_GET['catid']:0;
+        if($catid == 0){
+            redirectPage('items.php',0);
+        }else{
+            $verifyCat = query('select','Categories',['*'],[$catid],['CatID']);
+            if($verifyCat->rowCount() == 1){
+                $cat = $verifyCat->fetchObject();
+                ?>
+                    <h3 class="text-center text-capitalize text-second-color my-5"><?= $cat->Name ?></h3>
+                    <div class="row">
+                        <?php
+                        $getCatItems = query('select','Items',['*'],[$catid,1],['CatID','Approve']);
+                        if($getCatItems->rowCount() > 0){
+                            while($item = $getCatItems->fetchObject()){
+                            ?>
+                                <div class="col-md-6 col-lg-4 col-xl-3">
+                                    <div class="card" style="height:400px;">
+                                        <div class="card-body">
+                                            <img src="imgs/item.jpg" alt="" class="card-img-top" style="max-height:200px;">
+                                            <h6 class="card-title"><?= $item->Name ?></h6>
+                                            <p class="card-text"><?= $item->Description ?></p>
+                                            <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>">Show More</a>
+                                            <span class="price"><?= $item->Price ?> <?= $item->Currency ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php
+                            }
+                        }else{
+                            echo '<div class="alert alert-white text-center">There are no items</div>';
+                        }
+                        ?>
+                    </div>
+                <?php
+            }else{
+                redirectPage();
+            }
+        }
     }elseif($page == 'AddItem'){
         if(isset($_SESSION['user'])){
             $getUser = query('select','Users',['*'],[$_SESSION['user']],['Username'])->fetchObject();

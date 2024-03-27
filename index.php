@@ -23,7 +23,7 @@
                                                     <img src="imgs/item.jpg" alt="image of item" class="card-img-top" style="max-height:200px"/>
                                                     <h4 class="card-title"><?= $item->Name ?></h4>
                                                     <p class="card-text"><?= $item->Description ?></p>
-                                                    <a href="items.php?itemid=<?= $item->ItemID ?>" class="card-link">Click Here ...</a>
+                                                    <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link">Click Here ...</a>
                                                     <span class="price"><?= $item->Price ?> <?= $item->Currency ?></span>
                                                 </div>
                                             </div>

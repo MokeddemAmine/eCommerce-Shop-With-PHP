@@ -3,8 +3,11 @@
     session_start();
     $pageTitle = 'Items';
     include 'init.php';
+
     $page = isset($_GET['do'])?$_GET['do']:'manage';
+
     echo '<div class="container my-5">';
+
     if($page == 'manage'){
         $getAllItems = query('select','Items',['*'],NULL,NULL,'ItemID','DESC');
         if($getAllItems->rowCount() > 0){
@@ -18,7 +21,7 @@
                                 <img src="imgs/item.jpg" alt="" class="card-img-top" style="max-height:200px;">
                                 <h6 class="card-title"><?= $item->Name ?></h6>
                                 <p class="card-text"><?= $item->Description ?></p>
-                                <a href="?do=OneItem&itemid=<?= $item->ItemID ?>" class="card-link">Show More</a>
+                                <a href="?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link">Show More</a>
                                 <span class="price"><?= $item->Price ?> <?= $item->Currency ?></span>
                             </div>
                         </div>
@@ -154,6 +157,131 @@
 
         }else{
             redirectPage();
+        }
+    }elseif($page == 'ShowItem'){
+        $itemid = isset($_GET['itemid'])?$_GET['itemid']:0;
+        $getItem = query('select','Items INNER JOIN Categories ON Items.CatID = Categories.CatID INNER JOIN Users ON Items.MemberID = Users.UserID',['Items.*','Categories.Name AS Cat_Name','Users.Username AS Username'],[$itemid],['Items.ItemID']);
+        if($getItem->rowCount() == 1){
+            $getItem = $getItem->fetchObject();
+            ?>
+                <h2 class="text-center text-second-color text-capitalize my-5"><?= $getItem->Name ?></h2>
+                <div class="row border p-3">
+                    <div class="col-lg-4">
+                        <img src="imgs/item.jpg" alt="" class="w-100">
+                    </div>
+                    <div class="col-lg-8">
+                        <table class="table table-striped table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td class="text-capitalize font-weight-bold">Name</td>
+                                    <td><?= $getItem->Name ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-capitalize font-weight-bold">description</td>
+                                    <td><?= $getItem->Description ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-capitalize font-weight-bold">price</td>
+                                    <td><?= $getItem->Price ?> <?= $getItem->Currency ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-capitalize font-weight-bold">country</td>
+                                    <td><?= $getItem->Country_Name ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-capitalize font-weight-bold">status</td>
+                                    <td class="text-capitalize"><?= $getItem->Status ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-capitalize font-weight-bold">category</td>
+                                    <td><a href="items.php?do=Category&catid=<?= $getItem->CatID ?>"><?= $getItem->Cat_Name ?></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-capitalize font-weight-bold">added date</td>
+                                    <td><?= $getItem->Add_Date ?></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="comments">
+                    <?php 
+                        if(isset($_SESSION['user'])){
+                            ?>
+                            <hr class="comment-lines">
+                            <form action="?do=InsertComment" method="POST">
+                                <div class="row">
+                                    <div class="col-md-9 mb-3 mb-md-0">
+                                        <input type="hidden" name="itemid" value="<?= $getItem->ItemID ?>">
+                                        <input type="text" name="comment" placeholder="Enter your comment to this product" class="form-control">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="submit" value="Comment" class="btn btn-block bg-main-color text-second-color">
+                                    </div>
+                                </div>
+                            </form>
+                            <hr class="comment-lines">
+                            <?php
+                        }else{
+                            ?>
+                            <hr class="comment-lines">
+                            <p class="text-center">You have to <a href="login.php?do=login">Login</a> for comment</p>
+                            <hr class="comment-lines">
+                            <?php
+                        }
+                        $getComments = query('select','Comments INNER JOIN Users ON Comments.UserID = Users.UserID',['Comments.*','Users.Username'],[$getItem->ItemID],['Comments.ItemID']);
+                        if($getComments->rowCount() > 0){
+                            ?>
+                            <h4 class="text-second-color my-4">Comments:</h4>
+                            <table class="table table-striped table-borderless">
+                                <tbody>
+                                    <?php
+                                    while($comment = $getComments->fetchObject()){
+                                        ?>
+                                        <tr>
+                                            <td><?= $comment->Username ?></td>
+                                            <td style="width:66%;"><?= $comment->Comment ?></td>
+                                            <td><?= $comment->Comment_Date ?></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                            <?php
+
+                        }else{
+                            echo '<div class="alert alert-white">There are no comment</div>';
+                        }
+                    ?>
+                    
+                </div>
+            <?php
+        }else{
+            redirectPage(NULL,0);
+        }
+    }elseif($page == 'InsertComment'){
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            if(isset($_SESSION['user'])){
+                $getUserID  = query('select','Users',['*'],[$_SESSION['user']],['Username'])->fetchObject()->UserID;
+                $itemid     = filter_var($_POST['itemid'],FILTER_SANITIZE_NUMBER_INT);
+                $comment    = filter_var($_POST['comment'],FILTER_SANITIZE_STRING);
+                
+                $form = array();
+
+                if(empty($comment)){
+                    $form[] = '<div class="alert alert-danger">Comment must be not empty</div>';
+                }
+
+                if(!empty($form)){
+                    foreach($form as $error){
+                        echo $error;
+                    }
+                }else{
+                    $setComment = query('insert','Comments',['Comment','ItemID','UserID'],[$comment,$itemid,$getUserID]);
+                    redirectPage('back');
+                }
+            }
         }
     }
     echo '</div>';

@@ -15,7 +15,7 @@
             } ?>>
                 <div class="container">
                     <div class="w-50 m-auto bg-second-color text-white rounded p-3" <?php if($page == '') echo 'style="display:none;"' ?>>
-                        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" class="">
+                        <form action="<?= $_SERVER['PHP_SELF'].'?do=register' ?>" method="POST" class="">
                             <h2 class="text-capitalize text-center text-main-color mb-4"><?= lang('Registration') ?></h2>
                             <div class="form-group">
                                 <input type="text" name="name" placeholder="<?= lang('Enter your name here') ?>"  class="form-control">
@@ -45,7 +45,7 @@
             } ?>>
                 <div class="container">
                     <div class="w-50 m-auto bg-second-color text-white rounded p-3">
-                        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" class="">
+                        <form action="<?= $_SERVER['PHP_SELF'].'?do=login' ?>" method="POST" class="">
                             <h2 class="text-capitalize text-center text-main-color mb-4"><?= lang('login') ?></h2>
                             <div class="form-group">
                                 <input type="text" name="user" placeholder="<?= lang('Enter your username or email here'); ?>"  class="form-control">
@@ -65,28 +65,58 @@
     }
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         if(isset($_POST['sign_up'])){
-            $name       = $_POST['name'];
-            $username   = $_POST['username'];
-            $email      = $_POST['email'];
-            $pass1      = $_POST['password'];
-            $pass2      = $_POST['password-confirm'];
+
+            $name       = filter_var($_POST['name'],FILTER_SANITIZE_STRING);
+            $username   = filter_var($_POST['username'],FILTER_SANITIZE_STRING);
+            $email      = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
+            $pass1      = filter_var($_POST['password'],FILTER_SANITIZE_STRING);
+            $pass2      = filter_var($_POST['password-confirm'],FILTER_SANITIZE_STRING);
+
+            $form = array();
+
+            if(strlen($name) < 4){
+                $form[] = '<div class="alert alert-danger">Name must be has more than 4 characters</div>';
+            }
+            if(strlen($username) < 6){
+                $form[] = '<div class="alert alert-danger">Username must be has more than 6 characters</div>';
+            }
+            if(empty($email)){
+                $form[] = '<div class="alert alert-danger">Email must be entered</div>';
+            }
+            if(filter_var($email,FILTER_VALIDATE_EMAIL) != true){
+                $form[] = '<div class="alert alert-danger">Enter a Valid Email</div>';
+            }
+            if(empty($pass1)){
+                $form[] = '<div class="alert alert-danger">Password must be not empty</div>';
+            }
+            if(strlen($pass1) < 8){
+                $form[] = '<div class="alert alert-danger">Password must have more than 8 characters</div>';
+            }
+            if($pass1 != $pass2){
+                $form[] = '<div class="alert alert-danger">Please enter the same password</div>';
+            }
 
             echo '<div class="container">';
-            if($pass1 == $pass2){
+            if(!empty($form)){
+                foreach($form as $error){
+                    echo $error;
+                }
+            }
+            else{
                 
 
-                query('insert','Users',['FullName','Username','Email','password'],[$name,$username,$email,sha1($pass1)]);
+                $addUser = query('insert','Users',['FullName','Username','Email','password'],[$name,$username,$email,sha1($pass1)]);
+
+                if($addUser){
+                    echo '<div class="alert alert-success">User Added with success you will wait to approve from admin</div>';
+                }
                 
-                echo '<div class="alert alert-success">User Added with success you will wait to approve from admin</div>';
-                redirectPage(NULL,6);
             
-            }else{
-                echo '<div class="alert alert-danger">You must enter the same password</div>';
             }
             echo '</div>';
         }elseif(isset($_POST['sign_in'])){
-            $user       = $_POST['user'];
-            $pass      = $_POST['password'];
+            $user       = filter_var($_POST['user'],FILTER_SANITIZE_STRING);
+            $pass       = filter_var($_POST['password'],FILTER_SANITIZE_STRING);
 
             $login = $pdo->prepare("SELECT * FROM Users WHERE (Username = ? OR Email = ?) AND password = ?");
             $login-> execute([$user,$user,sha1($pass)]);

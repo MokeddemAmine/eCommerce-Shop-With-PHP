@@ -54,10 +54,10 @@
 }
 /* header end */
 /* homepage start */
-.cats-items .card{
+.card{
     position:relative;
 }
-.cats-items .card .price{
+.card .price{
     position:absolute;
     top:2px;
     left:2px;

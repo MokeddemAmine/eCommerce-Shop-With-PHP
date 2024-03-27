@@ -19,7 +19,7 @@
                 <button class="navbar-toggler bg-main-color" data-toggle="collapse" data-target="#main-navbar" aria-expanded="true"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse justify-content-betwen" id="main-navbar">
                     <div class="flex-grow-1 mb-2 mb-md-0 search-input">
-                        <input type="search" name="search" id="search" placeholder="Search Categories or Items Here" class="form-control">
+                        <input type="search" name="search" id="search" placeholder="<?= lang('Search Categories or Items Here') ?>" class="form-control">
                         <i class="fa-solid fa-search search-icon"></i>
                     </div>
                     <div class="languages mb-3 mb-md-0 ml-md-5">
@@ -31,6 +31,9 @@
                     <ul class="navbar-nav flex-grow-1 justify-content-end">
                         <?php if(isset($_SESSION['user'])){
                             $userStatus = query('select','Users',['*'],[$_SESSION['user']],['Username'])->fetchObject()->RegStatus;
+                            if($userStatus == 0){
+                                echo '<li class="nav-item btn btn-danger mr-1">Not Approve Yet</li>';
+                            }
                         ?>
                             
                             <li class="nav-item user-sign-in m-0">

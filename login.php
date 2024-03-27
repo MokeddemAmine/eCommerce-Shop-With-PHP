@@ -6,7 +6,7 @@
 
     
     if(isset($_SESSION['user'])){
-        redirectPage();
+        redirectPage(NULL,0);
     }else{
         $page = isset($_GET['do'])?$_GET['do']:'';
         ?>
@@ -14,29 +14,29 @@
                 echo 'style="display:none"';
             } ?>>
                 <div class="container">
-                    <div class="w-50 m-auto bg-second-color text-white rounded p-3">
-                        <form action="" method="POST" class="">
-                            <h2 class="text-capitalize text-center text-main-color mb-4">Registration</h2>
+                    <div class="w-50 m-auto bg-second-color text-white rounded p-3" <?php if($page == '') echo 'style="display:none;"' ?>>
+                        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" class="">
+                            <h2 class="text-capitalize text-center text-main-color mb-4"><?= lang('Registration') ?></h2>
                             <div class="form-group">
-                                <input type="text" name="name" placeholder="Enter your name here"  class="form-control">
+                                <input type="text" name="name" placeholder="<?= lang('Enter your name here') ?>"  class="form-control">
                             </div>
                             <div class="form-group">
-                                <input type="text" name="username" placeholder="Enter your username"  class="form-control">
+                                <input type="text" name="username" placeholder="<?= lang('Enter your username') ?>"  class="form-control">
                             </div>
                             <div class="form-group">
-                                <input type="email" name="email" placeholder="Enter a valid email"  class="form-control">
+                                <input type="email" name="email" placeholder="<?= lang('Enter a valid email') ?>"  class="form-control">
                             </div>
                             <div class="form-group">
-                                <input type="password" name="password" class="form-control" placeholder="Enter a password" >
+                                <input type="password" name="password" class="form-control" placeholder="<?= lang('Enter a password') ?>" >
                             </div>
                             <div class="form-group">
-                                <input type="password" name="password-confirm" placeholder="Repeat your password"  class="form-control">
+                                <input type="password" name="password-confirm" placeholder="<?= lang('Repeat your password') ?>"  class="form-control">
                             </div>
                             <div class="form-group">
-                                <input type="submit" value="Sign up" name="sign_up" class="btn bg-main-color text-second-color btn-block">
+                                <input type="submit" value="<?= lang('Sign up') ?>" name="sign_up" class="btn bg-main-color text-second-color btn-block">
                             </div>
                         </form>
-                        <div class="text-center">You have an acount <a class="login-go text-capitalize text-main-color"> login</a></div>
+                        <div class="text-center"><?= lang('You have an acount '); ?><a class="login-go text-capitalize text-main-color"> <?= lang('login') ?></a></div>
                     </div> 
                 </div>
             </section>
@@ -45,19 +45,19 @@
             } ?>>
                 <div class="container">
                     <div class="w-50 m-auto bg-second-color text-white rounded p-3">
-                        <form action="" method="POST" class="">
-                            <h2 class="text-capitalize text-center text-main-color mb-4">login</h2>
+                        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" class="">
+                            <h2 class="text-capitalize text-center text-main-color mb-4"><?= lang('login') ?></h2>
                             <div class="form-group">
-                                <input type="text" name="user" placeholder="Enter your username or email here"  class="form-control">
+                                <input type="text" name="user" placeholder="<?= lang('Enter your username or email here'); ?>"  class="form-control">
                             </div>
                             <div class="form-group">
-                                <input type="password" name="password" placeholder="Enter your password"  class="form-control">
+                                <input type="password" name="password" placeholder="<?= lang('Enter your password'); ?>"  class="form-control">
                             </div>
                             <div class="form-group">
-                                <input type="submit" value="login" name="sign_in" class="btn bg-main-color text-second-color btn-block">
+                                <input type="submit" value="<?= lang('login') ?>" name="sign_in" class="btn bg-main-color text-second-color btn-block">
                             </div>
                         </form>
-                        <div class="text-center">You have not an acount <a class="register-go text-capitalize text-main-color"> Register</a></div>
+                        <div class="text-center"><?= lang('You have not an acount'); ?> <a class="register-go text-capitalize text-main-color"> <?= lang('Register') ?></a></div>
                     </div> 
                 </div>
             </section>

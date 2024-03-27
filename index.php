@@ -17,12 +17,10 @@
                             echo '<div class="row">';
                                 while($item = $getItemsToCat->fetchObject()){
                                     ?>
-                                            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                                             <div class="card p-1" style="height:400px">
                                                 <div class="card-body">
-                                                    <div class="card-img-top text-center">
-                                                        <img src="imgs/item.jpg" alt="image of item" style="max-height:200px"/>
-                                                    </div>
+                                                    <img src="imgs/item.jpg" alt="image of item" class="card-img-top" style="max-height:200px"/>
                                                     <h4 class="card-title"><?= $item->Name ?></h4>
                                                     <p class="card-text"><?= $item->Description ?></p>
                                                     <a href="items.php?itemid=<?= $item->ItemID ?>" class="card-link">Click Here ...</a>

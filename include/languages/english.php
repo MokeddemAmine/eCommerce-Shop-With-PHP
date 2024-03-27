@@ -14,7 +14,22 @@
             'Email has been used'               => 'Email has been used',
             'Same password if you don\'t enter' => 'Same password if you don\'t enter',
             'Info delete with success'          =>  'Info delete with success',
-            
+            'Search Categories or Items Here'   => 'Search Categories or Items Here',
+            // login page
+            'Registration'                      => 'Registration',
+            'login'                             => 'login',
+            'Enter your name here'              => 'Enter your name here',
+            'Enter your username'               => 'Enter your username',
+            'Enter a valid email'               => 'Enter a valid email',
+            'Enter a password'                  => 'Enter a password',
+            'Repeat your password'              => 'Repeat your password',
+            'Sign up'                           => 'Sign up',
+            'Enter your username or email here' => 'Enter your username or email here',
+            'Enter your password'               => 'Enter your password',
+            'You have an acount '               => 'You have an acount ',
+            'You have not an acount'            => 'You have not an acount',
+            'Register'                          => 'Register',
+
         );
         return $lang[$sentence];
     }

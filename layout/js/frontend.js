@@ -27,3 +27,7 @@ $(document).ready(function(){
         $('.card .currency').text($(this).val());
     })
 })
+ // confirm delete 
+ $('.confirm-delete').click(function(){
+    return confirm('Are you sure want to delete this ?');
+})

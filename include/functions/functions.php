@@ -8,8 +8,14 @@
             echo 'Home page in '.$time.' second</div>';
             header("refresh:$time;url=index.php");
         }else{
-            $page = $_SERVER['HTTP_REFERER'];
-            echo 'Previous page in '.$time.' second</div>';
+            if($page == 'back'){
+                $page = $_SERVER['HTTP_REFERER'];
+                echo 'Previous page in '.$time.' second</div>';
+            }else{
+                echo $page.' page in '.$time.' second</div>';
+            }
+            
+            
             header("refresh:$time;url=$page");
         }
         exit();

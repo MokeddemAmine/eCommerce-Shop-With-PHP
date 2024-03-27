@@ -79,3 +79,10 @@
     border:1px solid var(--main-color);
 }
 /* End items page */
+/* Start profile */
+.approve{
+    position:absolute;
+    top:0;
+    right:0;
+}
+/* End profile */

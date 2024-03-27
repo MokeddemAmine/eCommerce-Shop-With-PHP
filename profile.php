@@ -48,9 +48,16 @@
                                                             <img src="imgs/item.jpg" alt="" class="card-img-top" style="max-height:200px"/>
                                                             <h6 class="card-title"><?= $item->Name ?></h6>
                                                             <p class="card-text"><?= $item->Description ?></p>
-                                                            <a href="items.php?itemid=<?= $item->ItemID ?>" class="card-link">Click Here</a>
+                                                            <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link">Click Here</a>
                                                             <span class="price"><?= $item->Price ?> <?= $item->Currency ?></span>
                                                         </div>
+                                                        <?php
+                                                        if($item->Approve == 1){
+                                                            echo '<span class="approve bg-success text-white font-weight-bold d-inline-block p-1">Approved</span>';
+                                                        }else{
+                                                            echo '<span class="approve bg-danger text-white font-weight-bold d-inline-block p-1">Not Approved</span>';
+                                                        }
+                                                        ?>
                                                     </div>
                                                 </div>
                                         <?php

@@ -11,7 +11,7 @@
                 $getCategories = query('select','Categories',['*'],NULL,NULL,'Ordering');
                 if($getCategories->rowCount() > 0){
                     while($cat = $getCategories->fetchObject()){
-                        $getItemsToCat = query('select','Items',['*'],[$cat->CatID],['CatID'],'ItemID','DESC',4);
+                        $getItemsToCat = query('select','Items',['*'],[$cat->CatID,1],['CatID','Approve'],'ItemID','DESC',4);
                         if($getItemsToCat->rowCount() > 0){
                             echo '<h4 class="text-center text-capitalize my-4 bg-second-color py-1 text-white rounded">'.$cat->Name.'</h4>';
                             echo '<div class="row">';
@@ -21,7 +21,7 @@
                                             <div class="card p-1" style="height:400px">
                                                 <div class="card-body">
                                                     <img src="imgs/item.jpg" alt="image of item" class="card-img-top" style="max-height:200px"/>
-                                                    <h4 class="card-title"><?= $item->Name ?></h4>
+                                                    <h6 class="card-title"><?= $item->Name ?></h6>
                                                     <p class="card-text"><?= $item->Description ?></p>
                                                     <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link">Click Here ...</a>
                                                     <span class="price"><?= $item->Price ?> <?= $item->Currency ?></span>

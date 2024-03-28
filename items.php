@@ -44,7 +44,9 @@
                     <h3 class="text-center text-capitalize text-second-color my-5"><?= $cat->Name ?></h3>
                     <div class="row">
                         <?php
-                        $getCatItems = query('select','Items',['*'],[$catid,1],['CatID','Approve']);
+                        //$getCatItems = query('select','Items',['*'],[$catid,1],['CatID','Approve']);
+                        $getCatItems = $pdo->prepare('SELECT * FROM Items WHERE Approve = ? AND CatID IN (SELECT CatID FROM Categories WHERE CatID = ? OR Parent = ?)');
+                        $getCatItems->execute([1,$catid,$catid]);
                         if($getCatItems->rowCount() > 0){
                             while($item = $getCatItems->fetchObject()){
                             ?>
@@ -116,10 +118,10 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <select name="category" class="custom-select">
+                                <select name="category" id="category-item" class="custom-select">
                                     <option hidden>Category</option>
                                     <?php 
-                                        $getCats = query('select','Categories',['CatID','Name'],NULL,NULL,'Ordering');
+                                        $getCats = query('select','Categories',['CatID','Name'],[true],['Parent IS NULL'],'Ordering');
                                         if($getCats->rowCount() > 0){
                                             while($cat = $getCats->fetchObject()){
                                                 echo '<option value="'.$cat->CatID.'">'.$cat->Name.'</option>';
@@ -128,6 +130,11 @@
                                             echo '<option>None</option>';
                                         }
                                     ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select name="sub-category" id="sub-category-item" class="custom-select">
+                                    <option hidden>Sub Category</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -189,7 +196,17 @@
                                 </tr>
                                 <tr>
                                     <td class="text-capitalize font-weight-bold">category</td>
-                                    <td><a href="items.php?do=Category&catid=<?= $getItem->CatID ?>"><?= $getItem->Cat_Name ?></a></td>
+                                    <td>
+                                        <a href="items.php?do=ShowCategory&catid=<?= $getItem->CatID ?>"><?= $getItem->Cat_Name ?></a>
+                                        <?php
+                                            $parentCat = query('select','Categories',['*'],[false,$getItem->CatID],['Parent IS NULL','CatID']);
+                                            if($parentCat->rowCount() > 0){
+                                                $subcat = $parentCat->fetchObject();
+                                                $getParent = query('select','Categories',['*'],[$subcat->Parent],['CatID'])->fetchObject();
+                                                echo '<a href="items.php?do=ShowCategory&catid='. $getParent->CatID .'">'. $getParent->Name .'</a>';
+                                            }
+                                        ?>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="text-capitalize font-weight-bold">added date</td>
@@ -274,6 +291,9 @@
             $country    = filter_var($_POST['country'],FILTER_SANITIZE_STRING);
             $status     = filter_var($_POST['status'],FILTER_SANITIZE_STRING);
             $category   = filter_var($_POST['category'],FILTER_SANITIZE_NUMBER_INT);
+            $subcat     = filter_var($_POST['sub-category'],FILTER_SANITIZE_NUMBER_INT);
+
+            $category = $subcat == ''?$category:$subcat;
 
             $form = array();
 
@@ -359,21 +379,23 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <select name="category" class="custom-select">
+                                <select name="category" id="category-item" class="custom-select">
+                                    <option hidden>Category</option>
                                     <?php 
-                                        $getCats = query('select','Categories',['CatID','Name'],NULL,NULL,'Ordering');
+                                        $getCats = query('select','Categories',['CatID','Name','Parent'],[true],['Parent IS NULL'],'Ordering');
                                         if($getCats->rowCount() > 0){
                                             while($cat = $getCats->fetchObject()){
-                                                echo '<option value="'.$cat->CatID.'"'; 
-                                                    if($item->CatID == $cat->CatID){
-                                                        echo 'selected';
-                                                    }
-                                                echo'>'.$cat->Name.'</option>';
+                                                echo '<option value="'.$cat->CatID.'">'.$cat->Name.'</option>';
                                             }
                                         }else{
                                             echo '<option>None</option>';
                                         }
                                     ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select name="sub-category" id="sub-category-item" class="custom-select">
+                                    <option hidden>Sub Category</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -410,6 +432,9 @@
                 $country    = filter_var($_POST['country'],FILTER_SANITIZE_STRING);
                 $status     = filter_var($_POST['status'],FILTER_SANITIZE_STRING);
                 $category   = filter_var($_POST['category'],FILTER_SANITIZE_NUMBER_INT);
+                $subcat     = filter_var($_POST['sub-category'],FILTER_SANITIZE_NUMBER_INT);
+
+                $category = $subcat == ''?$category:$subcat;
 
                 $form = array();
 

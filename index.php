@@ -8,10 +8,12 @@
     <section class="cats-items my-5">
         <div class="container">
             <?php
-                $getCategories = query('select','Categories',['*'],NULL,NULL,'Ordering');
+                $getCategories = query('select','Categories',['*'],[true],['Parent IS NULL'],'Ordering');
                 if($getCategories->rowCount() > 0){
                     while($cat = $getCategories->fetchObject()){
-                        $getItemsToCat = query('select','Items',['*'],[$cat->CatID,1],['CatID','Approve'],'ItemID','DESC',4);
+                        //$getItemsToCat = query('select','Items ',['*'],[$cat->CatID,1],['CatID','Approve'],'ItemID','DESC',4);
+                        $getItemsToCat = $pdo->prepare('SELECT * FROM Items WHERE Approve = ? AND CatID IN (SELECT CatID FROM Categories WHERE CatID = ? OR Parent = ?) ORDER BY ItemID DESC limit 4');
+                        $getItemsToCat->execute([1,$cat->CatID,$cat->CatID]);
                         if($getItemsToCat->rowCount() > 0){
                             echo '<h4 class="text-center text-capitalize my-4 bg-second-color py-1 text-white rounded">'.$cat->Name.'</h4>';
                             echo '<div class="row">';

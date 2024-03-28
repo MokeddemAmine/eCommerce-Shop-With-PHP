@@ -124,8 +124,9 @@
                         <label for="item-catid-create" class="col-md-2 text-capitalize font-weight-bold">Category</label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <select name="catid" id="item-catid-create" class="custom-select">
+                                <option hidden>None</option>
                                 <?php
-                                    $getCategories = query('select','Categories',['CatID','Name']);
+                                    $getCategories = query('select','Categories',['CatID','Name'],[true],['Parent IS NULL']);
                                     if($getCategories->rowCount() > 0){
                                         while($row = $getCategories->fetchObject()){
                                             echo '<option value="'.$row->CatID.'">'.$row->Name.'</option>';
@@ -134,6 +135,14 @@
                                         echo 'There are no category';
                                     }
                                 ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label for="item-subcatid-create" class="col-md-2 text-capitalize font-weight-bold">sub category</label>
+                        <div class="col-md-10 col-lg-8 col-xl-6">
+                            <select name="catid2" id="item-subcatid-create" class="custom-select">
+                                <option hidden>None</option>
                             </select>
                         </div>
                     </div>
@@ -170,9 +179,11 @@
                 $currency   = $_POST['currency'];
                 $country    = $_POST['country_made'];
                 $status     = $_POST['status'];
-                $catid      = $_POST['catid'];
+                $catid1      = $_POST['catid'];
+                $catid2      = $_POST['catid2'];
                 $memberid   = $_POST['memberid'];
 
+                $catid = $catid2 == 'None'?$catid1:$catid2;
                 $setItem = query('insert','Items',['Name','Description','Price','Currency','Country_Name','Status','CatId','MemberID'],[$name,$desc,$price,$currency,$country,$status,$catid,$memberid]);
 
                 redirectPage('back');
@@ -254,7 +265,7 @@
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <select name="catid" id="item-catid-create" class="custom-select">
                                 <?php
-                                    $getCategories = query('select','Categories',['CatID','Name']);
+                                    $getCategories = query('select','Categories',['CatID','Name'],[true],['Parent IS NULL']);
                                     if($getCategories->rowCount() > 0){
                                         while($row = $getCategories->fetchObject()){
                                             echo '<option value="'.$row->CatID.'"';
@@ -266,6 +277,14 @@
                                         echo 'There are no category';
                                     }
                                 ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label for="item-subcatid-create" class="col-md-2 text-capitalize font-weight-bold">sub category</label>
+                        <div class="col-md-10 col-lg-8 col-xl-6">
+                            <select name="catid2" id="item-subcatid-create" class="custom-select">
+                                <option hidden>None</option>
                             </select>
                         </div>
                     </div>
@@ -342,8 +361,11 @@
                 $currency       = $_POST['currency'];
                 $status         = $_POST['status'];
                 $country        = $_POST['country_made'];
-                $catid          = $_POST['catid'];
+                $catid1          = $_POST['catid'];
+                $catid2         = $_POST['catid2'];
                 $memberid       = $_POST['memberid'];
+
+                $catid = $catid2 == 'None'?$catid1:$catid2;
 
                 $setItem = query('update','Items',['Name','Description','Price','Currency','Country_Name','Status','CatID','MemberID'],[$name,$desc,$price,$currency,$country,$status,$catid,$memberid,$itemid],['ItemID']);
 

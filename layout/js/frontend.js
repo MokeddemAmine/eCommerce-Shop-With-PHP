@@ -31,3 +31,17 @@ $(document).ready(function(){
  $('.confirm-delete').click(function(){
     return confirm('Are you sure want to delete this ?');
 })
+// change sub categories 
+$(document).ready(function(){
+    var cat = $('#category-item');
+    var subcat = $('#sub-category-item');
+    cat.change(function(){
+        $.get('admin/APICat.php?catid='+cat.val(),function(data){
+            var result = JSON.parse(data);
+            subcat.html('<option hidden>Sub Category</option>');
+            result.map(e => {
+                subcat.append('<option value="'+e.CatID+'">'+e.Name+'</option>');
+            })
+        })
+    })
+})

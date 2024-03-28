@@ -46,4 +46,22 @@ $(document).ready(function(){
         var fileName = $(this).val().split('\\').pop();
         $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
     })
+    // change the subcategory 
+    var catid = $('#item-catid-create');
+    var subcat = $('#item-subcatid-create');
+    catid.change(function(){
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+            if(this.readyState === 4 && this.status === 200){
+                let data = JSON.parse(this.response);
+                subcat.html('<option hidden>None</option>');
+                data.map(e => {
+                    subcat.append('<option value="'+e.CatID+'">'+e.Name+'</option>');
+                })
+            }
+        }
+        xhr.open('GET','APICat.php?catid='+$(this).val(),false);
+        xhr.send();
+    })
+    
 })

@@ -72,7 +72,7 @@
             <div class="row align-items-center justify-content-between">
                 <div class="categories text-white col-md-10">
                     <?php
-                        $getLatestCategories = query('select','Categories',['*'],NULL,NULL,'CatID','DESC',5);
+                        $getLatestCategories = query('select','Categories',['*'],[true],['Parent IS NULL'],'CatID','DESC',5);
                         if($getLatestCategories->rowCount() > 0){
                             while($cat = $getLatestCategories->fetchObject()){
                                 echo '<a href="items.php?do=ShowCategory&catid='.$cat->CatID.'" class="btn btn-light btn-sm mr-2">'.$cat->Name.'</a>';
@@ -84,7 +84,7 @@
                     <input type="hidden" name="do" value="ShowCategory">
                     <select name="catid" id="cat-menu" class="custom-select custom-select-sm">
                         <?php
-                            $getAllCategories  = query('select','Categories',['*']);
+                            $getAllCategories  = query('select','Categories',['*'],[true],['Parent IS NULL']);
                             echo '<option value="0">All</option>';
                             if($getAllCategories->rowCount() > 0){ 
                                 while($cat = $getAllCategories->fetchObject()){
@@ -93,6 +93,16 @@
                                             echo 'selected';
                                         }
                                     echo '>'.$cat->Name.'</option>';
+                                    $getSubCats = query('select','Categories',['*'],[$cat->CatID],['Parent']);
+                                    if($getSubCats->rowCount() > 0){
+                                        while($subcat = $getSubCats->fetchObject()){
+                                            echo '<span>---</span><option class="pr-2" value="'.$subcat->CatID.'"'; 
+                                                if(isset($_GET['catid']) && is_numeric($_GET['catid']) && $subcat->CatID == $_GET['catid']){
+                                                    echo 'selected';
+                                                }
+                                            echo '>---'.$subcat->Name.'</option>';
+                                        }
+                                    }
                                 }
                             }
                         ?>

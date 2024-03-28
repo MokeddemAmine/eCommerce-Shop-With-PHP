@@ -55,7 +55,7 @@
                     </div>
                     <div class="card-body">
                         <?php
-                            $getCategories = query('select','categories',['*']);
+                            $getCategories = query('select','categories',['*'],[true],['Parent IS NULL']);
                             if(isset($_GET['order-by']) && isset($_GET['order'])){
                                 $getCategories = query('select','categories',['*'],null,null,$_GET['order-by'],$_GET['order']);
                             }
@@ -72,6 +72,23 @@
                                                     <span class="btn btn-sm <?php if($cat->Allow_Comments == 1) echo 'btn-success'; else echo 'btn-danger'; ?> text-white"><i class="fa-solid fa-comment"></i> comments</span>
                                                     <span class="btn btn-sm <?php if($cat->Allow_Ads == 1) echo 'btn-success'; else echo 'btn-danger'; ?> text-white"><i class="fa-solid fa-tag"></i> ads</span>
                                                 </div>
+                                                <?php
+                                                $getSubCats = query('select','Categories',['*'],[$cat->CatID],['Parent']);
+                                                if($getSubCats->rowCount() > 0){
+                                                    echo '<div class="my-2">';
+                                                    echo '<span class="text-second-color font-weight-bold">Subs : </span>';
+                                                    while($subCat = $getSubCats->fetchObject()){
+                                                        echo '<div class="sub-category d-inline-block">';
+                                                            echo '<span class="btn btn-info btn-sm sub-category-name mx-1">'.$subCat->Name.'</span>';
+                                                            echo '<div class="sub-cat-btn">
+                                                                    <a href="categories.php?do=Edit&catid='. $subCat->CatID .'" class="btn btn-success btn-sm text-capitalize"> edit</a>
+                                                                    <a href="categories.php?do=Delete&catid='. $subCat->CatID .'" class="btn btn-danger btn-sm text-capitalize confirm-delete"> delete</a>
+                                                                </div>';
+                                                        echo '</div>';
+                                                    }
+                                                    echo '</div>';
+                                                }
+                                                ?>
                                             </div>
                                             <div class="category-btn">
                                                 <a href="categories.php?do=Edit&catid=<?= $cat->CatID ?>" class="btn btn-success btn-sm text-capitalize"><i class="fa-solid fa-edit"></i> edit</a>
@@ -109,6 +126,23 @@
                     <label for="cat-order" class="col-2 text-capitalize font-weight-bold"><?= lang('ordering'); ?></label>
                     <div class="col-md-8 col-lg-6">
                         <input type="number" name="ordering" placeholder="<?= lang('Number to arrange the categories') ?>" id="cat-order" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row align-items-center">
+                    <label for="cat-parent" class="col-2 text-capitalize font-weight-bold">parent</label>
+                    <div class="col-md-8 col-lg-6">
+                        <select name="parent" id="cat-parent" class="custom-select">
+                            <option>None</option>
+                            <?php 
+                                $getParentCats = query('select','Categories',['*'],[true],['Parent IS NULL']);
+                                if($getParentCats->rowCount() > 0){
+                                    while($cat = $getParentCats->fetchObject()){
+                                        echo '<option value="'.$cat->CatID.'">'.$cat->Name.'</option>';
+                                    }
+                                    
+                                }
+                            ?>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group row align-items-center">
@@ -166,8 +200,14 @@
                 $visible    = intval($_POST['visible']);
                 $comments   = intval($_POST['comments']);
                 $ads        = intval($_POST['ads']);
+                $parent     = intval($_POST['parent']);
 
-                $setCategory = query('insert','categories',['Name','Description','Ordering','Visibility','Allow_Comments','Allow_Ads'],[$name,$desc,$order,$visible,$comments,$ads]);
+                if(empty($parent)){
+                    $setCategory = query('insert','categories',['Name','Description','Ordering','Visibility','Allow_Comments','Allow_Ads'],[$name,$desc,$order,$visible,$comments,$ads]);
+                }else{
+                    $setCategory = query('insert','categories',['Name','Description','Ordering','Visibility','Allow_Comments','Allow_Ads','Parent'],[$name,$desc,$order,$visible,$comments,$ads,$parent]);
+                }
+                
 
                 redirectPage('back');
 
@@ -199,6 +239,27 @@
                     <label for="cat-order" class="col-2 text-capitalize font-weight-bold"><?= lang('ordering'); ?></label>
                     <div class="col-md-8 col-lg-6">
                         <input type="number" name="ordering" value="<?= $cat->Ordering; ?>" placeholder="<?= lang('Number to arrange the categories') ?>" id="cat-order" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row align-items-center">
+                    <label for="cat-parent" class="col-2 text-capitalize font-weight-bold">parent</label>
+                    <div class="col-md-8 col-lg-6">
+                        <select name="parent" id="cat-parent" class="custom-select">
+                            <option>None</option>
+                            <?php 
+                                $getParentCats = query('select','Categories',['*'],[true],['Parent IS NULL']);
+                                if($getParentCats->rowCount() > 0){
+                                    while($cats = $getParentCats->fetchObject()){
+                                        echo '<option value="'.$cats->CatID.'"'; 
+                                            if($cats->CatID == $cat->Parent){
+                                                echo 'selected';
+                                            }
+                                        echo '>'.$cats->Name.'</option>';
+                                    }
+                                    
+                                }
+                            ?>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group row align-items-center">
@@ -260,8 +321,14 @@
                 $visible    = intval($_POST['visible']);
                 $comments   = intval($_POST['comments']);
                 $ads        = intval($_POST['ads']);
+                $parent     = intval($_POST['parent']);
 
-                $updateCategory = query('update','categories',['Name','Description','Ordering','Visibility','Allow_Comments','Allow_Ads'],[$name,$desc,$order,$visible,$comments,$ads,$catid],['CatID']);
+                if(empty($parent)){
+                    $updateCategory = query('update','categories',['Name','Description','Ordering','Visibility','Allow_Comments','Allow_Ads'],[$name,$desc,$order,$visible,$comments,$ads,$catid],['CatID']);
+                }else{
+                    $updateCategory = query('update','categories',['Name','Description','Ordering','Visibility','Allow_Comments','Allow_Ads','Parent'],[$name,$desc,$order,$visible,$comments,$ads,$parent,$catid],['CatID']);
+                }
+                
 
                 redirectPage('back');
             }else{

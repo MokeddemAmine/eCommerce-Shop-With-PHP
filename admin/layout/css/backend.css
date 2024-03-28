@@ -111,4 +111,24 @@ header .links{
         right:1rem;
     }
 }
+.sub-category{
+    position:relative;
+}
+@media (min-width:768px){
+    .sub-category span.sub-category-name{
+        margin:.5rem 2rem !important;
+    }
+}
+.sub-cat-btn{
+    position:absolute;
+    top:200%;
+    left:0;
+    display: none;
+    transition: .5s;
+
+}
+.sub-category:hover .sub-cat-btn{
+    top:50%;
+    display:block;
+}
 /* end categories */

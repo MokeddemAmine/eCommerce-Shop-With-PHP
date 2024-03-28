@@ -41,7 +41,9 @@
                 Visibility TINYINT DEFAULT 1,
                 Allow_Comments TINYINT DEFAULT 1,
                 Allow_Ads TINYINT DEFAULT 1,
-                CONSTRAINT categoriesPK PRIMARY KEY (CatID)
+                Parent SMALLINT NULL,
+                CONSTRAINT categoriesPK PRIMARY KEY (CatID),
+                CONSTRAINT parentFK FOREIGN KEY (parent) REFERENCES Categories (CatID) ON UPDATE CASCADE ON DELETE CASCADE
             )');
             $query->execute();
             $query = $pdo->prepare('CREATE TABLE Items(

@@ -61,7 +61,7 @@
         }elseif($page == 'Add'){
             ?>
                 <h2 class="text-center text-second-color text-capitalize my-5"><?=lang('add item')?></h2>
-                <form action="?do=Insert" method="POST">
+                <form action="?do=Insert" method="POST" enctype="multipart/form-data">
                     <div class="form-group row align-items-center">
                         <label for="item-name-create" class="col-md-2 text-capitalize font-weight-bold">name</label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
@@ -112,11 +112,11 @@
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-image-create" class="col-md-2 text-capitalize font-weight-bold">Image</label>
+                        <label for="item-image-create" class="col-md-2 text-capitalize font-weight-bold">Images</label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <div class="custom-file">
-                                <input type="file" name="image" id="image-item" class="custom-file-input">
-                                <label for="image-item" class="custom-file-label">Add image of item</label>
+                                <input type="file" name="images[]" id="image-item" class="custom-file-input" accept="image/*" multiple/>
+                                <label for="image-item" class="custom-file-label text-capitalize">add images of item</label>
                             </div>
                         </div>
                     </div>
@@ -173,7 +173,7 @@
         }elseif($page == 'Insert'){
             echo '<h2 class="text-center text-capitalize text-second-color my-5">'.lang('insert item').'</h2>';
             if($_SERVER['REQUEST_METHOD'] === 'POST'){
-                $name       = $_POST['name'];
+                $nameItem   = $_POST['name'];
                 $desc       = $_POST['description'];
                 $price      = $_POST['price'];
                 $currency   = $_POST['currency'];
@@ -183,8 +183,54 @@
                 $catid2      = $_POST['catid2'];
                 $memberid   = $_POST['memberid'];
 
+                $UserName    = query('select','Users',['Username'],[$memberid],['UserID'])->fetchObject()->Username;
+
+                $images     = $_FILES['images'];
+
+                // extensions accept for images
+                $exAccept   = array('jpeg','jpg','png','gif');
+
+                $length     = count($images['name']);
+
+                $names      = $images['name'];
+                $sizes      = $images['size'];
+                $tmp_names  = $images['tmp_name'];
+
+                $formError = array();
+
+                foreach ($names as $name){
+                    if(!in_array(pathinfo($name,PATHINFO_EXTENSION),$exAccept)){
+                        $formError[] = '<div class="alert alert-danger">Extension must be : jpeg, png and gif</div>';
+                        break;
+                    }
+                }
+
+                foreach($sizes as $size){
+                    if($size > 2097152){
+                        $formError[] = '<div class="alert alert-danger">Size must be less then <b>2 MB</b></div>';
+                    }
+                }
+
+                if(!empty($formError)){
+                    foreach($formError as $error){
+                        echo $error;
+                    }
+                }else{
+                    $newNames = array();
+                    foreach($names as $name){
+                        $newNames[] = $UserName.'-'.createID().'.'.pathinfo($name,PATHINFO_EXTENSION);
+                    }
+                    $imagesUpload = json_encode($newNames);
+                    $n = 0;
+                    foreach($tmp_names as $tmp){
+                        move_uploaded_file($tmp,'imgs/'.$newNames[$n]);
+                        $n++;
+                    }
+
+                }
+
                 $catid = $catid2 == 'None'?$catid1:$catid2;
-                $setItem = query('insert','Items',['Name','Description','Price','Currency','Country_Name','Status','CatId','MemberID'],[$name,$desc,$price,$currency,$country,$status,$catid,$memberid]);
+                $setItem = query('insert','Items',['Name','Description','Price','Currency','Country_Name','Status','CatId','MemberID','image','Approve'],[$nameItem,$desc,$price,$currency,$country,$status,$catid,$memberid,$imagesUpload,1]);
 
                 redirectPage('back');
             }else{

@@ -54,7 +54,7 @@
                 Currency Varchar(2) NOT NULL,
                 Add_Date DATE default now(),
                 Country_Name VARCHAR(20),
-                Image VARCHAR(255),
+                Image TEXT,
                 Status VARCHAR(50),
                 Rating SMALLINT,
                 CatID SMALLINT NOT NULL,

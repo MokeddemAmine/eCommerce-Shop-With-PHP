@@ -183,6 +183,10 @@
                 $catid2      = $_POST['catid2'];
                 $memberid   = $_POST['memberid'];
 
+                $catid = $catid2 == 'None'?$catid1:$catid2;
+
+                // start taken of images
+
                 $UserName    = query('select','Users',['Username'],[$memberid],['UserID'])->fetchObject()->Username;
 
                 $images     = $_FILES['images'];
@@ -208,6 +212,7 @@
                 foreach($sizes as $size){
                     if($size > 2097152){
                         $formError[] = '<div class="alert alert-danger">Size must be less then <b>2 MB</b></div>';
+                        break;
                     }
                 }
 
@@ -227,12 +232,13 @@
                         $n++;
                     }
 
+                    
+                    $setItem = query('insert','Items',['Name','Description','Price','Currency','Country_Name','Status','CatId','MemberID','image','Approve'],[$nameItem,$desc,$price,$currency,$country,$status,$catid,$memberid,$imagesUpload,1]);
+
                 }
-
-                $catid = $catid2 == 'None'?$catid1:$catid2;
-                $setItem = query('insert','Items',['Name','Description','Price','Currency','Country_Name','Status','CatId','MemberID','image','Approve'],[$nameItem,$desc,$price,$currency,$country,$status,$catid,$memberid,$imagesUpload,1]);
-
                 redirectPage('back');
+
+                
             }else{
                 redirectPage();
             }
@@ -243,8 +249,34 @@
             if($getItem->rowCount() == 1){
                 $item = $getItem->fetchObject();
             ?>
-                <form action="?do=Update" method="POST">
+                <form action="?do=Update" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="itemid" value="<?= $itemid ?>">
+                    
+                        <?php 
+                            $getImages = json_decode($item->Image);
+                            if(count($getImages) > 0){
+                                $n = 1;
+                                echo '<div class="row align-items-center my-4 imgs-item">';
+                                foreach($getImages as $img){
+
+                                    ?>
+                                    <div class="col-md-6 col-lg-4 col-xl-3 show-img-item">
+                                        <div class="img-item">
+                                            <span class="close text-danger confirm-delete">&times;</span>
+                                            <img src="imgs/<?= $img ?>" alt="" class="w-100" style="height:300px;" /> 
+                                            <?php 
+                                                echo '<input type="hidden" name="imgState'.$n.'" value="'.$img.'"/>';
+                                                $n++;
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <?php
+                                }
+                                echo '</div>';
+                            }
+                            
+                        ?>
+                    
                     <div class="form-group row align-items-center">
                         <label for="item-name-create" class="col-md-2 text-capitalize font-weight-bold">name</label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
@@ -301,8 +333,8 @@
                         <label for="item-image-create" class="col-md-2 text-capitalize font-weight-bold">Image</label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <div class="custom-file">
-                                <input type="file" name="image" id="image-item" class="custom-file-input">
-                                <label for="image-item" class="custom-file-label">Add image of item</label>
+                                <input type="file" name="images[]" id="image-item" class="custom-file-input" accept="image/*" multiple>
+                                <label for="image-item" class="custom-file-label text-capitalize">add new images to item</label>
                             </div>
                         </div>
                     </div>
@@ -401,7 +433,7 @@
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                 $itemid         = $_POST['itemid'];
-                $name           = $_POST['name'];
+                $nameitem       = $_POST['name'];
                 $desc           = $_POST['description'];
                 $price          = $_POST['price'];
                 $currency       = $_POST['currency'];
@@ -411,14 +443,106 @@
                 $catid2         = $_POST['catid2'];
                 $memberid       = $_POST['memberid'];
 
+                
+                // check if there are imgs deleted from the item , and get the images state
+                $imgsDelete = array();
+                $imgsState = array();
+
+                foreach($_POST as $key => $value){
+                    if(str_contains($key,'imgDelete')){
+                        array_push($imgsDelete,filter_var($value,FILTER_SANITIZE_STRING));
+                    }
+                    if(str_contains($key,'imgState')){
+                        array_push($imgsState,filter_var($value,FILTER_SANITIZE_STRING));
+                    }
+                }
+
+                // delete images from imgs folder in our storage
+                foreach($imgsDelete as $img){
+                    if(file_exists($img)){
+                        unlink($img);
+                    }
+                }
+                
+
+
                 $catid = $catid2 == 'None'?$catid1:$catid2;
 
-                $setItem = query('update','Items',['Name','Description','Price','Currency','Country_Name','Status','CatID','MemberID'],[$name,$desc,$price,$currency,$country,$status,$catid,$memberid,$itemid],['ItemID']);
+                // start taken of images
 
+                $UserName    = query('select','Users',['Username'],[$memberid],['UserID'])->fetchObject()->Username;
+
+                $images     = $_FILES['images'];
+
+                //die(json_encode($images));
+
+                if($images['size'] != [0]){
+                    // extensions accept for images
+                    $exAccept   = array('jpeg','jpg','png','gif');
+
+                    $length     = count($images['name']);
+
+                    $names      = $images['name'];
+                    $sizes      = $images['size'];
+                    $tmp_names  = $images['tmp_name'];
+
+                    $formError = array();
+
+                    foreach ($names as $name){
+                        if(!in_array(pathinfo($name,PATHINFO_EXTENSION),$exAccept)){
+                            $formError[] = '<div class="alert alert-danger">Extension must be : jpeg, png and gif</div>';
+                            break;
+                        }
+                    }
+
+                    foreach($sizes as $size){
+                        if($size > 2097152){
+                            $formError[] = '<div class="alert alert-danger">Size must be less then <b>2 MB</b></div>';
+                            break;
+                        }
+                    }
+
+                    if(!empty($formError)){
+                        foreach($formError as $error){
+                            echo $error;
+                        }
+                    }else{
+                        $newNames = array();
+                        foreach($names as $name){
+                            //$newNames[] = $UserName.'-'.createID().'.'.pathinfo($name,PATHINFO_EXTENSION);
+                            array_push($newNames,$UserName.'-'.createID().'.'.pathinfo($name,PATHINFO_EXTENSION));
+                        }
+                        
+                        $n = 0;
+                        foreach($tmp_names as $tmp){
+                            move_uploaded_file($tmp,'imgs/'.$newNames[$n]);
+                            $n++;
+                        }
+
+                        // collect new images with images state
+                        foreach($imgsState as $state){
+                            array_push($newNames,$state);
+                        }
+                        $imagesUpload = json_encode($newNames);
+                        
+                        $setItem = query('update','Items',['Name','Description','Price','Currency','Country_Name','Status','CatId','MemberID','image'],[$nameitem,$desc,$price,$currency,$country,$status,$catid,$memberid,$imagesUpload,$itemid],['ItemID']);
+
+                    }
+
+                }else{
+
+                    $imagesUpload = json_encode($imgsState);
+                    $setItem = query('update','Items',['Name','Description','Price','Currency','Country_Name','Status','CatID','MemberID','Image'],[$nameitem,$desc,$price,$currency,$country,$status,$catid,$memberid,$imagesUpload,$itemid],['ItemID']);
+
+                    
+                }
+                
                 redirectPage('back');
+                
 
             }else{
                 redirectPage();
+                
             }
         }elseif($page == 'Delete'){
             echo '<h2 class="text-center text-capitalize text-second-color my-5">'.lang('delete item').'</h2>';

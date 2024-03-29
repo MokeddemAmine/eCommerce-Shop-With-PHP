@@ -63,5 +63,15 @@ $(document).ready(function(){
         xhr.open('GET','APICat.php?catid='+$(this).val(),false);
         xhr.send();
     })
+
+    // delete image from edit item in admin
+    let n = 1;
+    $('.img-item .close').click(function(){
+        var deletedImgs = $(this).siblings('img').attr('src');
+        $(this).parents('.show-img-item').remove();
+        
+        $('.imgs-item').append('<input type="hidden" name="imgDelete'+n+'" class="img-deleted" value="'+deletedImgs+'">');
+        n++;
+    })
     
 })

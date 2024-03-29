@@ -41,14 +41,14 @@
                                 <div class="collapse" id="user-info">
                                     <ul class="navbar-nav nav flex-column bg-main-color">
                                         <?php
-                                            $getId = query('select','Users',['UserID'],[$_SESSION['user']],['Username'])->fetchObject()->UserID;
-                                            if($getId == 1){
+                                            $getGroupID = query('select','Users',['GroupID'],[$_SESSION['user']],['Username'])->fetchObject()->GroupID;
+                                            if($getGroupID == 1){
                                                 echo '<li class="nav-item d-block"><a href="admin/index.php" class="nav-link text-second-color">Go To  Admin</a></li>';
                                             }
                                             if($userStatus == 1){
                                                 echo '<li class="nav-item d-block"><a href="items.php?do=AddItem" class="nav-link text-second-color">Add Item</a></li>';
                                             }
-                                        ?>
+                                        ?> 
                                         <li class="nav-item d-block"><a href="profile.php" class="nav-link text-second-color">Profile</a></li>
                                         <li class="nav-item d-block"><a href="settings.php" class="nav-link text-second-color">Settings</a></li>
                                         <li class="nav-item d-block"><a href="logout.php" class="nav-link text-second-color">Logout</a></li>

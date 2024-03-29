@@ -132,3 +132,14 @@ header .links{
     display:block;
 }
 /* end categories */
+/* start items */
+.img-item{
+    position:relative;
+}
+.img-item .close{
+    position:absolute;
+    top:2px;
+    right:2px;
+    cursor:pointer;
+}
+/* end items */

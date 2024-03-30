@@ -51,9 +51,9 @@
             'add category'              => 'add category',
             'name'                      => 'name',
             'description'               => 'description',
+            'order'                     => 'order',
             'ordering'                  => 'ordering',
             'visible'                   => 'visible',
-            'Comments'                  => 'Comments',
             'ads'                       => 'ads',
             'yes'                       => 'yes',
             'no'                        => 'no',
@@ -64,6 +64,7 @@
             'edit category'             => 'edit category',
             'update category'           => 'update category',
             'delete category'           => 'delete category',
+            'sub category'              => 'sub category',
 
             // items page
             'manage items'              => 'manage items',
@@ -73,11 +74,44 @@
             'update item'               => 'update item',
             'delete item'               => 'delete item',
             'approve item'              => 'approve item',
+            'item name'                 => 'item name',
+            'Name of the item'          => 'Name of the item',
+            'Description of the item'   => 'Description of the item',
+            'add images to item'        => 'add images to item',
+            'add new images to item'    => 'add new images to item',
 
             // comments page
             'manage comments'           => 'manage comments',
             'approve comment'           => 'approve comment',
             'delete comment'            => 'delete comment',
+
+            // others
+            'delete'                    => 'delete',
+            'parent'                    => 'parent',
+            'comment'                   => 'comment',
+            'comment date'              => 'comment date',
+            'member'                    => 'member',
+            'control'                   => 'control',
+            'latest'                    => 'latest',
+            'registered user'           => 'registered user',
+            'registered date'           => 'registered date',
+            'added item'                => 'added item',
+            'added date'                => 'added date',
+            'admin login'               => 'admin login',
+            'price'                     => 'price',
+            'Price ici'                 => 'Price ici',
+            'country'                   => 'country',
+            'status'                    => 'status',
+            'member added'              => 'member added',
+            'new'                       => 'new',
+            'like new'                  => 'like new',
+            'used'                      => 'used',
+            'country made'              => 'country made',
+            'image'                     => 'image',
+            'images'                    => 'images',
+            'user'                      => 'user',
+            'comment'                   => 'comment',
+
             
         );
         return $lang[$sentence];

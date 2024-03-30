@@ -79,7 +79,7 @@
                             <div class="card-header bg-main-color text-white d-flex justify-content-between align-items-center">
                                 <div class="card-title m-0 text-capitalize">
                                     <i class="fa-solid fa-users"></i>
-                                    latest <?= $latestReg ?> registered users
+                                    <?= lang('latest') ?> <?= $latestReg ?> <?= lang('registered user') ?>
                                 </div>
                                 <i class="fa-solid fa-minus toggle-latest"></i>
                             </div>
@@ -99,9 +99,9 @@
                     <div class="latest-items-added col-lg-6">
                         <div class="card">
                             <div class="card-header bg-main-color text-white d-flex justify-content-between align-items-center">
-                                <div class="card-title m-0">
+                                <div class="card-title m-0 text-capitalize">
                                     <i class="fa-solid fa-tag"></i>
-                                    Latest 5 Added Items
+                                    <?= lang('latest') ?> 5 <?= lang('added item') ?>
                                 </div>
                                 <i class="fa-solid fa-minus toggle-latest"></i>
                             </div>
@@ -123,7 +123,7 @@
                             <div class="card-header bg-main-color text-white d-flex justify-content-between align-items-center">
                                 <div class="card-title m-0 text-capitalize">
                                     <i class="fa-solid fa-comments"></i>
-                                    latest <?= $latestReg ?> comments
+                                    <?= lang('latest') ?> <?= $latestReg ?> <?= lang('comments') ?>
                                 </div>
                                 <i class="fa-solid fa-minus toggle-latest"></i>
                             </div>
@@ -150,9 +150,9 @@
             <section class="login-admin bg-main-color" style="height:100vh" >
                 <div class="container text-center">
                     <form action="<?= $_SERVER['PHP_SELF']; ?>" method="POST" class="pt-5">
-                        <h4 class="text-capitalize text-second-color">admin login</h4>
-                        <input type="text" name="username" data-text="" placeholder="Username"  class="form-control my-4"/>
-                        <input type="password" name="password" data-text="" placeholder="Password" class="form-control my-4"/>
+                        <h4 class="text-capitalize text-second-color"><?= lang('admin login') ?></h4>
+                        <input type="text" name="username" data-text="" placeholder="<?= lang('username') ?>"  class="form-control my-4"/>
+                        <input type="password" name="password" data-text="" placeholder="<?= lang('password') ?>" class="form-control my-4"/>
                         <input type="submit" value="log in" name="login" class="btn bg-second-color text-main-color text-uppercase">
                     </form>
                 </div>

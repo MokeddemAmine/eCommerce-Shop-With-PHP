@@ -18,11 +18,11 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>#ID</th>
-                        <th>Comment</th>
-                        <th>Comment Date</th>
-                        <th>Item Name</th>
-                        <th>Member</th>
-                        <th>Control</th>
+                        <th class="text-capitalize"><?= lang('comment') ?></th>
+                        <th class="text-capitalize"><?= lang('comment date') ?></th>
+                        <th class="text-capitalize"><?= lang('item name') ?></th>
+                        <th class="text-capitalize"><?= lang('member') ?></th>
+                        <th class="text-capitalize"><?= lang('control') ?></th>
                     </tr>
                 </thead>
                 <tbody>

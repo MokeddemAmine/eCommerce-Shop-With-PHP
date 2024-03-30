@@ -33,7 +33,7 @@
                                                     </div>
                                                     <h6 class="card-title"><?= $item->Name ?></h6>
                                                     <p class="card-text"><?= $item->Description ?></p>
-                                                    <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link">Click Here ...</a>
+                                                    <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link text-capitalize"><?= lang('click here') ?> ...</a>
                                                     <span class="price"><?= $item->Price ?> <?= $item->Currency ?></span>
                                                 </div>
                                             </div>

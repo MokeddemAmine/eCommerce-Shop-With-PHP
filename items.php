@@ -28,7 +28,7 @@
                                 </div> 
                                 <h6 class="card-title"><?= $item->Name ?></h6>
                                 <p class="card-text"><?= $item->Description ?></p>
-                                <a href="?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link">Show More</a>
+                                <a href="?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link"><?= lang('show more') ?></a>
                                 <span class="price"><?= $item->Price ?> <?= $item->Currency ?></span>
                             </div>
                         </div>
@@ -70,7 +70,7 @@
                                         </div> 
                                             <h6 class="card-title"><?= $item->Name ?></h6>
                                             <p class="card-text"><?= $item->Description ?></p>
-                                            <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>">Show More</a>
+                                            <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>"><?= lang('show more') ?></a>
                                             <span class="price"><?= $item->Price ?> <?= $item->Currency ?></span>
                                         </div>
                                     </div>
@@ -92,19 +92,19 @@
             $getUser = query('select','Users',['*'],[$_SESSION['user']],['Username'])->fetchObject();
             if($getUser->RegStatus == 1){
                 ?>
-                <h2 class="text-center text-capitalize text-second-color mb-5">Add New Item</h2>
+                <h2 class="text-center text-capitalize text-second-color mb-5"><?= lang('add new item') ?></h2>
                 <div class="row border p-3">
                     <div class="col-lg-8">
                         <form action="?do=InsertItem" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="MemberID" value="<?= $getUser->UserID ?>">
                             <div class="form-group">
-                                <input type="text" name="name" placeholder="Enter the title"  class="form-control input-change">
+                                <input type="text" name="name" placeholder="<?= lang('Enter the title') ?>"  class="form-control input-change">
                             </div>
                             <div class="form-group">
-                                <input type="text" name="description" placeholder="Enter the description"  class="form-control input-change">
+                                <input type="text" name="description" placeholder="<?= lang('Enter the description') ?>"  class="form-control input-change">
                             </div>
                             <div class="input-group mb-3">
-                                <input type="number" name="prices" placeholder="Enter the price" class="form-control input-change">
+                                <input type="number" name="prices" placeholder="<?= lang('Enter the price') ?>" class="form-control input-change">
                                 <div class="input-group-append">
                                     <select name="currency" class="custom-select input-change-currency">
                                         <option value="$">$</option>
@@ -115,7 +115,7 @@
                             </div>
                             <div class="form-group">
                                 <select name="country" class="custom-select">
-                                    <option hidden>Country Made</option>
+                                    <option hidden> <?= lang('Country Made') ?></option>
                                     <?php 
                                         foreach($countries as $country){
                                             echo '<option value="'.$country.'">'.$country.'</option>';
@@ -125,15 +125,15 @@
                             </div>
                             <div class="form-group">
                                 <select name="status" class="custom-select">
-                                    <option hidden>Status</option>
-                                    <option value="new">New</option>
-                                    <option value="like new">Like New</option>
-                                    <option value="used">Used</option>
+                                    <option hidden><?= lang('Status') ?></option>
+                                    <option value="new"><?= lang('new') ?></option>
+                                    <option value="like new"><?= lang('like new') ?></option>
+                                    <option value="used"><?= lang('used') ?></option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <select name="category" id="category-item" class="custom-select">
-                                    <option hidden>Category</option>
+                                    <option hidden><?= lang('Category') ?></option>
                                     <?php 
                                         $getCats = query('select','Categories',['CatID','Name'],[true],['Parent IS NULL'],'Ordering');
                                         if($getCats->rowCount() > 0){
@@ -148,13 +148,13 @@
                             </div>
                             <div class="form-group">
                                 <select name="sub-category" id="sub-category-item" class="custom-select">
-                                    <option hidden>Sub Category</option>
+                                    <option hidden><?= lang('Sub Category') ?></option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <div class="custom-file col-12">
                                     <input type="file" name="images[]" class="custom-file-input add-image-item" accept="image/*" multiple/>
-                                    <label for="image-item" class="custom-file-label text-capitalize">add images of item</label>
+                                    <label for="image-item" class="custom-file-label text-capitalize"><?= lang('add images to item') ?></label>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -168,9 +168,9 @@
                                 <div style="height:200px;" class="d-flex justify-content-center align-items-center">
                                     <img src="admin/imgs/item.jpg" alt="" class="card-img-top imagine-image-item" style="max-height:200px;object-fit:cover; ">
                                 </div> 
-                                <h6 class="card-title name">title here</h6>
-                                <p class="card-text description">description here</p>
-                                <a href="#" class="card-link">show more</a>
+                                <h6 class="card-title name"><?= lang('title here') ?></h6>
+                                <p class="card-text description"><?= lang('description here') ?></p>
+                                <a href="#" class="card-link"><?= lang('show more') ?></a>
                                 <span class="price"><span class="prices">0</span><span class="currency">$</span></span>
                             </div>
                         </div>
@@ -203,7 +203,7 @@
                         <?php
                         if(count($images) > 0){
                         ?>
-                        <button class="btn bg-main-color text-second-color btn-sm btn-more-images" data-toggle="modal" data-target="#modal-item-images">Show More Images</button>
+                        <button class="btn bg-main-color text-second-color btn-sm btn-more-images text-capitalize" data-toggle="modal" data-target="#modal-item-images"><?= lang('show more images') ?></button>
                         <div class="modal fade" id="modal-item-images">
                             <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
@@ -277,27 +277,27 @@
                         <table class="table table-striped table-borderless">
                             <tbody>
                                 <tr>
-                                    <td class="text-capitalize font-weight-bold">Name</td>
+                                    <td class="text-capitalize font-weight-bold"><?= lang('name') ?></td>
                                     <td><?= $getItem->Name ?></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-capitalize font-weight-bold">description</td>
+                                    <td class="text-capitalize font-weight-bold"><?= lang('description') ?></td>
                                     <td><?= $getItem->Description ?></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-capitalize font-weight-bold">price</td>
+                                    <td class="text-capitalize font-weight-bold"><?= lang('price') ?></td>
                                     <td><?= $getItem->Price ?> <?= $getItem->Currency ?></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-capitalize font-weight-bold">country</td>
+                                    <td class="text-capitalize font-weight-bold"><?= lang('country') ?></td>
                                     <td><?= $getItem->Country_Name ?></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-capitalize font-weight-bold">status</td>
+                                    <td class="text-capitalize font-weight-bold"><?= lang('status') ?></td>
                                     <td class="text-capitalize"><?= $getItem->Status ?></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-capitalize font-weight-bold">category</td>
+                                    <td class="text-capitalize font-weight-bold"><?= lang('category') ?></td>
                                     <td>
                                         <a href="items.php?do=ShowCategory&catid=<?= $getItem->CatID ?>"><?= $getItem->Cat_Name ?></a>
                                         <?php
@@ -311,15 +311,15 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-capitalize font-weight-bold">added date</td>
+                                    <td class="text-capitalize font-weight-bold"><?= lang('added date') ?></td>
                                     <td><?= $getItem->Add_Date ?></td>
                                 </tr>
                             </tbody>
                         </table>
                         <?php if($getItem->Username == $_SESSION['user']){ ?>
                             <div class="text-right">
-                                <a href="items.php?do=EditItem&itemid=<?= $getItem->ItemID ?>" class="btn btn-success btn-sm"><i class="fa-solid fa-edit"></i> Edit</a>
-                                <a href="items.php?do=DeleteItem&itemid=<?= $getItem->ItemID ?>" class="btn btn-danger btn-sm confirm-delete"><i class="fa-solid fa-close"></i> Delete</a>
+                                <a href="items.php?do=EditItem&itemid=<?= $getItem->ItemID ?>" class="btn btn-success btn-sm text-capitalize"><i class="fa-solid fa-edit"></i> <?=lang('edit') ?></a>
+                                <a href="items.php?do=DeleteItem&itemid=<?= $getItem->ItemID ?>" class="btn btn-danger btn-sm confirm-delete text-capitalize"><i class="fa-solid fa-close"></i> <?= lang('delete') ?></a>
                             </div>
                         <?php } ?>
                     </div>
@@ -333,7 +333,7 @@
                                 <div class="row">
                                     <div class="col-md-9 mb-3 mb-md-0">
                                         <input type="hidden" name="itemid" value="<?= $getItem->ItemID ?>">
-                                        <input type="text" name="comment" placeholder="Enter your comment to this product" class="form-control">
+                                        <input type="text" name="comment" placeholder="<?= lang('Enter your comment to this product') ?>" class="form-control">
                                     </div>
                                     <div class="col-md-3">
                                         <input type="submit" value="Comment" class="btn btn-block bg-main-color text-second-color">
@@ -345,14 +345,14 @@
                         }else{
                             ?>
                             <hr class="comment-lines">
-                            <p class="text-center">You have to <a href="login.php?do=login">Login</a> for comment</p>
+                            <p class="text-center"><?= lang('You have to') ?> <a href="login.php?do=login">Login</a> <?= lang('For Comment') ?></p>
                             <hr class="comment-lines">
                             <?php
                         }
                         $getComments = query('select','Comments INNER JOIN Users ON Comments.UserID = Users.UserID',['Comments.*','Users.Username'],[$getItem->ItemID],['Comments.ItemID']);
                         if($getComments->rowCount() > 0){
                             ?>
-                            <h4 class="text-second-color my-4">Comments:</h4>
+                            <h4 class="text-second-color my-4"><?= lang('comment') ?>:</h4>
                             <table class="table table-striped table-borderless">
                                 <tbody>
                                     <?php
@@ -478,7 +478,7 @@
             if($getItem->rowCount() == 1){
                 $item = $getItem->fetchObject();
                 ?>
-                <h2 class="text-center text-capitalize text-second-color mb-5">Edit Item</h2>
+                <h2 class="text-center text-capitalize text-second-color mb-5"<?= lang('edit item') ?></h2>
                 
                 
                         
@@ -545,14 +545,14 @@
                             </div>
                             <div class="form-group">
                                 <select name="status" class="custom-select">
-                                    <option value="new" <?php if($item->Status == 'new') echo 'selected' ?>>New</option>
-                                    <option value="like new" <?php if($item->Status == 'like new') echo 'selected' ?>>Like New</option>
-                                    <option value="used" <?php if($item->Status == 'used') echo 'selected' ?>>Used</option>
+                                    <option value="new" <?php if($item->Status == 'new') echo 'selected' ?>><?= lang('new') ?></option>
+                                    <option value="like new" <?php if($item->Status == 'like new') echo 'selected' ?>><?= lang('like new') ?></option>
+                                    <option value="used" <?php if($item->Status == 'used') echo 'selected' ?>><?= lang('used') ?></option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <select name="category" id="category-item" class="custom-select">
-                                    <option hidden>Category</option>
+                                    <option hidden><?= lang('Category') ?></option>
                                     <?php 
                                         $getCats = query('select','Categories',['CatID','Name','Parent'],[true],['Parent IS NULL'],'Ordering');
                                         if($getCats->rowCount() > 0){
@@ -567,13 +567,13 @@
                             </div>
                             <div class="form-group">
                                 <select name="sub-category" id="sub-category-item" class="custom-select">
-                                    <option hidden>Sub Category</option>
+                                    <option hidden><?= lang('Sub Category') ?></option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <div class="custom-file col-12">
                                     <input type="file" name="images[]" id="image-item"  class="custom-file-input add-image-item" accept="image/*" multiple/>
-                                    <label for="image-item" class="custom-file-label text-capitalize">add new images of item</label>
+                                    <label for="image-item" class="custom-file-label text-capitalize"><?= lang('add new images to item') ?></label>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -588,7 +588,7 @@
                                         </div> 
                                         <h6 class="card-title name"><?= $item->Name ?></h6>
                                         <p class="card-text description"><?= $item->Description ?></p>
-                                        <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link">show more</a>
+                                        <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link text-capitalize"><?= lang('show more') ?></a>
                                         <span class="price"><span class="prices"><?= $item->Price ?></span><span class="currency"><?= $item->Currency ?></span></span>
                                     </div>
                                 </div>
@@ -732,6 +732,7 @@
         }
     }elseif($page == 'DeleteItem'){
         $itemid = isset($_GET['itemid'])?$_GET['itemid']:0;
+        echo '<h2 class="text-center text-capitalize text-second-colr my-5">'.lang('delete item').'</h2>';
         if(isset($_SESSION['user'])){
             $confirmSelfItem = query('select','Items INNER JOIN Users ON Items.MemberID = Users.UserID',['Items.*'],[$itemid,$_SESSION['user']],['Items.ItemID','Users.Username']);
             if($confirmSelfItem->rowCount() == 1){

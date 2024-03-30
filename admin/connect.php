@@ -29,6 +29,7 @@
                 TrustStatus INT,
                 RegStatus INT DEFAULT 0,
                 RegData DATE DEFAULT now(),
+                Lang VARCHAR(10) DEFAULT "English",
                 CONSTRAINT usersPK PRIMARY KEY (UserID) 
             )');
             $query->execute();

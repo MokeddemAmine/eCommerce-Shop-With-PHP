@@ -17,11 +17,11 @@
                     <thead class="thead-dark">
                         <tr>
                             <th class="text-capitalize">#ID</th>
-                            <th class="text-capitalize">username</th>
-                            <th class="text-capitalize">email</th>
-                            <th class="text-capitalize">full name</th>
-                            <th class="text-capitalize">registered date</th>
-                            <th class="text-capitalize">control</th>
+                            <th class="text-capitalize"><?= lang('username') ?></th>
+                            <th class="text-capitalize"><?= lang('email') ?></th>
+                            <th class="text-capitalize"><?= lang('full name') ?></th>
+                            <th class="text-capitalize"><?= lang('registered date') ?></th>
+                            <th class="text-capitalize"><?= lang('control') ?></th>
                         </tr>
                     </thead>
                     <tbody>

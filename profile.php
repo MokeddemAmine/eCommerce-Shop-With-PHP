@@ -7,24 +7,24 @@
         ?>
         <section class="user">
             <div class="container">
-                <h2 class="text-center text-capitalize text-second-color my-5">profile</h2>
+                <h2 class="text-center text-capitalize text-second-color my-5"><?= lang('profile') ?></h2>
                 <div class="card user-info mb-3">
                     <div class="card-header bg-main-color text-second-color">
-                        <h4 class="card-title">Information</h4>
+                        <h4 class="card-title text-capitalize"><?= lang('information') ?></h4>
                     </div>
                     <div class="card-body">
                         <table class="table table-borderless">
                             <tbody>
                                 <tr>
-                                    <td class="text-second-color font-weight-bold">Name</td>
+                                    <td class="text-second-color font-weight-bold"><?= lang('name') ?></td>
                                     <td><?= $getUser->FullName ?></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-second-color font-weight-bold">Username</td>
+                                    <td class="text-second-color font-weight-bold"><?= lang('username') ?></td>
                                     <td><?= $getUser->Username ?></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-second-color font-weight-bold">Email</td>
+                                    <td class="text-second-color font-weight-bold"><?= lang('email') ?></td>
                                     <td><?= $getUser->Email ?></td>
                                 </tr>
                             </tbody>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="card user-items mb-3">
                     <div class="card-header bg-main-color text-second-color">
-                        <h4 class="card-title">Items</h4>
+                        <h4 class="card-title text-capitalize"><?= lang('items') ?></h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -55,7 +55,7 @@
                                                             </div> 
                                                             <h6 class="card-title"><?= $item->Name ?></h6>
                                                             <p class="card-text"><?= $item->Description ?></p>
-                                                            <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link">Click Here</a>
+                                                            <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link text-capitalize"><?= lang('click here') ?></a>
                                                             <span class="price"><?= $item->Price ?> <?= $item->Currency ?></span>
                                                         </div>
                                                         <?php
@@ -70,7 +70,7 @@
                                         <?php
                                     }
                                 }else{
-                                    echo '<alert class="alert-white">There are no item</alert>';
+                                    echo '<alert class="alert-white">'.lang('There are no item').'</alert>';
                                 }
                             ?>
                         </div>
@@ -78,7 +78,7 @@
                 </div>
                 <div class="card user-comments mb-3">
                     <div class="card-header bg-main-color text-second-color">
-                        <h4 class="card-title">Comments</h4>
+                        <h4 class="card-title text-capitalize"><?= lang('comments') ?></h4>
                     </div>
                     <div class="card-body">
                         <?php
@@ -88,9 +88,9 @@
                                 <table class="table table-borderless">
                                     <thead>
                                         <tr>
-                                            <th>Comment</th>
-                                            <th>Item</th>
-                                            <th>Comment Date</th>
+                                            <th><?= lang('comments') ?></th>
+                                            <th><?= lang('item') ?></th>
+                                            <th><?= lang('comment date') ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -107,7 +107,7 @@
                                 </table>
                                 <?php
                             }else{
-                                echo '<div class="alert alert-white">There are no comment</div>';
+                                echo '<div class="alert alert-white">'.lang('There are no comment').'</div>';
                             }
                         ?>
                     </div>

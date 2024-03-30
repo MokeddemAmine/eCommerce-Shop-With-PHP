@@ -17,14 +17,14 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>#ID</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Added Date</th>
-                                <th>Country</th>
-                                <th>Status</th>
-                                <th>Category</th>
-                                <th>Member Added</th>
-                                <th>Control</th>
+                                <th class="text-capitalize"><?= lang('name') ?></th>
+                                <th class="text-capitalize"><?= lang('price') ?></th>
+                                <th class="text-capitalize"><?= lang('added date') ?></th>
+                                <th class="text-capitalize"><?= lang('country') ?></th>
+                                <th class="text-capitalize"><?= lang('status') ?></th>
+                                <th class="text-capitalize"><?= lang('category') ?></th>
+                                <th class="text-capitalize"><?= lang('member added') ?></th>
+                                <th class="text-capitalize"><?= lang('control') ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -63,22 +63,22 @@
                 <h2 class="text-center text-second-color text-capitalize my-5"><?=lang('add item')?></h2>
                 <form action="?do=Insert" method="POST" enctype="multipart/form-data">
                     <div class="form-group row align-items-center">
-                        <label for="item-name-create" class="col-md-2 text-capitalize font-weight-bold">name</label>
+                        <label for="item-name-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('name') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
-                            <input type="text" name="name" placeholder="Name of the item" id="item-name-create" class="form-control">
+                            <input type="text" name="name" placeholder="<?= lang('Name of the item'); ?>" id="item-name-create" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-desc-create" class="col-md-2 text-capitalize font-weight-bold">description</label>
+                        <label for="item-desc-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('description') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
-                            <input type="text" name="description" placeholder="Description of the item" id="item-desc-create" class="form-control">
+                            <input type="text" name="description" placeholder="<?= lang('Description of the item') ?>" id="item-desc-create" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-price-create" class="col-md-2 text-capitalize font-weight-bold">price</label>
+                        <label for="item-price-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('price') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <div class="input-group">
-                                <input type="number" name="price" id="item-price-create" placeholder="Price ici" class="form-control"/>
+                                <input type="number" name="price" id="item-price-create" placeholder="<?= lang('Price ici'); ?>" class="form-control"/>
                                 <div class="input-group-append">
                                     <select name="currency" id="" class="custom-select">
                                         <option value="$">$</option>
@@ -90,17 +90,17 @@
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-status-create" class="col-md-2 text-capitalize font-weight-bold">status</label>
+                        <label for="item-status-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('status') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <select name="status" id="" class="custom-select">
-                                <option value="new">New</option>
-                                <option value="like new">Like New</option>
-                                <option value="used">Used</option>
+                                <option value="new"><?= lang('new') ?></option>
+                                <option value="like new"><?= lang('like new') ?></option>
+                                <option value="used"><?= lang('used') ?></option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-country-create" class="col-md-2 text-capitalize font-weight-bold">country made</label>
+                        <label for="item-country-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('country made') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <select name="country_made" id="" class="custom-select">
                                 <?php 
@@ -112,16 +112,16 @@
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-image-create" class="col-md-2 text-capitalize font-weight-bold">Images</label>
+                        <label for="item-image-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('images') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <div class="custom-file">
                                 <input type="file" name="images[]" id="image-item" class="custom-file-input" accept="image/*" multiple/>
-                                <label for="image-item" class="custom-file-label text-capitalize">add images of item</label>
+                                <label for="image-item" class="custom-file-label text-capitalize"><?= lang('add images to item') ?></label>
                             </div>
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-catid-create" class="col-md-2 text-capitalize font-weight-bold">Category</label>
+                        <label for="item-catid-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('category') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <select name="catid" id="item-catid-create" class="custom-select">
                                 <option hidden>None</option>
@@ -139,7 +139,7 @@
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-subcatid-create" class="col-md-2 text-capitalize font-weight-bold">sub category</label>
+                        <label for="item-subcatid-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('sub category') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <select name="catid2" id="item-subcatid-create" class="custom-select">
                                 <option hidden>None</option>
@@ -147,7 +147,7 @@
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-memberid-create" class="col-md-2 text-capitalize font-weight-bold">Member</label>
+                        <label for="item-memberid-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('member') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <select name="memberid" id="item-memberid-create" class="custom-select">
                                 <?php
@@ -280,22 +280,22 @@
                         ?>
                     
                     <div class="form-group row align-items-center">
-                        <label for="item-name-create" class="col-md-2 text-capitalize font-weight-bold">name</label>
+                        <label for="item-name-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('name') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
-                            <input type="text" name="name" placeholder="Name of the item" id="item-name-create" class="form-control" value="<?= $item->Name ?>">
+                            <input type="text" name="name"  id="item-name-create" class="form-control" value="<?= $item->Name ?>">
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-desc-create" class="col-md-2 text-capitalize font-weight-bold">description</label>
+                        <label for="item-desc-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('description') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
-                            <input type="text" name="description" placeholder="Description of the item" id="item-desc-create" class="form-control" value="<?= $item->Description ?>">
+                            <input type="text" name="description" id="item-desc-create" class="form-control" value="<?= $item->Description ?>">
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-price-create" class="col-md-2 text-capitalize font-weight-bold">price</label>
+                        <label for="item-price-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('price') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <div class="input-group">
-                                <input type="number" name="price" id="item-price-create" placeholder="Price ici" class="form-control" value="<?= $item->Price ?>"/>
+                                <input type="number" name="price" id="item-price-create" class="form-control" value="<?= $item->Price ?>"/>
                                 <div class="input-group-append">
                                     <select name="currency" id="" class="custom-select">
                                         <option value="$" <?php if($item->Currency == '$') echo 'selected' ?>>$</option>
@@ -307,17 +307,17 @@
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-status-create" class="col-md-2 text-capitalize font-weight-bold">status</label>
+                        <label for="item-status-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('status') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <select name="status" id="" class="custom-select">
-                                <option value="new" <?php if($item->Status == 'new') echo 'selected'; ?>>New</option>
-                                <option value="like new" <?php if($item->Status == 'like new') echo 'selected'; ?>>Like New</option>
-                                <option value="used" <?php if($item->Status == 'used') echo 'selected'; ?>>Used</option>
+                                <option value="new" <?php if($item->Status == 'new') echo 'selected'; ?>><?= lang('new') ?></option>
+                                <option value="like new" <?php if($item->Status == 'like new') echo 'selected'; ?>><?= lang('like new') ?></option>
+                                <option value="used" <?php if($item->Status == 'used') echo 'selected'; ?>><?= lang('used') ?></option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-country-create" class="col-md-2 text-capitalize font-weight-bold">country made</label>
+                        <label for="item-country-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('country made') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <select name="country_made" id="" class="custom-select">
                                 <?php 
@@ -332,16 +332,16 @@
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-image-create" class="col-md-2 text-capitalize font-weight-bold">Image</label>
+                        <label for="item-image-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('images') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <div class="custom-file">
                                 <input type="file" name="images[]" id="image-item" class="custom-file-input" accept="image/*" multiple>
-                                <label for="image-item" class="custom-file-label text-capitalize">add new images to item</label>
+                                <label for="image-item" class="custom-file-label text-capitalize"><?= lang('add new images to item') ?></label>
                             </div>
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-catid-create" class="col-md-2 text-capitalize font-weight-bold">Category</label>
+                        <label for="item-catid-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('category') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <select name="catid" id="item-catid-create" class="custom-select">
                                 <?php
@@ -361,7 +361,7 @@
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-subcatid-create" class="col-md-2 text-capitalize font-weight-bold">sub category</label>
+                        <label for="item-subcatid-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('sub category') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <select name="catid2" id="item-subcatid-create" class="custom-select">
                                 <option hidden>None</option>
@@ -369,7 +369,7 @@
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label for="item-memberid-create" class="col-md-2 text-capitalize font-weight-bold">Member</label>
+                        <label for="item-memberid-create" class="col-md-2 text-capitalize font-weight-bold"><?= lang('member') ?></label>
                         <div class="col-md-10 col-lg-8 col-xl-6">
                             <select name="memberid" id="item-memberid-create" class="custom-select">
                                 <?php
@@ -401,9 +401,9 @@
                                 <table class="table mt-5 table-sm">
                                     <thead>
                                         <tr>
-                                            <th>User</th>
-                                            <th>Comment</th>
-                                            <th>Comment Date</th>
+                                            <th class="text-capitalize"><?= lang('user') ?></th>
+                                            <th class="text-capitalize"><?= lang('comment') ?></th>
+                                            <th class="text-capitalize"><?= lang('comment date') ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>

@@ -86,3 +86,14 @@
     right:0;
 }
 /* End profile */
+/* start items */
+.img-item{
+    position:relative;
+}
+.img-item .close{
+    position:absolute;
+    top:2px;
+    right:2px;
+    cursor:pointer;
+}
+/* end items */

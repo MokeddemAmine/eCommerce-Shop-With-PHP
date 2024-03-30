@@ -26,7 +26,35 @@ $(document).ready(function(){
     $('.input-change-currency').change(function(){
         $('.card .currency').text($(this).val());
     })
+    // live show for image
+    $('.add-image-item').change(function(){
+        let file = this.files[0];
+        let format = ['image/jpeg','image/png','image/jpg','image/gif'];
+
+        if( format.indexOf(file.type) === -1){
+            
+            alert('type of image not supported')
+            this.value = ''
+            return;
+        }
+        if(file.size > 2 * 1024 * 1024){
+            alert('image not exced more than 512Kb');
+            this.value = ''
+            return
+        }
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(){
+             $('.imagine-image-item').attr('src',reader.result);
+        }
+
+        reader.onerror = function(){
+            $('#imagine-image-item').attr('src','imgs/item.jpg')
+            alert('error !!');
+        }
+    })
 })
+
  // confirm delete 
  $('.confirm-delete').click(function(){
     return confirm('Are you sure want to delete this ?');
@@ -43,5 +71,15 @@ $(document).ready(function(){
                 subcat.append('<option value="'+e.CatID+'">'+e.Name+'</option>');
             })
         })
+    })
+
+    // delete image from edit item
+    let n = 1;
+    $('.img-item .close').click(function(){
+        var deletedImgs = $(this).siblings('img').attr('src');
+        $(this).parents('.show-img-item').remove();
+        
+        $('.imgs-item').append('<input type="hidden" name="imgDelete'+n+'" class="img-deleted" value="'+deletedImgs+'">');
+        n++;
     })
 })

@@ -81,7 +81,7 @@
                 <h2 class="text-center text-capitalize text-second-color mb-5">Add New Item</h2>
                 <div class="row border p-3">
                     <div class="col-lg-8">
-                        <form action="?do=InsertItem" method="POST">
+                        <form action="?do=InsertItem" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="MemberID" value="<?= $getUser->UserID ?>">
                             <div class="form-group">
                                 <input type="text" name="name" placeholder="Enter the title"  class="form-control input-change">
@@ -138,6 +138,12 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                                <div class="custom-file col-12">
+                                    <input type="file" name="images[]" class="custom-file-input add-image-item" accept="image/*" multiple/>
+                                    <label for="image-item" class="custom-file-label text-capitalize">add images of item</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <input type="submit" value="Add Item" class="btn bg-main-color text-second-color btn-block">
                             </div>
                         </form>
@@ -145,7 +151,7 @@
                     <div class="col-lg-4">
                         <div class="card" style="height:400px">
                             <div class="card-body">
-                                <img src="imgs/item.jpg" alt="" class="card-img-top" style="max-height:200px;">
+                                <img src="imgs/item.jpg" alt="" class="card-img-top imagine-image-item" style="max-height:200px;">
                                 <h6 class="card-title name">title here</h6>
                                 <p class="card-text description">description here</p>
                                 <a href="#" class="card-link">show more</a>
@@ -293,37 +299,77 @@
             $category   = filter_var($_POST['category'],FILTER_SANITIZE_NUMBER_INT);
             $subcat     = filter_var($_POST['sub-category'],FILTER_SANITIZE_NUMBER_INT);
 
-            $category = $subcat == ''?$category:$subcat;
+            $catid = $subcat == ''?$category:$subcat;
 
-            $form = array();
+            $UserName    = query('select','Users',['Username'],[$memberid],['UserID'])->fetchObject()->Username;
+
+            $images     = $_FILES['images'];
+
+            // extensions accept for images
+            $exAccept   = array('jpeg','jpg','png','gif');
+
+            $length     = count($images['name']);
+
+            $names      = $images['name'];
+            $sizes      = $images['size'];
+            $tmp_names  = $images['tmp_name'];
+
+            $formError = array();
+
+            foreach ($names as $name){
+                if(!in_array(pathinfo($name,PATHINFO_EXTENSION),$exAccept)){
+                    $formError[] = '<div class="alert alert-danger">Extension must be : jpeg, png and gif</div>';
+                    break;
+                }
+            }
+
+            foreach($sizes as $size){
+                if($size > 2097152){
+                    $formError[] = '<div class="alert alert-danger">Size must be less then <b>2 MB</b></div>';
+                    break;
+                }
+            }
 
             if(empty($title)){
-                $form[] = '<div class="alert alert-danger">Title must be entered</div>';
+                $formError[] = '<div class="alert alert-danger">Title must be entered</div>';
             }
             if(empty($desc)){
-                $form[] = '<div class="alert alert-danger">Description must be not empty</div>'; 
+                $formError[] = '<div class="alert alert-danger">Description must be not empty</div>'; 
             }
             if(empty($price)){
-                $form[] = '<div class="alert alert-danger">price must be not empty</div>';
+                $formError[] = '<div class="alert alert-danger">price must be not empty</div>';
             }
             if($country == 'Country Made'){
-                $form[] = '<div class="alert alert-danger">Country must be not empty</div>';
+                $formError[] = '<div class="alert alert-danger">Country must be not empty</div>';
             }
             if($status == 'Status'){
-                $form[] = '<div class="alert alert-danger">Status must be not empty</div>';
+                $formError[] = '<div class="alert alert-danger">Status must be not empty</div>';
             }
             if(empty($category)){
-                $form[] = '<div class="alert alert-danger">Category must be not empty</div>';
+                $formError[] = '<div class="alert alert-danger">Category must be not empty</div>';
             }
 
-            if(!empty($form)){
-                foreach($form as $error){
+            if(!empty($formError)){
+                foreach($formError as $error){
                     echo $error;
                 }
-                redirectPage('back');
             }else{
-                $setItem = query('insert','Items',['Name','Description','Price','Currency','Country_Name','Status','CatID','MemberID'],[$title,$desc,$price,$currency,$country,$status,$category,$memberid]);
+                $newNames = array();
+                foreach($names as $name){
+                    $newNames[] = $UserName.'-'.createID().'.'.pathinfo($name,PATHINFO_EXTENSION);
+                }
+                $imagesUpload = json_encode($newNames);
+                $n = 0;
+                foreach($tmp_names as $tmp){
+                    move_uploaded_file($tmp,'imgs/'.$newNames[$n]);
+                    $n++;
+                }
+
+                
+                $setItem = query('insert','Items',['Name','Description','Price','Currency','Country_Name','Status','CatId','MemberID','image'],[$title,$desc,$price,$currency,$country,$status,$catid,$memberid,$imagesUpload]);
+
                 redirectPage('back');
+
             }
 
         }else{
@@ -336,10 +382,38 @@
             if($getItem->rowCount() == 1){
                 $item = $getItem->fetchObject();
                 ?>
-                <h2 class="text-center text-capitalize text-second-color mb-5">Add New Item</h2>
-                <div class="row border p-3">
-                    <div class="col-lg-8">
-                        <form action="?do=UpdateItem" method="POST">
+                <h2 class="text-center text-capitalize text-second-color mb-5">Edit Item</h2>
+                
+                
+                        
+                    <form action="?do=UpdateItem" method="POST" enctype="multipart/form-data">
+                        <?php 
+                            $getImages = json_decode($item->Image);
+                            $firstImage = NULL;
+                            if(count($getImages) > 0){
+                                $firstImage = $getImages[0];
+                                $n = 1;
+                                echo '<div class="row align-items-center my-4 imgs-item">';
+                                foreach($getImages as $img){
+
+                                    ?>
+                                    <div class="col-md-6 col-lg-4 col-xl-3 show-img-item">
+                                        <div class="img-item">
+                                            <span class="close text-danger confirm-delete">&times;</span>
+                                            <img src="admin/imgs/<?= $img ?>" alt="" class="w-100" style="height:300px;" /> 
+                                            <?php 
+                                                echo '<input type="hidden" name="imgState'.$n.'" value="'.$img.'"/>';
+                                                $n++;
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <?php
+                                }
+                                echo '</div>';
+                            }
+                         ?>
+                        <div class="row border p-3">
+                        <div class="col-lg-8">
                             <input type="hidden" name="itemid" value="<?= $item->ItemID ?>">
                             <input type="hidden" name="MemberID" value="<?= $item->MemberID ?>">
                             <div class="form-group">
@@ -399,22 +473,29 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                                <div class="custom-file col-12">
+                                    <input type="file" name="images[]" id="image-item"  class="custom-file-input add-image-item" accept="image/*" multiple/>
+                                    <label for="image-item" class="custom-file-label text-capitalize">add new images of item</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <input type="submit" value="Update Item" class="btn bg-main-color text-second-color btn-block">
                             </div>
-                        </form>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="card" style="height:400px">
-                            <div class="card-body">
-                                <img src="imgs/item.jpg" alt="" class="card-img-top" style="max-height:200px;">
-                                <h6 class="card-title name"><?= $item->Name ?></h6>
-                                <p class="card-text description"><?= $item->Description ?></p>
-                                <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link">show more</a>
-                                <span class="price"><span class="prices"><?= $item->Price ?></span><span class="currency"><?= $item->Currency ?></span></span>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card" style="height:400px">
+                                    <div class="card-body">
+                                        <img src="admin/imgs/<?php echo $firstImage?$firstImage:'item.jpg' ?>" alt="" class="card-img-top imagine-image-item" style="max-height:200px;">
+                                        <h6 class="card-title name"><?= $item->Name ?></h6>
+                                        <p class="card-text description"><?= $item->Description ?></p>
+                                        <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link">show more</a>
+                                        <span class="price"><span class="prices"><?= $item->Price ?></span><span class="currency"><?= $item->Currency ?></span></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </form>
+                    
                 <?php
             }else{
                 redirectPage(NULL,0);
@@ -434,38 +515,114 @@
                 $category   = filter_var($_POST['category'],FILTER_SANITIZE_NUMBER_INT);
                 $subcat     = filter_var($_POST['sub-category'],FILTER_SANITIZE_NUMBER_INT);
 
-                $category = $subcat == ''?$category:$subcat;
+                // check if there are imgs deleted from the item , and get the images state
+                $imgsDelete = array();
+                $imgsState = array();
 
-                $form = array();
-
-                if(empty($title)){
-                    $form[] = '<div class="alert alert-danger">Title must be entered</div>';
-                }
-                if(empty($desc)){
-                    $form[] = '<div class="alert alert-danger">Description must be not empty</div>'; 
-                }
-                if(empty($price)){
-                    $form[] = '<div class="alert alert-danger">price must be not empty</div>';
-                }
-                if($country == 'Country Made'){
-                    $form[] = '<div class="alert alert-danger">Country must be not empty</div>';
-                }
-                if($status == 'Status'){
-                    $form[] = '<div class="alert alert-danger">Status must be not empty</div>';
-                }
-                if(empty($category)){
-                    $form[] = '<div class="alert alert-danger">Category must be not empty</div>';
-                }
-
-                if(!empty($form)){
-                    foreach($form as $error){
-                        echo $error;
+                foreach($_POST as $key => $value){
+                    if(str_contains($key,'imgDelete')){
+                        array_push($imgsDelete,filter_var($value,FILTER_SANITIZE_STRING));
                     }
-                    redirectPage('back');
-                }else{
-                    $setItem = query('update','Items',['Name','Description','Price','Currency','Country_Name','Status','CatID','MemberID'],[$title,$desc,$price,$currency,$country,$status,$category,$memberid,$itemid],['ItemID']);
-                    redirectPage('back');
+                    if(str_contains($key,'imgState')){
+                        array_push($imgsState,filter_var($value,FILTER_SANITIZE_STRING));
+                    }
                 }
+                
+                // delete images from imgs folder in our storage
+                foreach($imgsDelete as $img){
+                    if(file_exists($img)){
+                        unlink($img);
+                    }
+                }
+
+                $catid = $subcat == ''?$category:$subcat;
+
+                // start taken of images
+
+                $UserName    = query('select','Users',['Username'],[$memberid],['UserID'])->fetchObject()->Username;
+
+                $images     = $_FILES['images'];
+
+                if($images['size'] != [0]){
+                    // extensions accept for images
+                    $exAccept   = array('jpeg','jpg','png','gif');
+
+                    $length     = count($images['name']);
+
+                    $names      = $images['name'];
+                    $sizes      = $images['size'];
+                    $tmp_names  = $images['tmp_name'];
+
+                    $formError = array();
+
+                    foreach ($names as $name){
+                        if(!in_array(pathinfo($name,PATHINFO_EXTENSION),$exAccept)){
+                            $formError[] = '<div class="alert alert-danger">Extension must be : jpeg, png and gif</div>';
+                            break;
+                        }
+                    }
+
+                    foreach($sizes as $size){
+                        if($size > 2097152){
+                            $formError[] = '<div class="alert alert-danger">Size must be less then <b>2 MB</b></div>';
+                            break;
+                        }
+                    }
+
+                    if(empty($title)){
+                        $formError[] = '<div class="alert alert-danger">Title must be entered</div>';
+                    }
+                    if(empty($desc)){
+                        $formError[] = '<div class="alert alert-danger">Description must be not empty</div>'; 
+                    }
+                    if(empty($price)){
+                        $formError[] = '<div class="alert alert-danger">price must be not empty</div>';
+                    }
+                    if($country == 'Country Made'){
+                        $formError[] = '<div class="alert alert-danger">Country must be not empty</div>';
+                    }
+                    if($status == 'Status'){
+                        $formError[] = '<div class="alert alert-danger">Status must be not empty</div>';
+                    }
+                    if(empty($category)){
+                        $formError[] = '<div class="alert alert-danger">Category must be not empty</div>';
+                    }
+
+                    if(!empty($formError)){
+                        foreach($formError as $error){
+                            echo $error;
+                        }
+                    }else{
+                        $newNames = array();
+                        foreach($names as $name){
+                            //$newNames[] = $UserName.'-'.createID().'.'.pathinfo($name,PATHINFO_EXTENSION);
+                            array_push($newNames,$UserName.'-'.createID().'.'.pathinfo($name,PATHINFO_EXTENSION));
+                        }
+                        
+                        $n = 0;
+                        foreach($tmp_names as $tmp){
+                            move_uploaded_file($tmp,'admin/imgs/'.$newNames[$n]);
+                            $n++;
+                        }
+
+                        // collect new images with images state
+                        foreach($imgsState as $state){
+                            array_push($newNames,$state);
+                        }
+                        $imagesUpload = json_encode($newNames);
+                        
+                        $setItem = query('update','Items',['Name','Description','Price','Currency','Country_Name','Status','CatId','MemberID','Image'],[$title,$desc,$price,$currency,$country,$status,$catid,$memberid,$imagesUpload,$itemid],['ItemID']);
+
+                    }
+
+                }else{
+
+                    $imagesUpload = json_encode($imgsState);
+                    $setItem = query('update','Items',['Name','Description','Price','Currency','Country_Name','Status','CatID','MemberID','Image'],[$title,$desc,$price,$currency,$country,$status,$catid,$memberid,$imagesUpload,$itemid],['ItemID']);
+
+                    
+                }
+                redirectPage('back');
 
             }else{
                 redirectPage();

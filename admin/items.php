@@ -263,7 +263,9 @@
                                     <div class="col-md-6 col-lg-4 col-xl-3 show-img-item">
                                         <div class="img-item">
                                             <span class="close text-danger confirm-delete">&times;</span>
-                                            <img src="imgs/<?= $img ?>" alt="" class="w-100" style="height:300px;" /> 
+                                            <div style="height:200px;" class="img d-flex justify-content-center align-items-center">
+                                                <img src="imgs/<?= $img ?>" alt="" class="card-img-top w-100" style="max-height:200px; ">
+                                            </div> 
                                             <?php 
                                                 echo '<input type="hidden" name="imgState'.$n.'" value="'.$img.'"/>';
                                                 $n++;

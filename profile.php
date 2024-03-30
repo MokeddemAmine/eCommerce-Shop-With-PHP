@@ -41,11 +41,18 @@
                                 $getAllItems = query('select','Items',['*'],[$getUser->UserID],['MemberID']);
                                 if($getAllItems->rowCount() > 0){
                                     while($item = $getAllItems->fetchObject()){
+                                        $images = json_decode($item->Image);
+                                        $firstImage = NULL;
+                                        if(count($images) > 0){
+                                            $firstImage = $images[0];
+                                        }
                                         ?>
                                                 <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                                                     <div class="card" style="height:400px">
                                                         <div class="card-body">
-                                                            <img src="imgs/item.jpg" alt="" class="card-img-top" style="max-height:200px"/>
+                                                            <div style="height:200px;" class="d-flex justify-content-center align-items-center">
+                                                                <img src="admin/imgs/<?= $firstImage?$firstImage:'item.jpg' ?>" alt="" class="card-img-top" style="max-height:200px;object-fit:cover ">
+                                                            </div> 
                                                             <h6 class="card-title"><?= $item->Name ?></h6>
                                                             <p class="card-text"><?= $item->Description ?></p>
                                                             <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link">Click Here</a>

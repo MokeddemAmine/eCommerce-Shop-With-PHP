@@ -14,11 +14,18 @@
             
             echo '<div class="row">';
             while($item = $getAllItems->fetchObject()){
+                $firstImage = NULL;
+                $images = json_decode($item->Image);
+                if(count($images) > 0){
+                    $firstImage = $images[0];
+                }
                 ?>
                     <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                         <div class="card" style="height:400px;">
                             <div class="card-body">
-                                <img src="imgs/item.jpg" alt="" class="card-img-top" style="max-height:200px;">
+                                <div style="height:200px;" class="d-flex justify-content-center align-items-center">
+                                    <img src="admin/imgs/<?= $firstImage?$firstImage:'item.jpg' ?>" alt="" class="card-img-top" style="max-height:200px;object-fit:cover ">
+                                </div> 
                                 <h6 class="card-title"><?= $item->Name ?></h6>
                                 <p class="card-text"><?= $item->Description ?></p>
                                 <a href="?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link">Show More</a>
@@ -49,11 +56,18 @@
                         $getCatItems->execute([1,$catid,$catid]);
                         if($getCatItems->rowCount() > 0){
                             while($item = $getCatItems->fetchObject()){
+                                $firstImage = NULL;
+                                $images = json_decode($item->Image);
+                                if(count($images) > 0){
+                                    $firstImage = $images[0];
+                                }
                             ?>
                                 <div class="col-md-6 col-lg-4 col-xl-3">
                                     <div class="card" style="height:400px;">
                                         <div class="card-body">
-                                            <img src="imgs/item.jpg" alt="" class="card-img-top" style="max-height:200px;">
+                                        <div style="height:200px;" class="d-flex justify-content-center align-items-center">
+                                            <img src="admin/imgs/<?= $firstImage?$firstImage:'item.jpg' ?>" alt="" class="card-img-top" style="max-height:200px;object-fit:cover ">
+                                        </div> 
                                             <h6 class="card-title"><?= $item->Name ?></h6>
                                             <p class="card-text"><?= $item->Description ?></p>
                                             <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>">Show More</a>
@@ -151,7 +165,9 @@
                     <div class="col-lg-4">
                         <div class="card" style="height:400px">
                             <div class="card-body">
-                                <img src="imgs/item.jpg" alt="" class="card-img-top imagine-image-item" style="max-height:200px;">
+                                <div style="height:200px;" class="d-flex justify-content-center align-items-center">
+                                    <img src="admin/imgs/item.jpg" alt="" class="card-img-top imagine-image-item" style="max-height:200px;object-fit:cover; ">
+                                </div> 
                                 <h6 class="card-title name">title here</h6>
                                 <p class="card-text description">description here</p>
                                 <a href="#" class="card-link">show more</a>
@@ -171,11 +187,91 @@
         if($getItem->rowCount() == 1){
             $getItem = $getItem->fetchObject();
             if($getItem->Approve == 1 || ($getItem->Username == $_SESSION['user'])){
+                $images = json_decode($getItem->Image);
+                $firstImage = NULL;
+                if(count($images) > 0){
+                    $firstImage = $images[0];
+                }
             ?>
                 <h2 class="text-center text-second-color text-capitalize my-5"><?= $getItem->Name ?></h2>
                 <div class="row border p-3">
-                    <div class="col-lg-4">
-                        <img src="imgs/item.jpg" alt="" class="w-100">
+                    <div class="col-lg-4 show-images-img mb-3 mb-lg-0">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <img src="admin/imgs/<?= $firstImage?$firstImage:'item.jpg' ?>" alt="" class="card-img-top imagine-image-item" style="object-fit:cover">
+                            
+                        </div> 
+                        <?php
+                        if(count($images) > 0){
+                        ?>
+                        <button class="btn bg-main-color text-second-color btn-sm btn-more-images" data-toggle="modal" data-target="#modal-item-images">Show More Images</button>
+                        <div class="modal fade" id="modal-item-images">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title text-capitalize"><?= $getItem->Name ?></h4>
+                                        <button class="close text-danger" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body" style="max-height:800px;">
+                                        <div class="row justify-content-md-center align-items-md-center">
+                                            <?php
+                                            foreach($images as $image){
+                                                ?>
+                                                <div class="col-6 col-md-3 col-lg-2" style="height:200px;">
+                                                    <img src="admin/imgs/<?= $image ?>" alt="" class="mw-100" style="object-fit:cover"/>
+                                                </div>
+                                                <?php
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="carousel slide" data-ride="carousel" id="carousel-item-images" style="max-height:576px;">
+                                            <ul class="carousel-indicators">
+                                                <?php
+                                                $i = 0;
+                                                foreach($images as $image){
+                                                    echo '<li data-target="#carousel-item-images" data-slide-to="'.$i.'"';
+                                                    if($i == 0){
+                                                        echo 'class="active"';
+                                                    }
+                                                    echo '></li>';
+                                                    $i++;
+                                                }
+                                                ?>
+                                                
+                                            </ul>
+                                            <div class="carousel-inner" style="max-height:576px;">
+                                                <?php 
+                                                $i = 0;
+                                                foreach($images as $image){
+                                                    echo '<div class="carousel-item';
+                                                    if($i == 0){
+                                                        echo ' active';
+                                                    }
+                                                    echo '" style="max-height:576px;">';
+                                                        echo '<div class="d-flex justify-content-center align-items-center">';
+                                                            echo '<img src="admin/imgs/'; 
+                                                            echo $image;
+                                                            echo '" alt="" class="carousel-item-image " style="max-height:576px;">';
+                                                        echo '</div>';
+                                                    echo '</div>';
+                                                    $i++;
+                                                }
+                                                ?>
+                                            </div>
+                                            <a href="#carousel-item-images" data-slide="prev" class="carousel-control-prev">
+                                                <span class="carousel-control-prev-icon bg-main-color"></span>
+                                            </a>
+                                            <a href="#carousel-item-images" data-slide="next" class="carousel-control-next">
+                                                <span class="carousel-control-next-icon bg-main-color"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button data-dismiss="modal" class="btn btn-danger btn-sm text-capitalize">close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php } ?>
                     </div>
                     <div class="col-lg-8">
                         <table class="table table-striped table-borderless">
@@ -400,7 +496,9 @@
                                     <div class="col-md-6 col-lg-4 col-xl-3 show-img-item">
                                         <div class="img-item">
                                             <span class="close text-danger confirm-delete">&times;</span>
-                                            <img src="admin/imgs/<?= $img ?>" alt="" class="w-100" style="height:300px;" /> 
+                                            <div style="height:200px;" class="img d-flex justify-content-center align-items-center">
+                                                <img src="admin/imgs/<?= $img ?>" alt="" class="card-img-top" style="max-height:200px;object-fit:cover">
+                                            </div>  
                                             <?php 
                                                 echo '<input type="hidden" name="imgState'.$n.'" value="'.$img.'"/>';
                                                 $n++;
@@ -485,7 +583,9 @@
                             <div class="col-lg-4">
                                 <div class="card" style="height:400px">
                                     <div class="card-body">
-                                        <img src="admin/imgs/<?php echo $firstImage?$firstImage:'item.jpg' ?>" alt="" class="card-img-top imagine-image-item" style="max-height:200px;">
+                                        <div style="height:200px;" class="img d-flex justify-content-center align-items-center">
+                                                <img src="admin/imgs/<?php echo $firstImage?$firstImage:'item.jpg' ?>" alt="" class="card-img-top imagine-image-item" style="max-height:200px;object-fit:cover">
+                                        </div> 
                                         <h6 class="card-title name"><?= $item->Name ?></h6>
                                         <p class="card-text description"><?= $item->Description ?></p>
                                         <a href="items.php?do=ShowItem&itemid=<?= $item->ItemID ?>" class="card-link">show more</a>

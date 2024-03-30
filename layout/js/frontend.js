@@ -76,7 +76,7 @@ $(document).ready(function(){
     // delete image from edit item
     let n = 1;
     $('.img-item .close').click(function(){
-        var deletedImgs = $(this).siblings('img').attr('src');
+        var deletedImgs = $(this).siblings('.img').children('img').attr('src');
         $(this).parents('.show-img-item').remove();
         
         $('.imgs-item').append('<input type="hidden" name="imgDelete'+n+'" class="img-deleted" value="'+deletedImgs+'">');

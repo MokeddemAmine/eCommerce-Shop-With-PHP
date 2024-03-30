@@ -96,4 +96,18 @@
     right:2px;
     cursor:pointer;
 }
+.show-images-img{
+    position: relative;
+    overflow: hidden;
+}
+.show-images-img .btn-more-images{
+    position:absolute;
+    bottom:-3rem;
+    left:50%;
+    transform: translateX(-50%);
+    transition: .5s;
+}
+.show-images-img:hover .btn-more-images{
+    bottom:0;
+}
 /* end items */

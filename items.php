@@ -457,7 +457,7 @@
                 $imagesUpload = json_encode($newNames);
                 $n = 0;
                 foreach($tmp_names as $tmp){
-                    move_uploaded_file($tmp,'imgs/'.$newNames[$n]);
+                    move_uploaded_file($tmp,'admin/imgs/'.$newNames[$n]);
                     $n++;
                 }
 
@@ -735,6 +735,14 @@
         if(isset($_SESSION['user'])){
             $confirmSelfItem = query('select','Items INNER JOIN Users ON Items.MemberID = Users.UserID',['Items.*'],[$itemid,$_SESSION['user']],['Items.ItemID','Users.Username']);
             if($confirmSelfItem->rowCount() == 1){
+                $getImages = json_decode($confirmSelfItem->fetchObject()->Image);
+                if(count($getImages) > 0){
+                    foreach($getImages as $image){
+                        if(file_exists('admin/imgs/'.$image)){
+                            unlink('admin/imgs/'.$image);
+                        }
+                    }
+                }
                 $deleteItem = query('delete','Items',['ItemID'],[$itemid]);
                 redirectPage('profile.php');
             }

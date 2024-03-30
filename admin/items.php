@@ -551,7 +551,14 @@
             $itemid = isset($_GET['itemid']) && is_numeric($_GET['itemid']) ? $_GET['itemid']:0;
             $getItem = query('select','Items',['*'],[$itemid],['ItemID']);
             if($getItem->rowCount() == 1){
-
+                $getImages = json_decode($getItem->fetchObject()->Image);
+                if(count($getImages) > 0){
+                    foreach($getImages as $image){
+                        if(file_exists('imgs/'.$image)){
+                            unlink('imgs/'.$image);
+                        }
+                    }
+                }
                 $deleteItem = query('delete','Items',['ItemID'],[$itemid]);
 
                 redirectPage('back');

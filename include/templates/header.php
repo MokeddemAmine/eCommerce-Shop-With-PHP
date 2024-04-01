@@ -23,10 +23,19 @@
                         <i class="fa-solid fa-search search-icon"></i>
                     </div>
                     <div class="languages mb-3 mb-md-0 ml-md-5">
-                        <select name="language" id="language" class="custom-select custom-select-sm bg-main-color text-white">
-                            <option value="en">En</option>
-                            <option value="ar">Ar</option>
-                        </select>
+                        <form action="?do=changeLang" method="POST" id="languageForm">
+                            <select name="language" id="languageSelect" class="custom-select custom-select-sm bg-main-color text-white">
+                            <?php 
+                                $userLang = NULL;
+                                if(isset($_SESSION['user']) || isset($_SESSION['useradmin'])) {
+                                    $username   = $_SESSION['user']?$_SESSION['user']:$_SESSION['useradmin'];
+                                    $userLang     = query('select','Users',['Lang'],[$username],['Username'])->fetchObject()->Lang;
+                                }
+                             ?>
+                                <option value="english" <?php if($userLang){ if($userLang == 'english') echo 'selected';} ?>>En</option>
+                                <option value="french" <?php if($userLang){ if($userLang == 'french') echo 'selected';} ?>>Fr</option>
+                            </select>
+                        </form>    
                     </div>
                     <ul class="navbar-nav flex-grow-1 justify-content-end">
                         <?php if(isset($_SESSION['user'])){
@@ -43,15 +52,15 @@
                                         <?php
                                             $getGroupID = query('select','Users',['GroupID'],[$_SESSION['user']],['Username'])->fetchObject()->GroupID;
                                             if($getGroupID == 1){
-                                                echo '<li class="nav-item d-block"><a href="admin/index.php" class="nav-link text-second-color">Go To  Admin</a></li>';
+                                                echo '<li class="nav-item d-block"><a href="admin/index.php" class="nav-link text-second-color text-capitalize">'.lang('go to admin').'</a></li>';
                                             }
                                             if($userStatus == 1){
-                                                echo '<li class="nav-item d-block"><a href="items.php?do=AddItem" class="nav-link text-second-color">Add Item</a></li>';
+                                                echo '<li class="nav-item d-block"><a href="items.php?do=AddItem" class="nav-link text-second-color text-capitalize">'.lang('add item').'</a></li>';
                                             }
                                         ?> 
-                                        <li class="nav-item d-block"><a href="profile.php" class="nav-link text-second-color">Profile</a></li>
-                                        <li class="nav-item d-block"><a href="settings.php" class="nav-link text-second-color">Settings</a></li>
-                                        <li class="nav-item d-block"><a href="logout.php" class="nav-link text-second-color">Logout</a></li>
+                                        <li class="nav-item d-block"><a href="profile.php" class="nav-link text-second-color text-capitalize"><?= lang('profile') ?></a></li>
+                                        <li class="nav-item d-block"><a href="settings.php" class="nav-link text-second-color text-capitalize"><?= lang('settings') ?></a></li>
+                                        <li class="nav-item d-block"><a href="logout.php" class="nav-link text-second-color text-capitalize"><?= lang('logout') ?></a></li>
                                     </ul>
                                 </div>
                                 
@@ -113,3 +122,19 @@
             
         </div>
     </section>
+
+    <?php 
+        if(isset($_GET['do']) && $_GET['do'] == 'changeLang'){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                if(isset($_SESSION['user']) || isset($_SESSION['useradmin'])){
+                    $username   = $_SESSION['user']?$_SESSION['user']:$_SESSION['useradmin'];
+                    $userid     = query('select','Users',['UserID'],[$username],['Username'])->fetchObject()->UserID;
+                    $language   = $_POST['language'];
+                    if($userid){
+                        $updateLang = query('update','Users',['Lang'],[$language,$userid],['UserID']);
+                    }
+                    redirectPage(NULL,0);
+                }
+            }
+        }
+    ?>

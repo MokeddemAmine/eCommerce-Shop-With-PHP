@@ -10,7 +10,13 @@
 
     //include the important files
     include $functions.'functions.php';
-    include $languages.'english.php';
+    if(isset($_SESSION['useradmin'])){
+        $getLang = query('select','Users',['Lang'],[$_SESSION['useradmin']],['Username'])->fetchObject()->Lang;
+        include $languages.$getLang.'.php';
+    }else{
+        include $languages.'english.php';
+    }
+    
     include $template.'header.php';
     if(isset($navbar)){
         include 'navbar.php';

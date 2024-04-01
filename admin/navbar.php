@@ -10,6 +10,21 @@
                     <li class="nav-item"><a href="members.php" class="nav-link text-white text-capitalize"><?= lang('members'); ?></a></li>
                     <li class="nav-item"><a href="comments.php" class="nav-link text-white text-capitalize"><?= lang('comments'); ?></a></li>
                 </ul>
+                <div class="languages mb-3 mb-md-0 ml-md-5">
+                        <form action="?do=changeLang" method="POST" id="languageForm">
+                            <select name="language" id="languageSelect" class="custom-select custom-select-sm bg-main-color text-white">
+                            <?php 
+                                $userLang = NULL;
+                                if(isset($_SESSION['user']) || isset($_SESSION['useradmin'])) {
+                                    $username   = $_SESSION['user']?$_SESSION['user']:$_SESSION['useradmin'];
+                                    $userLang     = query('select','Users',['Lang'],[$username],['Username'])->fetchObject()->Lang;
+                                }
+                             ?>
+                                <option value="english" <?php if($userLang){ if($userLang == 'english') echo 'selected';} ?>>En</option>
+                                <option value="french" <?php if($userLang){ if($userLang == 'french') echo 'selected';} ?>>Fr</option>
+                            </select>
+                        </form>    
+                    </div>
                 <div class="sous-menu d-inline-block">
                     <h3 class="bg-main-color p-2 m-0 rounded sous-menu-name"><?= $_SESSION['useradmin']; ?></h3>
                     <ul class="links list-unstyled bg-main-color text-center py-3">
@@ -23,3 +38,21 @@
         </div>
     </div>
 </header>
+
+<?php 
+        if(isset($_GET['do']) && $_GET['do'] == 'changeLang'){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                if(isset($_SESSION['user']) || isset($_SESSION['useradmin'])){
+                    $username   = $_SESSION['user']?$_SESSION['user']:$_SESSION['useradmin'];
+                    $userid     = query('select','Users',['UserID'],[$username],['Username'])->fetchObject()->UserID;
+                    $language   = $_POST['language'];
+                    if($userid){
+                        $updateLang = query('update','Users',['Lang'],[$language,$userid],['UserID']);
+                    }
+                    redirectPage(NULL,0);
+                }
+                
+
+            }
+        }
+    ?>

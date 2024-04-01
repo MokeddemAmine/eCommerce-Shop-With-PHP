@@ -73,5 +73,10 @@ $(document).ready(function(){
         $('.imgs-item').append('<input type="hidden" name="imgDelete'+n+'" class="img-deleted" value="'+deletedImgs+'">');
         n++;
     })
+
+    // submit the form language
+    $('#languageSelect').change(function(){
+        $('#languageForm').submit();
+    })
     
 })

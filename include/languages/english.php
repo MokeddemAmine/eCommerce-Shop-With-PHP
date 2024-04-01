@@ -2,6 +2,9 @@
     function lang($sentence){
         static $lang = array(
             'welcome'           => 'welcome',
+            'go to admin'       => 'go to admin',
+            'add item'          => 'add item',
+            'logout'            => 'logout',
             // long sentences
             'Username (8 character minimun)'    => 'Username (8 character minimun)',
             'Password must be >= 8 characters'  => 'Password must be >= 8 characters',

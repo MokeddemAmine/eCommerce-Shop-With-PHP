@@ -82,9 +82,16 @@ $(document).ready(function(){
         $('.imgs-item').append('<input type="hidden" name="imgDelete'+n+'" class="img-deleted" value="'+deletedImgs+'">');
         n++;
     })
-
+    // change the value of lang in html tag
     // submit the form language
     $('#languageSelect').change(function(){
+        if($(this).val() == 'english'){
+            $('html').attr('lang','en');
+        }else if($(this).val() == 'french'){
+            $('html').attr('lang','fr');
+        }
+        console.log($('html').attr('lang'));
         $('#languageForm').submit();
     })
+    
 })

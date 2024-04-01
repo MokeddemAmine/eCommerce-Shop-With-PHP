@@ -13,13 +13,7 @@
                 <div class="languages mb-3 mb-md-0 ml-md-5">
                         <form action="?do=changeLang" method="POST" id="languageForm">
                             <select name="language" id="languageSelect" class="custom-select custom-select-sm bg-main-color text-white">
-                            <?php 
-                                $userLang = NULL;
-                                if(isset($_SESSION['useradmin'])) {
-                                    $username   = $_SESSION['user']?$_SESSION['user']:$_SESSION['useradmin'];
-                                    $userLang     = query('select','Users',['Lang'],[$username],['Username'])->fetchObject()->Lang;
-                                }
-                             ?>
+                            <!-- $userLang was declared in header.php -->
                                 <option value="english" <?php if($userLang){ if($userLang == 'english') echo 'selected';} ?>>En</option>
                                 <option value="french" <?php if($userLang){ if($userLang == 'french') echo 'selected';} ?>>Fr</option>
                             </select>

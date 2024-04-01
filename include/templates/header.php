@@ -8,6 +8,15 @@
 
 <!DOCTYPE html>
 <html lang="<?php if($userLang){ if($userLang == 'english') echo 'en'; elseif($userLang == 'french') echo 'fr';}else{echo 'en';} ?>">
+<?php 
+    if(isset($_SESSION['user'])){
+        $username = $_SESSION['user']?$_SESSION['user']:$_SESSION['useradmin'];
+        $getLang = query('select','Users',['Lang'],[$username],['Username'])->fetchObject()->Lang;
+        include $languages.$getLang.'.php';
+    }else{
+        include $languages.'english.php';
+    }
+?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -127,7 +136,7 @@
     <?php 
         if(isset($_GET['do']) && $_GET['do'] == 'changeLang'){
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                if(isset($_SESSION['user']) || isset($_SESSION['useradmin'])){
+                if(isset($_SESSION['user'])){
                     $username   = $_SESSION['user']?$_SESSION['user']:$_SESSION['useradmin'];
                     $userid     = query('select','Users',['UserID'],[$username],['Username'])->fetchObject()->UserID;
                     $language   = $_POST['language'];

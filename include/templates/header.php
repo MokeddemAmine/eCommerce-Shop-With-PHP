@@ -1,5 +1,13 @@
+<?php 
+    $userLang = NULL;
+    if(isset($_SESSION['user'])) {
+        $username   = $_SESSION['user']?$_SESSION['user']:$_SESSION['useradmin'];
+        $userLang     = query('select','Users',['Lang'],[$username],['Username'])->fetchObject()->Lang;
+    }
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php if($userLang){ if($userLang == 'english') echo 'en'; elseif($userLang == 'french') echo 'fr';}else{echo 'en';} ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,13 +33,6 @@
                     <div class="languages mb-3 mb-md-0 ml-md-5">
                         <form action="?do=changeLang" method="POST" id="languageForm">
                             <select name="language" id="languageSelect" class="custom-select custom-select-sm bg-main-color text-white">
-                            <?php 
-                                $userLang = NULL;
-                                if(isset($_SESSION['user']) || isset($_SESSION['useradmin'])) {
-                                    $username   = $_SESSION['user']?$_SESSION['user']:$_SESSION['useradmin'];
-                                    $userLang     = query('select','Users',['Lang'],[$username],['Username'])->fetchObject()->Lang;
-                                }
-                             ?>
                                 <option value="english" <?php if($userLang){ if($userLang == 'english') echo 'selected';} ?>>En</option>
                                 <option value="french" <?php if($userLang){ if($userLang == 'french') echo 'selected';} ?>>Fr</option>
                             </select>

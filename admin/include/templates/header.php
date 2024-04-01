@@ -1,5 +1,13 @@
+<?php 
+    $userLang = NULL;
+    if(isset($_SESSION['useradmin'])) {
+        $username   = $_SESSION['user']?$_SESSION['user']:$_SESSION['useradmin'];
+        $userLang     = query('select','Users',['Lang'],[$username],['Username'])->fetchObject()->Lang;
+    }
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php if($userLang){ if($userLang == 'english') echo 'en'; elseif($userLang == 'french') echo 'fr';}else{echo 'en';} ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

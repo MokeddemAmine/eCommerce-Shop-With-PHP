@@ -15,7 +15,7 @@
                             <select name="language" id="languageSelect" class="custom-select custom-select-sm bg-main-color text-white">
                             <?php 
                                 $userLang = NULL;
-                                if(isset($_SESSION['user']) || isset($_SESSION['useradmin'])) {
+                                if(isset($_SESSION['useradmin'])) {
                                     $username   = $_SESSION['user']?$_SESSION['user']:$_SESSION['useradmin'];
                                     $userLang     = query('select','Users',['Lang'],[$username],['Username'])->fetchObject()->Lang;
                                 }

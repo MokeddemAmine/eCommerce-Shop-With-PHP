@@ -316,7 +316,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <?php if($getItem->Username == $_SESSION['user']){ ?>
+                        <?php if(isset($_SESSION['user']) && $getItem->Username == $_SESSION['user']){ ?>
                             <div class="text-right">
                                 <a href="items.php?do=EditItem&itemid=<?= $getItem->ItemID ?>" class="btn btn-success btn-sm text-capitalize"><i class="fa-solid fa-edit"></i> <?=lang('edit') ?></a>
                                 <a href="items.php?do=DeleteItem&itemid=<?= $getItem->ItemID ?>" class="btn btn-danger btn-sm confirm-delete text-capitalize"><i class="fa-solid fa-close"></i> <?= lang('delete') ?></a>

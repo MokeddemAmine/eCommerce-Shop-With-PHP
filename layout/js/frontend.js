@@ -93,5 +93,37 @@ $(document).ready(function(){
         console.log($('html').attr('lang'));
         $('#languageForm').submit();
     })
+    // display the section of result of search 
+    $('#search').focus(function(){
+        $('#result-search').css('display','block');
+        // print result of search from items and categories
+    })
+    $('#search').keyup(function(){
+        console.log('repeat');
+        $('#result-search').children('a').remove();
+        $.ajax({
+            method:'GET',
+            url:'APISearch.php',
+            data:{
+                search:$(this).val()
+            },
+            success:function(data){
+                let result = JSON.parse(data);
+                console.log(result);
+                result.map(res => $('#result-search').append(res));
+            },
+            error:function(xhr,status,err){
+                console.log(err);
+            }
+        })
+    })
+    $('body').children().not('header').click(function(){
+        $('#search').val('');
+        $('#result-search').children('a').remove();
+        $('#result-search').css('display','none');
+    })
+
+
+
     
 })

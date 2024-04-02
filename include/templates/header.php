@@ -29,15 +29,19 @@
     <!-- add the upperbar for login and registration -->
     
     <!-- add the navbar here because all pages need it -->
-    <section class="bg-second-color p-0">
+    <header class="bg-second-color p-0">
         <div class="container">
             <nav class="navbar navbar-expand-md navbar-dark p-0">
                 <a href="index.php" class="navbar-brand"><h1 class="text-main-color m-0">LOGO</h1></a>
                 <button class="navbar-toggler bg-main-color" data-toggle="collapse" data-target="#main-navbar" aria-expanded="true"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse justify-content-betwen" id="main-navbar">
                     <div class="flex-grow-1 mb-2 mb-md-0 search-input">
-                        <input type="search" name="search" id="search" placeholder="<?= lang('Search Categories or Items Here') ?>" class="form-control">
-                        <i class="fa-solid fa-search search-icon"></i>
+                        <form action="" method="GET">
+                            <input type="search" name="search" id="search" placeholder="<?= lang('Search Categories or Items Here') ?>" class="form-control search-items">
+                            <i class="fa-solid fa-search search-icon"></i>
+                        </form>
+                        <div id="result-search" class="search-items">
+                        </div>
                     </div>
                     <div class="languages mb-3 mb-md-0 ml-md-5">
                         <form action="?do=changeLang" method="POST" id="languageForm">
@@ -85,7 +89,7 @@
                 </div>
             </nav>
         </div>
-    </section>
+    </header>
     <section class="bg-dark py-2">
         <div class="container">
             <div class="row align-items-center justify-content-between">

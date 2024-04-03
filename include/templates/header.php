@@ -53,8 +53,8 @@
                     </div>
                     <ul class="navbar-nav flex-grow-1 justify-content-end">
                         <?php if(isset($_SESSION['user'])){
-                            $userStatus = query('select','Users',['*'],[$_SESSION['user']],['Username'])->fetchObject()->RegStatus;
-                            if($userStatus == 0){
+                            $getUser = query('select','Users',['*'],[$_SESSION['user']],['Username'])->fetchObject();
+                            if($getUser->RegStatus == 0 || $getUser->EmailConfirm != 1){
                                 echo '<li class="nav-item btn btn-danger mr-1">Not Approve Yet</li>';
                             }
                         ?>
@@ -64,11 +64,10 @@
                                 <div class="collapse" id="user-info">
                                     <ul class="navbar-nav nav flex-column bg-main-color">
                                         <?php
-                                            $getGroupID = query('select','Users',['GroupID'],[$_SESSION['user']],['Username'])->fetchObject()->GroupID;
-                                            if($getGroupID == 1){
+                                            if($getUser->GroupID == 1){
                                                 echo '<li class="nav-item d-block"><a href="admin/index.php" class="nav-link text-second-color text-capitalize">'.lang('go to admin').'</a></li>';
                                             }
-                                            if($userStatus == 1){
+                                            if($getUser->RegStatus == 1 && $getUser->EmailConfirm == 1){
                                                 echo '<li class="nav-item d-flex align-items-center"><a href="orders.php?do=Sellings" class="nav-link text-second-color text-capitalize">sellings</a> | <a href="orders.php?do=Buyings" class="nav-link text-second-color text-capitalize">buyings</a></li>';
                                                 echo '<li class="nav-item d-block"><a href="items.php?do=AddItem" class="nav-link text-second-color text-capitalize">'.lang('add item').'</a></li>';
                                             }

@@ -1,4 +1,13 @@
 <?php
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+    
+    require 'vendor/phpmailer/phpmailer/src/Exception.php';
+    require 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
+    require 'vendor/phpmailer/phpmailer/src/SMTP.php';
+
+    require 'vendor/autoload.php';
+
     ob_start();
     session_start();
     $pageTitle = 'Login';
@@ -9,6 +18,26 @@
         redirectPage(NULL,0);
     }else{
         $page = isset($_GET['do'])?$_GET['do']:'';
+        if($page == 'confirmEmail'){
+            $code   = isset($_GET['code']) && is_string($_GET['code'])?$_GET['code']:0;
+            $email  = isset($_GET['email']) && is_string($_GET['email'])?$_GET['email']:0;
+
+            if($code != 0 && $email != 0){
+                $getCode = query('select','Users',['EmailConfirm'],[$email],['Email'])->fetchObject()->EmailConfirm;
+                if($getCode == $code){
+                    
+                    echo '<div class="container pt-5">';
+                        $confirmEmail = query('update','Users',['EmailConfirm'],[1,$email],['Email']);
+                         echo '<div class="alert alert-success">Email confirm with success you can <a href="?do=login">login</a> now</div>';
+                    echo '</div>';
+                }else{
+                    redirectPage(NULL,0);
+                }
+            }else{
+                redirectPage(NULL,0);
+            }
+
+        }elseif($page == 'login' || $page == 'register'){
         ?>
             <section class="register my-5" <?php if($page == 'login'){
                 echo 'style="display:none"';
@@ -62,6 +91,7 @@
                 </div>
             </section>
         <?php
+        }
     }
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         if(isset($_POST['sign_up'])){
@@ -104,11 +134,43 @@
             }
             else{
                 
+                $emailConfirm = createID();
+                $mail = new PHPMailer(true);
 
-                $addUser = query('insert','Users',['FullName','Username','Email','password'],[$name,$username,$email,sha1($pass1)]);
+                try {
+                    //Server settings
+                    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+                    $mail->isSMTP();                                            //Send using SMTP
+                    $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+                    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+                    $mail->Username   = 'mokeddemamine1707@gmail.com';                     //SMTP username
+                    $mail->Password   = 'hfwc pscq lukp gurw';                               //SMTP password
+                    $mail->SMTPSecure = 'ssl';            //Enable implicit TLS encryption
+                    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+                    //Recipients
+                    $mail->setFrom('mokeddemamine1707@gmail.com', 'eCommerce Website');
+                    $mail->addAddress($email, $name);     //Add a recipient
+                    $mail->addReplyTo('mokeddemamine1707@gmail.com', 'eCommerce Website');
+
+                    //Content
+                    $mail->isHTML(true);                                  //Set email format to HTML
+                    $mail->Subject = 'Confirmation Email registration';
+                    $mail->Body    = "<div style='text-align:center;margin-top:1rem;'>
+                    <h2 style='color:#343f71;font-weight: bold;'>eCommerce Website</h2>
+                    <p style='font-size:1.5rem;'>Welcome to your home. You can buy and sell anything you want in our platform of ecommerce</p>
+                    <p style='font-size:1.5rem;'>Thank you for register in our ecommerce site</p>
+                    <a href='ecommerce.local/login.php?do=confirmEmail&email=$email&code=$emailConfirm' style='cursor:pointer;background-color: #FBC40E;color:#343f71;padding:.5rem 1rem;text-decoration: none;text-transform: capitalize;border-radius:.5rem;'>confirm email</a>
+                </div>";
+
+                    $mail->send();
+                } catch (Exception $e) {
+                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                }
+                $addUser = query('insert','Users',['FullName','Username','Email','EmailConfirm','password'],[$name,$username,$email,$emailConfirm,sha1($pass1)]);
 
                 if($addUser){
-                    echo '<div class="alert alert-success">User Added with success you will wait to approve from admin</div>';
+                    echo '<div class="alert alert-success">You added with success you must confirm your email</div>';
                 }
                 
             

@@ -7,8 +7,8 @@
         echo '<div class="container">';
         $page = isset($_GET['do'])?$_GET['do']:'manage';
 
+        $getUser = query('select','Users',['*'],[$_SESSION['user']],['Username'])->fetchObject();
         if($page == 'manage'){
-            $getUser = query('select','Users',['*'],[$_SESSION['user']],['Username'])->fetchObject();
             ?>
             <h2 class="text-center text-second-color text-capitalize my-5"><?= lang('settings') ?></h2>
             <div class="card">

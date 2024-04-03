@@ -7,7 +7,9 @@
         echo '<section class="sell-buy">';
         echo '<div class="container">';
         $page = isset($_GET['do'])?$_GET['do']:'manage';
-        $userId = query('select','Users',['UserID'],[$_SESSION['user']],['Username'])->fetchObject()->UserID;
+        $getUser = query('select','Users',['UserID'],[$_SESSION['user']],['Username'])->fetchObject();
+        if($getUser->Status == 1 && $getUser->EmailConfirm == 1){
+        $userId = $getUser->UserID;
         if($page == 'Sellings'){
             echo '<h2 class="text-center text-capitalize my-5 text-second-color">sellings</h2>';
             $getSellings = query('select','Orders INNER JOIN Items ON Orders.ItemID = Items.ItemID',['Orders.*','Items.Name AS Item_Name','Items.Price AS Item_Price','Items.Currency AS Item_Currency','Items.MemberID'],[$userId],['MemberID'],'OrderID','DESC');
@@ -210,6 +212,9 @@
                 $deleteOrder = query('delete','Orders',['OrderID'],[$orderid]);
                 redirectPage('back');
             }
+        }else{
+            redirectPage(NULL,0);
+        }
         }else{
             redirectPage(NULL,0);
         }

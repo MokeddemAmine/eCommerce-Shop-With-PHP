@@ -90,7 +90,7 @@
     }elseif($page == 'AddItem'){
         if(isset($_SESSION['user'])){
             $getUser = query('select','Users',['*'],[$_SESSION['user']],['Username'])->fetchObject();
-            if($getUser->RegStatus == 1){
+            if($getUser->RegStatus == 1 && $getUser->EmailConfirm == 1){
                 ?>
                 <h2 class="text-center text-capitalize text-second-color mb-5"><?= lang('add new item') ?></h2>
                 <div class="row border p-3">

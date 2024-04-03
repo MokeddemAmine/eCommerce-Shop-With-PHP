@@ -10,6 +10,8 @@
 
     
         if(isset($_SESSION['user'])){
+            $getUser = query('select','Users',['*'],[$_SESSION['user']],['Username'])->fetchObject();
+            if($getUser->RegStatus == 1 && $getUser->EmailConfirm == 1){
             echo '<div class="row">';
             $itemid = isset($_GET['itemid']) && is_numeric($_GET['itemid'])?$_GET['itemid']:0;
             $verifyItem = query('select','Items',['*'],[$itemid],['ItemID']);
@@ -373,6 +375,9 @@
            ?>
         </div>
         <?php
+        }else{
+            redirectPage(NULL,0);
+        }
     }
     else{
         echo '<div class="alert alert-info">You must <a href="login.php?do=login">Login</a> to continue the order</div>'; 

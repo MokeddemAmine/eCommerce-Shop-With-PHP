@@ -69,6 +69,7 @@
                                                 echo '<li class="nav-item d-block"><a href="admin/index.php" class="nav-link text-second-color text-capitalize">'.lang('go to admin').'</a></li>';
                                             }
                                             if($userStatus == 1){
+                                                echo '<li class="nav-item d-flex align-items-center"><a href="orders.php?do=Sellings" class="nav-link text-second-color text-capitalize">sellings</a> | <a href="orders.php?do=Buyings" class="nav-link text-second-color text-capitalize">buyings</a></li>';
                                                 echo '<li class="nav-item d-block"><a href="items.php?do=AddItem" class="nav-link text-second-color text-capitalize">'.lang('add item').'</a></li>';
                                             }
                                         ?> 

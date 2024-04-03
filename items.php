@@ -779,6 +779,8 @@
                 redirectPage('back');
             }
         }
+    }else{
+        redirectPage(NULL,0);
     }
     echo '</div>';
     include $template.'footer.php';

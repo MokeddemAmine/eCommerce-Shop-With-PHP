@@ -367,6 +367,8 @@
                 </div>
                 <?php } 
             }
+        }else{
+            redirectPage(NULL,0);
         }
            ?>
         </div>

@@ -86,7 +86,7 @@
                 Phone VARCHAR(15) NOT NULL,
                 Address TEXT NOT NULL,
                 Quantity INT DEFAULT 1,
-                BuyerConfirm SMALLINT DEFAULT 0,
+                SellerConfirm SMALLINT DEFAULT 0,
                 CustomerConfirm SMALLINT DEFAULT 0,
                 CONSTRAINT OrdersPK PRIMARY KEY (OrderID),
                 CONSTRAINT itemidOrdersFK FOREIGN KEY (ItemID) REFERENCES Items (ItemID),

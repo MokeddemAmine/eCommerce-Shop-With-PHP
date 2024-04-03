@@ -7,8 +7,8 @@
         echo '<section class="sell-buy">';
         echo '<div class="container">';
         $page = isset($_GET['do'])?$_GET['do']:'manage';
-        $getUser = query('select','Users',['UserID'],[$_SESSION['user']],['Username'])->fetchObject();
-        if($getUser->Status == 1 && $getUser->EmailConfirm == 1){
+        $getUser = query('select','Users',['*'],[$_SESSION['user']],['Username'])->fetchObject();
+        if($getUser->RegStatus == 1 && $getUser->EmailConfirm == 1){
         $userId = $getUser->UserID;
         if($page == 'Sellings'){
             echo '<h2 class="text-center text-capitalize my-5 text-second-color">sellings</h2>';

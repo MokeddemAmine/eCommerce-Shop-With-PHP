@@ -78,6 +78,21 @@
                 CONSTRAINT UserIDFK FOREIGN KEY (UserID) REFERENCES Users (UserID) ON UPDATE CASCADE ON DELETE CASCADE
             )');
             $query->execute();
+            $query = $pdo->prepare('CREATE TABLE Orders(
+                OrderID INT AUTO_INCREMENT NOT NULL,
+                ItemID INT NOT NULL,
+                CustomerID INT NOT NULL,
+                CustomerName VARCHAR(50) NOT NULL,
+                Phone VARCHAR(15) NOT NULL,
+                Address TEXT NOT NULL,
+                Quantity INT DEFAULT 1,
+                BuyerConfirm SMALLINT DEFAULT 0,
+                CustomerConfirm SMALLINT DEFAULT 0,
+                CONSTRAINT OrdersPK PRIMARY KEY (OrderID),
+                CONSTRAINT itemidOrdersFK FOREIGN KEY (ItemID) REFERENCES Items (ItemID),
+                CONSTRAINT customeridOrdersFK FOREIGN KEY (CustomerID) REFERENCES Users (UserID)
+            )');
+            $query->execute();
         }
     }
 ?>

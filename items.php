@@ -321,7 +321,15 @@
                                 <a href="items.php?do=EditItem&itemid=<?= $getItem->ItemID ?>" class="btn btn-success btn-sm text-capitalize"><i class="fa-solid fa-edit"></i> <?=lang('edit') ?></a>
                                 <a href="items.php?do=DeleteItem&itemid=<?= $getItem->ItemID ?>" class="btn btn-danger btn-sm confirm-delete text-capitalize"><i class="fa-solid fa-close"></i> <?= lang('delete') ?></a>
                             </div>
-                        <?php } ?>
+                        <?php
+                            }else{
+                                ?>
+                                <div class="text-right">
+                                    <a href="buyItem.php?do=setAddress&itemid=<?= $getItem->ItemID ?>" class="btn bg-main-color text-second-color btn-sm text-uppercase">buy item</a>
+                                </div>
+                                <?php
+                            } 
+                        ?>
                     </div>
                 </div>
                 <div class="comments">

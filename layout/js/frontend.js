@@ -123,7 +123,20 @@ $(document).ready(function(){
         $('#result-search').css('display','none');
     })
 
+   // change total price when change number of unit of item
+   $('#number-unit-item').change(function(){
+    $('#price-item').text(parseFloat($('#unit-price-item').text())*parseInt($(this).val()));
 
+   })
+   $('#number-unit-item').keyup(function(){
+    $('#price-item').text(parseFloat($('#unit-price-item').text())*parseInt($(this).val()));
 
+   })
+   // show and hide method of payment
+   $('.click-payment').click(function(){
+    $('#'+$(this).data('class')).slideToggle(100);
+    $('.method-payment').not('#'+$(this).data('class')).hide();
+    
+   })
     
 })

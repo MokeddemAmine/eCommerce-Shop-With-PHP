@@ -59,7 +59,7 @@
                             }
                         ?>
                             
-                            <li class="nav-item user-sign-in m-0">
+                            <li class="nav-item user-sign-in m-0" style="min-width:200px;">
                                 <a data-toggle="collapse" href="#user-info" class="nav-link text-second-color text-uppercase btn btn-sm bg-main-color mb-2 mb-md-0"><?= $_SESSION['user']; ?></a>
                                 <div class="collapse" id="user-info">
                                     <ul class="navbar-nav nav flex-column bg-main-color">

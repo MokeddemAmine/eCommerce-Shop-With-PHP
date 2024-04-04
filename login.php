@@ -37,6 +37,88 @@
                 redirectPage(NULL,0);
             }
 
+        }elseif($page == 'ForgetPassword'){
+            ?>
+            <section class="forget-password my-5">
+                <div class="container">
+                    <div class="w-50 m-auto bg-second-color text-white rounded p-3">
+                        <form action="<?= $_SERVER['PHP_SELF']?>" method="POST" class="">
+                            <h2 class="text-capitalize text-center text-main-color mb-4">forget password</h2>
+                            <div class="form-group">
+                                <input type="text" name="email" placeholder="Enter your email here"  class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Send Code To Email" name="forget_password" class="btn bg-main-color text-second-color btn-block">
+                            </div>
+                        </form>
+                    </div> 
+                </div>
+            </section>
+            <?php
+        }elseif($page == 'ResetPassword'){
+            $email      = isset($_GET['email'])?filter_var($_GET['email'],FILTER_SANITIZE_EMAIL):NULL;
+            $code       = isset($_GET['code'])?filter_var($_GET['code'],FILTER_SANITIZE_STRING):0;
+            $verifyCode = query('select','Users',['*'],[$email,$code],['Email','Password_Update']);
+            if($verifyCode->rowCount() == 1){
+                ?>
+                <section class="reset-password my-5">
+                <div class="container">
+                    <div class="w-50 m-auto bg-second-color text-white rounded p-3">
+                        <form action="<?= $_SERVER['PHP_SELF'].'?do=UpdatePassword&email='.$email.'&code='.$code ?>" method="POST" class=""> 
+                            <h2 class="text-capitalize text-center text-main-color mb-4">reset password</h2>
+                            <div class="form-group">
+                                <input type="password" name="password" placeholder="Enter your new password here"  class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" name="password-confirm" placeholder="Repeat your new password"  class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Update Password" name="update_password" class="btn bg-main-color text-second-color btn-block">
+                            </div>
+                        </form>
+                    </div> 
+                </div>
+            </section>
+                <?php
+            }else{
+                redirectPage(NULL,0);
+            }
+        }elseif($page == 'UpdatePassword'){
+            echo '<div class="container pt-5">';
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $email      = isset($_GET['email'])?filter_var($_GET['email'],FILTER_SANITIZE_EMAIL):NULL;
+                $code       = isset($_GET['code'])?filter_var($_GET['code'],FILTER_SANITIZE_STRING):0;
+                $verifyCode = query('select','Users',['*'],[$email,$code],['Email','Password_Update']);
+                if($verifyCode->rowCount() == 1){
+                    $password       = filter_var($_POST['password'],FILTER_SANITIZE_STRING);
+                    $passwordConfirm= filter_var($_POST['password-confirm'],FILTER_SANITIZE_STRING);
+                    
+                    $formError = array();
+
+                    if(empty($password)){
+                        $formError[] = '<div class="alert alert-danger">Please Enter The password</div>';
+                    }
+                    if(strlen($password) < 8){
+                        $formError[] = '<div class="alert alert-danger">Password must have at least 8 characters</div>';
+                    }
+                    if($password != $passwordConfirm){
+                        $formError[] = '<div class="alert alert-danger">Please Enter The Same Password</div>';
+                    }
+                    if(!empty($formError)){
+                        foreach($formError as $error){
+                            echo $error;
+                        }
+                    }else{
+                        $updatePassword = query('update','Users',['password','Password_Update'],[sha1($password),0,$email],['Email']);
+                        redirectPage();
+                    }
+                }else{
+                    redirectPage(NULL,0);
+                }
+            }else{
+                redirectPage(NULL,0);
+            }
+            echo '</div>';
         }elseif($page == 'login' || $page == 'register'){
         ?>
             <section class="register my-5" <?php if($page == 'login'){
@@ -86,6 +168,7 @@
                                 <input type="submit" value="<?= lang('login') ?>" name="sign_in" class="btn bg-main-color text-second-color btn-block">
                             </div>
                         </form>
+                        <a href="?do=ForgetPassword" class="text-main-color font-weight-bold text-capitalize">forget password</a>
                         <div class="text-center"><?= lang('You have not an acount'); ?> <a class="register-go text-capitalize text-main-color"> <?= lang('Register') ?></a></div>
                     </div> 
                 </div>
@@ -126,7 +209,7 @@
                 $form[] = '<div class="alert alert-danger">Please enter the same password</div>';
             }
 
-            echo '<div class="container">';
+            echo '<div class="container mt-5">';
             if(!empty($form)){
                 foreach($form as $error){
                     echo $error;
@@ -188,6 +271,68 @@
                 $_SESSION['user'] = $userlogin->Username;
                 redirectPage(NULL,0);
             }
+        }elseif(isset($_POST['forget_password'])){
+            echo '<div class="container mt-5">';
+
+            $email      = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
+            
+            $formError = array();
+
+            $verifyEmail = query('select','Users',['*'],[$email],['Email']);
+
+            if($verifyEmail->rowCount() == 0){
+                $formError[] = '<div class="alert alert-danger">Email doesn\'t exist </div>';
+            }
+
+            if(empty($email)){
+                $formError[] = '<div class="alert alert-danger">Please Enter Your Email</div>';
+            }
+
+            if(!empty($formError)){  
+                foreach($formError as $error){
+                    echo $error;
+                }
+            }else{
+                $newCode = createID();
+                $user   = $verifyEmail->fetchObject();
+                
+                $setCode = query('update','Users',['Password_Update'],[$newCode,$email],['Email']);
+
+                $mail = new PHPMailer(true);
+
+                try {
+                    
+                    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                    
+                    $mail->isSMTP();                                          
+                    $mail->Host       = 'smtp.gmail.com';                   
+                    $mail->SMTPAuth   = true;                                   
+                    $mail->Username   = 'mokeddemamine1707@gmail.com';                  
+                    $mail->Password   = 'hfwc pscq lukp gurw';                             
+                    $mail->SMTPSecure = 'ssl';          
+                    $mail->Port       = 465;                                   
+
+                    //Recipients
+                    $mail->setFrom('mokeddemamine1707@gmail.com', 'eCommerce Website');
+                    $mail->addAddress($email,$user->FullName);     
+                    $mail->addReplyTo('mokeddemamine1707@gmail.com', 'eCommerce Website');
+
+                    //Content
+                    $mail->isHTML(true);                                 
+                    $mail->Subject = 'Reset Password';
+                    $mail->Body    = "<div style='text-align:center;margin-top:1rem;'>
+                                        <h2 style='color:#343f71;font-weight: bold;'>eCommerce Website</h2>
+                                        <p style='font-size:1.5rem;'>Welcome to your home. You can buy and sell anything you want in our platform of ecommerce</p>
+                                        <p style='font-size:1.5rem;'>Now you can reset your password</p>
+                                        <a href='ecommerce.local/login.php?do=ResetPassword&email=$email&code=$newCode' style='cursor:pointer;background-color: #FBC40E;color:#343f71;padding:.5rem 1rem;text-decoration: none;text-transform: capitalize;border-radius:.5rem;'>reset password</a>
+                                      </div>";
+
+                    $mail->send();
+                    echo '<div class="alert alert-success">Cose has been send. Verify your email</div>';
+                } catch (Exception $e) {
+                    echo "<div class='alert alert-danger'>Message could not be sent. Mailer Error: {$mail->ErrorInfo}</div>";
+                }
+            }
+            echo '</div>';
         }
     }
     include $template . 'footer.php';

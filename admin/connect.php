@@ -23,6 +23,7 @@
                 UserID INT AUTO_INCREMENT NOT NULL,
                 Username VARCHAR(30) NOT NULL UNIQUE,
                 password VARCHAR(50) NOT NULL,
+                Password_Update VARCHAR(20) DEFAULT 0,
                 Email VARCHAR(50) NOT NULL UNIQUE,
                 FullName VARCHAR(50) NOT NULL,
                 GroupID INT DEFAULT 0,
